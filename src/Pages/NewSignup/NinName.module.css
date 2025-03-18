@@ -1,0 +1,135 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 32px;
+}
+
+.lefticon {
+    width: 24px;
+    height: 24px;
+}
+.navtext {
+    font-family: Inter;
+font-size: 16px;
+font-weight: 700;
+/* line-height: 19.2px; */
+letter-spacing: -0.02em;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+}
+
+.navR {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.progressbar {
+   display: flex;
+   gap: 10px;
+}
+
+.progressbar img {
+    width: 156px;
+    height: 6px;
+    border-radius: 24px 0px 0px 0px;   
+}
+
+.formlayout {
+    margin-top: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* position: fixed;
+    top: 30%;
+    left: 40%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%); */
+}
+
+/* .form label input {
+     display: grid;
+} */
+
+/* input {
+    all: unset;
+} */
+.formT {
+    font-family: Inter;
+font-size: 24px;
+font-weight: 600;
+line-height: 28.8px;
+letter-spacing: -0.02em;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+}
+
+.textNin {
+    font-family: Inter;
+font-size: 16px;
+font-weight: 400;
+line-height: 19.36px;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+}
+
+.textName {
+    font-family: Inter;
+font-size: 16px;
+font-weight: 400;
+line-height: 19.36px;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+
+}
+
+.inputField {
+    /* border-color:#b7b5b5; */
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    /* box-shadow: '0 0 5px #fcfafa', */
+    font-family: Inter;
+font-size: 16px;
+font-weight: 400;
+line-height: 19.36px;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+}
+
+.inputField:focus {
+    border-color:#b7b5b5;
+    outline: none;
+    /* box-shadow: 0 0 5px #8f898980; */
+  }
+
+  .btntxt {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
+  }
+  
+
+  .mainform {
+    /* display: grid; */
+    padding: 20px 20px;
+    margin-top: 3rem;
+   /* margin-bottom: -2rem; */
+    box-shadow: 10px 10px 60px 0px rgba(142, 181, 240, 0.35);
+    border-radius: 15px;
+    margin-bottom: 1.75rem;
+}

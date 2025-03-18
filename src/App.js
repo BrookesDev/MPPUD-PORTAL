@@ -10,7 +10,8 @@ import Success from "./Pages/Successfulpage/Success"
 
 import Layout from "./Components/Layout";
 
-import Signup from "./Pages/Signup/Signup";
+// import Signup from "./Pages/Signup/Signup";
+import Signup from "./Pages/NewSignup/Signup";
 import Create from "./Pages/Create/Create";
 import Request from "./Pages/Request/Request";
 import Budget from "./Pages/Budget/BudgetPerformance";

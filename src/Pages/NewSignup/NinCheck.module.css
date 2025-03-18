@@ -1,0 +1,129 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 32px;
+}
+
+.lefticon {
+    width: 24px;
+    height: 24px;
+    
+}
+
+.navtext {
+    font-family: Inter;
+font-size: 16px;
+font-weight: 700;
+/* line-height: 19.2px; */
+letter-spacing: -0.02em;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+}
+
+
+
+.navR {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.progressbar {
+   display: flex;
+   gap: 10px;
+
+}
+
+.progressbar img {
+    width: 156px;
+    height: 6px;
+    border-radius: 24px 0px 0px 0px;   
+}
+
+.mainform {
+    /* display: grid; */
+    padding: 20px 20px;
+    margin-top: 3rem;
+   /* margin-bottom: -2rem; */
+    box-shadow: 10px 10px 60px 0px rgba(142, 181, 240, 0.35);
+    border-radius: 15px;
+    margin-bottom: 1.75rem;
+}
+
+.formlayout {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* position: fixed;
+    top: 30%;
+    left: 40%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%); */
+}
+
+.idcardicon {
+    width: 94px;
+    height: 94px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    margin-left: 140px;
+    margin-right: 120px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+    
+}
+
+.Maintext {
+    font-family: Inter;
+font-size: 20px;
+font-weight: 500;
+line-height: 24.2px;
+letter-spacing: 0.3199999928474426px;
+text-align: center;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+
+}
+
+.center1 {
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.textH {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+     
+}
+
+.longicon {
+    width: 400px;
+    height: 8px;
+}
+
+.textNu {
+    font-family: SF Pro Display;
+font-size: 32px;
+font-weight: 700;
+line-height: 38.19px;
+text-align: center;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+text-align: center;
+color: #21B55A;
+padding-bottom: 10px;
+padding-top: 30px;
+}

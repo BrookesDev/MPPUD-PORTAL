@@ -1,0 +1,302 @@
+import React, { useState, useEffect } from "react";
+import classes from "./Signup.module.css";
+import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
+import { Button, Spinner } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
+// import { BASE_URL } from "../api/api";
+// import axios from "axios";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import logo from "../../Asset/olarmsLogo.svg"
+import slide from "../../Asset/slide.svg"
+import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
+import errorIcon from '../../Asset/error.svg';
+import Carousel from "react-bootstrap/Carousel";
+
+
+
+function SignUp() {
+   const [loading, setLoading] = useState(false);
+   const [showValidations, setShowValidations] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [passwordValidations, setPasswordValidations] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    specialChar: false,
+    match: false,
+    number: false
+  });
+  const selectedPlan = location.state?.selectedPlan;
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setActiveIndex(selectedIndex);
+  };
+
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
+  };
+  const handleLogin = () => {
+    navigate('/login');
+  }
+  const handleVerify = () => {
+    navigate('/verify_account');
+  }
+
+  // const handleSignup = async () => {
+  //   setLoading(true);
+  //   setShowErrorMessage(false);
+
+  //   if (password !== confirmPassword) {
+  //     setErrorMessage("Password and Confirm Password do not match");
+  //     setShowErrorMessage(true);
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   try {        
+  //     const response = await axios.post(`${BASE_URL}/signup`, {
+  //       // full_name: fullName,
+  //       email: email,
+  //       // password: password,
+  //       // confirm_password: confirmPassword
+  //     });  
+  //     navigate('/verify_otp', { state: { email, firstName, lastName, phone, password, confirmPassword } });
+
+  //   } catch (error) {
+  //     let errorMessage = 'An error occurred. Please try again.';
+  //     if (error.response && error.response.data && error.response.data.message) {
+  //       if (typeof error.response.data.message === 'string') {
+  //         errorMessage = error.response.data.message;
+  //       } else if (Array.isArray(error.response.data.message)) {
+  //         errorMessage = error.response.data.message.join('; ');
+  //       } else if (typeof error.response.data.message === 'object') {
+  //         errorMessage = JSON.stringify(error.response.data.message);
+  //       }
+  //       setErrorMessage(JSON.stringify(error.response.data.message));
+  //       setShowErrorMessage(true);
+  //       // Swal.fire({
+  //       //   icon: 'error',
+  //       //   title: 'Failed',
+  //       //   text: JSON.stringify(error.response.data.message),
+  //       // });
+  //     }
+      
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handleFirstName = (e) => {
+    setFirstName(e.target.value);
+    setShowErrorMessage(false);
+  };
+  const handleLastName = (e) => {
+    setLastName(e.target.value);
+    setShowErrorMessage(false);
+  };
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    setShowErrorMessage(false);
+  };
+  const handlePassword = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setShowErrorMessage(false);
+    setShowValidations(true);
+    setPasswordValidations({
+      length: value.length >= 6,
+      uppercase: /[A-Z]/.test(value),
+      lowercase: /[a-z]/.test(value),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+      match: confirmPassword === value, 
+      number: /\d/.test(value),
+    });
+  };
+  const handlePhone = (e) => {
+    setPhone(e.target.value);
+    setShowErrorMessage(false);
+  };
+  const handleConfirmPassword = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setShowErrorMessage(false);
+
+    setPasswordValidations((prev) => ({
+      ...prev,
+      match: password === value,
+    }));
+  };
+
+  const isButtonDisabled = !email || !password || !firstName || !lastName || !confirmPassword || loading || !Object.values(passwordValidations).every(Boolean);
+
+  return (
+    <div >
+      <div className={classes.maincontainer}>
+        <div className={classes.lftcontainer}>
+          <h1>
+
+          </h1>
+        </div>
+        <div className={classes.rgtcontainer}>
+          <div className={classes.maintext}>
+            <h1> Sign Up </h1>
+            <h6> Sign up now to experience seamless land administration. </h6>
+
+            <div className="row">
+              <div className="col-md-6">
+              <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+              <Form.Label className={classes.inputLabel}>First name</Form.Label>
+              <Form.Control onChange={handleFirstName} type="name" placeholder="Enter your first name" />
+            </Form.Group>
+            </div>
+            <div className="col-md-6">
+            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+              <Form.Label className={classes.inputLabel}>Last name</Form.Label>
+              <Form.Control onChange={handleLastName} type="name" placeholder="Enter your last name" />
+            </Form.Group>
+            </div>
+            </div>
+            <div className="row">
+            <div className="col-md-6">
+            <Form.Group className={classes.errorCt12}>
+              <Form.Label className={classes.inputLabel}>Email address</Form.Label>
+              <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" />             
+            </Form.Group>
+            </div>
+            <div className="col-md-6">
+            <Form.Group  className={classes.errorCt12}>
+              <Form.Label className={classes.inputLabel}>Phone Number</Form.Label>
+              <Form.Control onChange={handlePhone} type="phone" placeholder="Enter your phone number" />             
+            </Form.Group>
+            </div>
+            </div>
+
+            <div className="row">
+            <div className="col-md-6">
+            <Form.Group >
+              <Form.Label className={classes.inputLabel}>Password</Form.Label>
+              <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" />
+              <button
+                type="button"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  float: 'right',
+                  marginRight: '10px',                  
+                  // left: "-3%",
+                  marginTop: '-45px',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <img src={crossedEyeIcon} alt="Hide Password" style={{ height: "17px", width: "17px" }} />
+                ) : (
+                  '👁️'
+                )}
+              </button>
+
+            </Form.Group>
+            </div>
+            <div className="col-md-6">
+            <Form.Group>
+              <Form.Label className={classes.inputLabel}>Confirm Password</Form.Label>
+              <Form.Control onChange={handleConfirmPassword} type={showPassword2 ? 'text' : 'password'} placeholder="Confirm password" />
+              <button
+                type="button"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  float: 'right',
+                  // left: "-3%",
+                  marginTop: '-45px',
+                  marginRight: '10px',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+                onClick={togglePasswordVisibility2}
+              >
+                {showPassword2 ? (
+                  <img src={crossedEyeIcon} alt="Hide Password" style={{ height: "17px", width: "17px" }} />
+                ) : (
+                  '👁️'
+                )}
+              </button>
+
+            </Form.Group>
+            </div>
+            </div>
+            {password && showValidations && (
+            <ul style={{ listStyleType: "none", padding: 0 }}>
+  <li style={{ color: passwordValidations.number ? "green" : "red" }}>
+    {passwordValidations.length ? "✔" : "❌"} Must contain at least a number
+  </li>
+  <li style={{ color: passwordValidations.length ? "green" : "red" }}>
+    {passwordValidations.length ? "✔" : "❌"} Must be at least 6 characters
+  </li>
+  <li style={{ color: passwordValidations.uppercase ? "green" : "red" }}>
+    {passwordValidations.uppercase ? "✔" : "❌"} Must contain an uppercase letter
+  </li>
+  <li style={{ color: passwordValidations.lowercase ? "green" : "red" }}>
+    {passwordValidations.lowercase ? "✔" : "❌"} Must contain a lowercase letter
+  </li>
+  <li style={{ color: passwordValidations.specialChar ? "green" : "red" }}>
+    {passwordValidations.specialChar ? "✔" : "❌"} Must contain a special character
+  </li>
+  <li style={{ color: passwordValidations.match ? "green" : "red" }}>
+    {passwordValidations.match ? "✔" : "❌"} Passwords must match
+  </li>
+</ul>
+            )}
+
+            {showErrorMessage === true && (
+              <div className={classes.errorCt}>
+                <p>{errorMessage}</p>
+                <img src={errorIcon} alt="Hide Password" style={{ height: "20px", width: "20px" }} />
+              </div>
+              )}
+
+            <Button disabled={isButtonDisabled} variant="success" className={classes.btngreen}  >
+            {loading ? (
+                            <>
+                                <Spinner size='sm' />
+                                <span style={{ marginLeft: '5px' }}>Signing up...</span>
+                            </>
+                        ) : (
+                            "Signup"
+                        )}          
+            </Button>
+            <div className={classes.btmTxt}>
+            <p> Already have an account? <span className={classes.loginclk} onClick={handleLogin}> Log in</span> </p>
+            {/* <p style={{marginTop: 10}}> By Signing up, you agree to our <span style={{ color: "#21B55A" }}> Terms of Services</span> </p> */}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SignUp;

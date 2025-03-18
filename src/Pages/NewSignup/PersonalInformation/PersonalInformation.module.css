@@ -1,0 +1,187 @@
+.maincontainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+  }
+
+  .maintext {
+    width: 70%;
+    margin: 0 auto;
+    box-shadow: 10px 10px 60px 0 rgba(142, 181, 240, 0.35);
+    padding: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+
+  .required {
+    color: red;
+    padding: 10px 0 0 2px;
+    font-size: 12px;
+    /* height: 20px; */
+  }
+
+  .errorCt {
+    width: 100%;
+    display: flex;
+    /* position: fixed; */
+    justify-content: space-between;
+    padding: 5px 14px 5px 14px;
+    background-color: #ffffff; 
+    border-radius: 7px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 1); /* Neumorphic shadow effect */
+    border-top: 3px solid #21B55A; /* Top border only */
+    border-right: 3px solid #21B55A; /* Right border only */
+    border-bottom: none; /* Remove bottom border */
+    border-left: none; /* Remove left border */
+    /* z-index: 999; */
+    margin: -10px 0 0 0;
+    
+    /* display: none; */
+    }
+
+  .errorCt p {
+    color: #EB0000 !important;
+    font-family: Poppins;
+font-size: 14px;
+font-weight: 400;
+line-height: 21px;
+letter-spacing: -0.01em;
+text-align: left;
+text-decoration-skip-ink: none;
+
+  }
+
+  .errorCt::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* Position above the container */
+    right: 10px; /* Adjust to align with the top-right edge */
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent; /* Left side of triangle */
+    border-right: 10px solid transparent; /* Right side of triangle */
+    border-bottom: 10px solid green; /* Bottom of triangle (visible part) */
+    /* background-color: green; */
+    color: green;
+    }
+
+  .progressbar {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    width: 45%;
+    margin-top: 20px;
+ }
+ 
+ .progressbar > img {
+     width: 156px;
+     height: 6px;
+     border-radius: 24px 0px 0px 0px;   
+ }
+
+  .maintext h6 {
+    color: #667185;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+    margin: 5px 0 30px 0;
+    line-height: 25px;        
+  }
+
+  .maintext h1 {
+    color: black;
+    font-size: 24px;
+    font-weight: 650;
+    text-align: left;
+    /* font-family: arial black; */
+  }
+
+  .maintext p {
+    color: #667185;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: left;
+    margin: 0;
+  }
+  .optioncss:hover {
+    box-shadow: 0 0 5px rgba(45, 153, 95, 0.7) !important;
+  }
+  
+  .optioncss {
+    height: 50px;
+    margin: 0px 0 10px 0;
+  }
+
+  .btmBtnCont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  .btngreen {
+  
+    margin: 20px 0 15px 0;
+    width: 300px;
+    background-color: #21B55A;
+    font-size: 16px;
+    height: 40px;
+    border: none;
+  }
+
+  .passDn{
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .maincontainer {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+      }
+      .maintext {
+        /* padding: 20px 10px; */
+        /* text-align: center; */
+        width: 288px;
+        margin: 0 auto;
+        padding-top: 80px 10px;
+      }
+    
+      .maintext h6,
+      .maintext h1 {
+        text-align: left;
+      }
+
+      .maintext h1 {
+        font-size: 20px;
+      }
+    
+      .maintext p {
+        font-size: 14px;
+      }
+
+      .inputLabel{
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20.3px;
+        text-align: left !important;
+        text-decoration-skip-ink: none;
+        width: 100%;
+        
+      }
+
+      .btngreen {
+        width: 90%;
+        font-size: 14px;
+        height: 40px;
+      }
+
+      .btngreen {
+        font-size: 12px;
+        height: 38px;
+      }
+    
+    
+  }
