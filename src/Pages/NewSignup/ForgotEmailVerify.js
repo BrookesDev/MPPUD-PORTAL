@@ -9,20 +9,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import errorIcon from '../../Assets/error.svg';
-import logo from "../../Assets/olarmsLogo.svg";
-import slide from "../../Assets/slide.svg";
-import Carousel from "react-bootstrap/Carousel";
-import axios from "axios";
-import { BASE_URL } from "../../API/Api";
-
+import errorIcon from '../../Asset/error.svg';
+import ogunlogo from "../../Asset/ogunlogonew.svg";
+// import slide from "../../Assets/slide.svg";
 
 function ForgotEmailVerify() {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-  const {email, firstName, phone, lastName, password, confirmPassword} = location.state;
+  const {email } = location.state || '';
  const [errorMessage, setErrorMessage] = useState("");
      const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -81,149 +77,122 @@ function ForgotEmailVerify() {
 
   const getOtpString = () => otp.join("");
 
-  const handleSignup = async () => {
-    setLoading(true);
-    setShowErrorMessage(false);
-    try {
+  // const handleSignup = async () => {
+  //   setLoading(true);
+  //   try {
       
-      const otpString = getOtpString();
-      const response = await axios.post(`${BASE_URL}/verifyOtp`, {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        phone: phone,
-        password: password,
-        confirm_password: confirmPassword,
-        otp: otpString
-      });
+  //     const otpString = getOtpString();
+  //     const response = await axios.post(`${BASE_URL}/verifyOtp`, {
+  //       email: email,
+  //       otp: otpString
+  //     });
   
-      navigate('/success');
+  //     navigate('/success');
 
-    } catch (error) {
-      let errorMessage = 'An error occurred. Please try again.';
-      if (error.response && error.response.data && error.response.data.message) {
-        if (typeof error.response.data.message === 'string') {
-          errorMessage = error.response.data.message;
-        } else if (Array.isArray(error.response.data.message)) {
-          errorMessage = error.response.data.message.join('; ');
-        } else if (typeof error.response.data.message === 'object') {
-          errorMessage = JSON.stringify(error.response.data.message);
-        }
-        setErrorMessage(JSON.stringify(error.response.data.message));
-        setShowErrorMessage(true);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Failed',
-        //   text: JSON.stringify(error.response.data.message),
-        // });
-      }
+  //   } catch (error) {
+  //     let errorMessage = 'An error occurred. Please try again.';
+  //     if (error.response && error.response.data && error.response.data.message) {
+  //       if (typeof error.response.data.message === 'string') {
+  //         errorMessage = error.response.data.message;
+  //       } else if (Array.isArray(error.response.data.message)) {
+  //         errorMessage = error.response.data.message.join('; ');
+  //       } else if (typeof error.response.data.message === 'object') {
+  //         errorMessage = JSON.stringify(error.response.data.message);
+  //       }
+  //       setErrorMessage(JSON.stringify(error.response.data.message));
+  //       setShowErrorMessage(true);
+  //       // Swal.fire({
+  //       //   icon: 'error',
+  //       //   title: 'Failed',
+  //       //   text: JSON.stringify(error.response.data.message),
+  //       // });
+  //     }
       
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   
-  const handleResendOtp = async () => {
-    setOtpLoading(true);
-    setShowErrorMessage(false);
-    setOtp(Array(5).fill(""));
-    try {
+  // const handleResendOtp = async () => {
+  //   setOtpLoading(true);
+  //   setShowErrorMessage(false);
+  //   setOtp(Array(5).fill(""));
+  //   try {
       
-      const otpString = getOtpString();
-      const response = await axios.post(`${BASE_URL}/resend_otp`, {
-        email: email,
-      });
-      setSeconds(34); 
-    setIsCounting(true); 
-    setMessage("");
+  //     const otpString = getOtpString();
+  //     const response = await axios.post(`${BASE_URL}/resend_otp`, {
+  //       email: email,
+  //     });
+  //     setSeconds(34); 
+  //   setIsCounting(true); 
+  //   setMessage("");
  
   
-    } catch (error) {
-      let errorMessage = 'An error occurred. Please try again.';
-      if (error.response && error.response.data && error.response.data.message) {
-        if (typeof error.response.data.message === 'string') {
-          errorMessage = error.response.data.message;
-        } else if (Array.isArray(error.response.data.message)) {
-          errorMessage = error.response.data.message.join('; ');
-        } else if (typeof error.response.data.message === 'object') {
-          errorMessage = JSON.stringify(error.response.data.message);
-        }
-        setErrorMessage(JSON.stringify(error.response.data.message));
-        setShowErrorMessage(true);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Failed',
-        //   text: JSON.stringify(error.response.data.message),
-        // });
-      }
+  //   } catch (error) {
+  //     let errorMessage = 'An error occurred. Please try again.';
+  //     if (error.response && error.response.data && error.response.data.message) {
+  //       if (typeof error.response.data.message === 'string') {
+  //         errorMessage = error.response.data.message;
+  //       } else if (Array.isArray(error.response.data.message)) {
+  //         errorMessage = error.response.data.message.join('; ');
+  //       } else if (typeof error.response.data.message === 'object') {
+  //         errorMessage = JSON.stringify(error.response.data.message);
+  //       }
+  //       setErrorMessage(JSON.stringify(error.response.data.message));
+  //       setShowErrorMessage(true);
+  //       // Swal.fire({
+  //       //   icon: 'error',
+  //       //   title: 'Failed',
+  //       //   text: JSON.stringify(error.response.data.message),
+  //       // });
+  //     }
       
-    } finally {
-      setOtpLoading(false);
-    }
-  };
+  //   } finally {
+  //     setOtpLoading(false);
+  //   }
+  // };
 
   const isButtonDisabled = !otp || loading;
   return (
     <div >
         <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
-          <div className={classes.logohead}>
-            <img src={logo} alt="Olarms Logo" className={classes.logoimage} />
-          </div>
-
-          <Carousel
-        activeIndex={activeIndex}
-        onSelect={handleSelect}
-        controls={false}
-        indicators={false} // Disable default indicators
-        className={classes.customCarousel}
-      >
-            <Carousel.Item className={classes.textdown}>
-            <h6 className={classes.textdownH}>
-                  {" "}
-                  Seamless Land <br />
-                  Administration Starts Here
-                </h6>
-                <p className={classes.textdownP}>
-                  Welcome to the Ogun State Land Administration <br />
-                  and Revenue Management System (OLARMS).
-                </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-            <h6 className={classes.textdownH}>
-                  {" "}
-                  Your Gateway to Owning Land <br />
-                  Starts Here!
-                </h6>
-                <p className={classes.textdownP}>
-                Discover the simplicity of land ownership with Ogun State's <br />
-                premier Land Administration and Revenue Management System.
-                </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-                <h6 className={classes.textdownH}>
-                  {" "}
-                  Invest in Your Future <br />
-                  with Land in Ogun State!
-                </h6>
-                <p className={classes.textdownP}>
-                Unlock seamless access to affordable and secure land <br />
-                ownership through Ogun State’s trusted OLARMS.
-                </p>{" "}
-            </Carousel.Item>
-          </Carousel>
-      <div className={classes.slidehead4}>
-        {[0, 1, 2].map((index) => (
-          <span
-            key={index}
-            onClick={() => handleSelect(index)}
-            className={`${classes.indicator} ${
-              activeIndex === index ? classes.activeIndicator : ""
-            }`}
-          ></span>
-        ))}
-      </div>
+          <Row>
+            <Col md={2}>
+              <img src={ogunlogo} className={classes.logoimage} alt="logo" />
+            </Col>
+            <Col md={10}>
+              <h1
+              style={{
+                color: 'white',  
+                fontSize: '30px',  
+                fontWeight: '600',
+                fontFamily: 'Inter, sans-serif',
+                margin: 0,
+              }}>
+                Ogun State Budget System
+              </h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+            </Col>
+            <Col md={10}>
+            <p
+          style={{
+            color: 'white', 
+            fontSize: '14px',
+            fontWeight: '400',
+            fontFamily: 'Inter, sans-serif',
+            textAlign: 'center',
+            margin: 0,
+          }}>
+            Effortless Budget Management: Request, Track, and<br />Approve with Ease
+          </p>
+            </Col>
+          </Row>
         </div>
+
             <div className={classes.rgtcontainer}>
                 <div className={classes.maintext}>
                     <h1> Verify your account </h1>
@@ -256,7 +225,7 @@ function ForgotEmailVerify() {
               )}
 
     <h6 style={{marginTop: showErrorMessage === true ? 70 : 0}}> Didn’t get the code?  
-      <span style={{ color: "#21B55A", cursor: "pointer", marginLeft: 5}}  onClick={handleResendOtp}> 
+      <span style={{ color: "#21B55A", cursor: "pointer", marginLeft: 5}}  > 
         {
           otpLoading ? "Resending OTP, Please wait..." : "Resend"
         } 
@@ -272,7 +241,7 @@ function ForgotEmailVerify() {
    
 
 
-                    <Button disabled={isButtonDisabled} onClick={handleSignup} variant="success" className={classes.btngreen}>
+                    <Button disabled={isButtonDisabled} variant="success" className={classes.btngreen}>
                     {loading ? (
                             <>
                                 <Spinner size='sm' />

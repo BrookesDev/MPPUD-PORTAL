@@ -11,6 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import logo from "../../Asset/olarmsLogo.svg"
 import slide from "../../Asset/slide.svg"
+import ogunlogo from "../../Asset/ogunlogonew.svg"
 import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
 import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
@@ -152,49 +153,56 @@ function SignUp() {
     <div >
       <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
-          <h1>
-
-          </h1>
+          <Row>
+            <Col md={2}>
+              <img src={ogunlogo} className={classes.logoimage} alt="logo" />
+            </Col>
+            <Col md={10}>
+              <h1
+              style={{
+                color: 'white',  
+                fontSize: '30px',  
+                fontWeight: '600',
+                fontFamily: 'Inter, sans-serif',
+                margin: 0,
+              }}>
+                Ogun State Budget System
+              </h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+            </Col>
+            <Col md={10}>
+            <p
+          style={{
+            color: 'white', 
+            fontSize: '14px',
+            fontWeight: '400',
+            fontFamily: 'Inter, sans-serif',
+            textAlign: 'center',
+            margin: 0,
+          }}>
+            Effortless Budget Management: Request, Track, and<br />Approve with Ease
+          </p>
+            </Col>
+          </Row>
         </div>
         <div className={classes.rgtcontainer}>
           <div className={classes.maintext}>
-            <h1> Sign Up </h1>
-            <h6> Sign up now to experience seamless land administration. </h6>
-
-            <div className="row">
-              <div className="col-md-6">
+            <h1> Create Account </h1>
+            <h6> Sign up and Effortlessly manage Budget Management. </h6>
               <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label className={classes.inputLabel}>First name</Form.Label>
-              <Form.Control onChange={handleFirstName} type="name" placeholder="Enter your first name" />
+              <Form.Label className={classes.inputLabel}>Full name</Form.Label>
+              <Form.Control onChange={handleFirstName} type="name" placeholder="Enter your first name" className={classes.inputField} />
             </Form.Group>
-            </div>
-            <div className="col-md-6">
-            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label className={classes.inputLabel}>Last name</Form.Label>
-              <Form.Control onChange={handleLastName} type="name" placeholder="Enter your last name" />
-            </Form.Group>
-            </div>
-            </div>
-            <div className="row">
-            <div className="col-md-6">
             <Form.Group className={classes.errorCt12}>
               <Form.Label className={classes.inputLabel}>Email address</Form.Label>
-              <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" />             
+              <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField} />             
             </Form.Group>
-            </div>
-            <div className="col-md-6">
-            <Form.Group  className={classes.errorCt12}>
-              <Form.Label className={classes.inputLabel}>Phone Number</Form.Label>
-              <Form.Control onChange={handlePhone} type="phone" placeholder="Enter your phone number" />             
-            </Form.Group>
-            </div>
-            </div>
-
-            <div className="row">
-            <div className="col-md-6">
             <Form.Group >
               <Form.Label className={classes.inputLabel}>Password</Form.Label>
-              <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" />
+              <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} />
               <button
                 type="button"
                 style={{
@@ -218,11 +226,9 @@ function SignUp() {
               </button>
 
             </Form.Group>
-            </div>
-            <div className="col-md-6">
             <Form.Group>
               <Form.Label className={classes.inputLabel}>Confirm Password</Form.Label>
-              <Form.Control onChange={handleConfirmPassword} type={showPassword2 ? 'text' : 'password'} placeholder="Confirm password" />
+              <Form.Control onChange={handleConfirmPassword} type={showPassword2 ? 'text' : 'password'} placeholder="Confirm password" className={classes.inputField} />
               <button
                 type="button"
                 style={{
@@ -246,8 +252,6 @@ function SignUp() {
               </button>
 
             </Form.Group>
-            </div>
-            </div>
             {password && showValidations && (
             <ul style={{ listStyleType: "none", padding: 0 }}>
   <li style={{ color: passwordValidations.number ? "green" : "red" }}>

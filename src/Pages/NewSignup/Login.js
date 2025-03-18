@@ -9,15 +9,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import logo from "../../Assets/olarmsLogo.svg"
-import slide from "../../Assets/slide.svg"
-import crossedEyeIcon from '../../Assets/crossedEyeIcon.svg';
-import errorIcon from '../../Assets/error.svg';
+import ogunlogo from "../../Asset/ogunlogonew.svg"
+import slide from "../../Asset/slide.svg"
+import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
+import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Swal from "sweetalert2";
-import { BASE_URL } from "../../API/Api";
-import axios from "axios";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import Swal from "sweetalert2";
 
 
 
@@ -48,105 +46,106 @@ const handleForgot = () => {
 
 
 
-const handleLogin = async () => {
-  setLoading(true);
-  try {
-      const response = await axios.post(`${BASE_URL}/login`,
-          {
-              email: email,
-              password: password
-          }
-      );
+// const handleLogin = async () => {
+//   setLoading(true);
+//   try {
+//       const response = await axios.post(`${BASE_URL}/login`,
+//           {
+//               email: email,
+//               password: password
+//           }
+//       );
     
-      const result = response.data?.data?.user?.name;
-      const cac = response.data?.data?.user?.customer?.cac;
-      const businessName = response.data?.data?.user?.customer?.business_name;
-      const add = response.data?.data?.user?.customer?.address;
-      const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
-      const em = response.data?.data?.user?.customer?.email;
-      const ph = response.data?.data?.user?.customer?.phone;
-      const st = response.data?.data?.user?.customer?.state;
-      const lg = response.data?.data?.user?.customer?.lga;
-      const tin = response.data?.data?.user?.customer?.tin;
-      const nin = response.data?.data?.user?.customer?.nin;
-      const gender = response.data?.data?.user?.customer?.gender;
-      const userType = response.data?.data?.user?.user_type;
-      const resulth = response.data?.data?.user?.first_name;
-      const resulthh = response.data?.data?.user?.last_name;
-      const resultx = response.data?.data?.user?.email;
-      const resultxx = response.data?.data?.user?.phone;
-      const address = response.data?.data?.user?.address;
-      const dob = response.data?.data?.user?.customer?.dob;
-      const state = response.data?.data?.user?.state;
-      const results = response.data?.data?.token;
-      const isFilled = response.data?.data?.user?.is_fill;
-      const customerImage = response.data?.data?.user?.image;
-      const customerPicture = response.data?.data?.user?.customer?.picture;
-      const createdBy = response.data?.data?.user?.created_by;
+//       const result = response.data?.data?.user?.name;
+//       const cac = response.data?.data?.user?.customer?.cac;
+//       const businessName = response.data?.data?.user?.customer?.business_name;
+//       const add = response.data?.data?.user?.customer?.address;
+//       const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
+//       const em = response.data?.data?.user?.customer?.email;
+//       const ph = response.data?.data?.user?.customer?.phone;
+//       const st = response.data?.data?.user?.customer?.state;
+//       const lg = response.data?.data?.user?.customer?.lga;
+//       const tin = response.data?.data?.user?.customer?.tin;
+//       const nin = response.data?.data?.user?.customer?.nin;
+//       const gender = response.data?.data?.user?.customer?.gender;
+//       const userType = response.data?.data?.user?.user_type;
+//       const resulth = response.data?.data?.user?.first_name;
+//       const resulthh = response.data?.data?.user?.last_name;
+//       const resultx = response.data?.data?.user?.email;
+//       const resultxx = response.data?.data?.user?.phone;
+//       const address = response.data?.data?.user?.address;
+//       const dob = response.data?.data?.user?.customer?.dob;
+//       const state = response.data?.data?.user?.state;
+//       const results = response.data?.data?.token;
+//       const isFilled = response.data?.data?.user?.is_fill;
+//       const customerImage = response.data?.data?.user?.image;
+//       const customerPicture = response.data?.data?.user?.customer?.picture;
+//       const createdBy = response.data?.data?.user?.created_by;
      
-      console.log(response.data?.data?.user?.customer?.picture);
+//       console.log(response.data?.data?.user?.customer?.picture);
 
-      AsyncStorage.setItem('userName', result);
-      AsyncStorage.setItem('createdBy', createdBy);
-      AsyncStorage.setItem('businessName', businessName);
-      AsyncStorage.setItem('customerImage', customerImage);
-      AsyncStorage.setItem('cac', cac);
-      AsyncStorage.setItem('gender', gender);
-      AsyncStorage.setItem('tin', tin);
-      AsyncStorage.setItem('nin', nin);
-      AsyncStorage.setItem('add', add);
-      AsyncStorage.setItem('incorporationDate', incorporationDate);
-      AsyncStorage.setItem('em', em);
-      AsyncStorage.setItem('ph', ph);
-      AsyncStorage.setItem('st', st);
-      AsyncStorage.setItem('lg', lg);
-      AsyncStorage.setItem('userType', userType);
-      AsyncStorage.setItem('firstName', resulth);
-      AsyncStorage.setItem('secondName', resulthh);
-      AsyncStorage.setItem('userToken', results);
-      AsyncStorage.setItem('userEmail', resultx);
-      AsyncStorage.setItem('userPhone', resultxx);
-      AsyncStorage.setItem('userAddress', address);
-      AsyncStorage.setItem('dateOfBirth', dob);
-      AsyncStorage.setItem('stateOfOrigin', state);
-      AsyncStorage.setItem('isFilledState', isFilled);
-      AsyncStorage.setItem('customerPicture', customerPicture);
+//       AsyncStorage.setItem('userName', result);
+//       AsyncStorage.setItem('createdBy', createdBy);
+//       AsyncStorage.setItem('businessName', businessName);
+//       AsyncStorage.setItem('customerImage', customerImage);
+//       AsyncStorage.setItem('cac', cac);
+//       AsyncStorage.setItem('gender', gender);
+//       AsyncStorage.setItem('tin', tin);
+//       AsyncStorage.setItem('nin', nin);
+//       AsyncStorage.setItem('add', add);
+//       AsyncStorage.setItem('incorporationDate', incorporationDate);
+//       AsyncStorage.setItem('em', em);
+//       AsyncStorage.setItem('ph', ph);
+//       AsyncStorage.setItem('st', st);
+//       AsyncStorage.setItem('lg', lg);
+//       AsyncStorage.setItem('userType', userType);
+//       AsyncStorage.setItem('firstName', resulth);
+//       AsyncStorage.setItem('secondName', resulthh);
+//       AsyncStorage.setItem('userToken', results);
+//       AsyncStorage.setItem('userEmail', resultx);
+//       AsyncStorage.setItem('userPhone', resultxx);
+//       AsyncStorage.setItem('userAddress', address);
+//       AsyncStorage.setItem('dateOfBirth', dob);
+//       AsyncStorage.setItem('stateOfOrigin', state);
+//       AsyncStorage.setItem('isFilledState', isFilled);
+//       AsyncStorage.setItem('customerPicture', customerPicture);
    
-      if (isFilled === "0") {
-        navigate('/complete_your_registration');
-      } else if (isFilled === "1") {
-        navigate('/dashboard');
-      }
+//       if (isFilled === "0") {
+//         navigate('/complete_your_registration');
+//       } else if (isFilled === "1") {
+//         navigate('/dashboard');
+//       }
   
 
-  } catch (error) {
-    let errorMessage = 'An error occurred. Please try again.';
-    if (error.response && error.response.data && error.response.data.message) {
-      if (typeof error.response.data.message === 'string') {
-        errorMessage = error.response.data.message;
-      } else if (Array.isArray(error.response.data.message)) {
-        errorMessage = error.response.data.message.join('; ');
-      } else if (typeof error.response.data.message === 'object') {
-        errorMessage = JSON.stringify(error.response.data.message);
-      }
-      setErrorMessage(JSON.stringify(error.response.data.message));
-      setShowErrorMessage(true);
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Failed',
-      //   text: JSON.stringify(error.response.data.message),
-      // });
-    }
-  } finally {
-      setLoading(false);
-  }
-}
+//   } catch (error) {
+//     let errorMessage = 'An error occurred. Please try again.';
+//     if (error.response && error.response.data && error.response.data.message) {
+//       if (typeof error.response.data.message === 'string') {
+//         errorMessage = error.response.data.message;
+//       } else if (Array.isArray(error.response.data.message)) {
+//         errorMessage = error.response.data.message.join('; ');
+//       } else if (typeof error.response.data.message === 'object') {
+//         errorMessage = JSON.stringify(error.response.data.message);
+//       }
+//       setErrorMessage(JSON.stringify(error.response.data.message));
+//       setShowErrorMessage(true);
+//       // Swal.fire({
+//       //   icon: 'error',
+//       //   title: 'Failed',
+//       //   text: JSON.stringify(error.response.data.message),
+//       // });
+//     }
+//   } finally {
+//       setLoading(false);
+//   }
+// }
 
-const handleKeyPress = (e) => {
-  if (e.key === 'Enter' && !isButtonDisabled) {
-      handleLogin();
-  }
-};
+// const handleKeyPress = (e) => {
+//   if (e.key === 'Enter' && !isButtonDisabled) {
+//       handleLogin();
+//   }
+// };
+
 const handleEmail = (e) => {
   setEmail(e.target.value);
   setShowErrorMessage(false);
@@ -166,74 +165,53 @@ const handleLogin2 = () => {
     <div >
         <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
-          <div className={classes.logohead}>
-            <img src={logo} alt="Olarms Logo" className={classes.logoimage} />
-          </div>
-
-          <Carousel
-        activeIndex={activeIndex}
-        onSelect={handleSelect}
-        controls={false}
-        indicators={false} // Disable default indicators
-        className={classes.customCarousel}
-      >
-            <Carousel.Item className={classes.textdown}>
-            <h6 className={classes.textdownH}>
-                  {" "}
-                  Seamless Land <br />
-                  Administration Starts Here
-                </h6>
-                <p className={classes.textdownP}>
-                  Welcome to the Ogun State Land Administration <br />
-                  and Revenue Management System (OLARMS).
-                </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-            <h6 className={classes.textdownH}>
-                  {" "}
-                  Your Gateway to Owning Land <br />
-                  Starts Here!
-                </h6>
-                <p className={classes.textdownP}>
-                Discover the simplicity of land ownership with Ogun State's <br />
-                premier Land Administration and Revenue Management System.
-                </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-                <h6 className={classes.textdownH}>
-                  {" "}
-                  Invest in Your Future <br />
-                  with Land in Ogun State!
-                </h6>
-                <p className={classes.textdownP}>
-                Unlock seamless access to affordable and secure land <br />
-                ownership through Ogun State’s trusted OLARMS.
-                </p>{" "}
-            </Carousel.Item>
-          </Carousel>
-      <div className={classes.slidehead4}>
-        {[0, 1, 2].map((index) => (
-          <span
-            key={index}
-            onClick={() => handleSelect(index)}
-            className={`${classes.indicator} ${
-              activeIndex === index ? classes.activeIndicator : ""
-            }`}
-          ></span>
-        ))}
-      </div>
+          <Row>
+            <Col md={2}>
+              <img src={ogunlogo} className={classes.logoimage} alt="logo" />
+            </Col>
+            <Col md={10}>
+              <h1
+              style={{
+                color: 'white',  
+                fontSize: '30px',  
+                fontWeight: '600',
+                fontFamily: 'Inter, sans-serif',
+                margin: 0,
+              }}>
+                Ogun State Budget System
+              </h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={2}>
+            </Col>
+            <Col md={10}>
+            <p
+          style={{
+            color: 'white', 
+            fontSize: '14px',
+            fontWeight: '400',
+            fontFamily: 'Inter, sans-serif',
+            textAlign: 'center',
+            margin: 0,
+          }}>
+            Effortless Budget Management: Request, Track, and<br />Approve with Ease
+          </p>
+            </Col>
+          </Row>
         </div>
+
             <div className={classes.rgtcontainer}>
                 <div className={classes.maintext}>
-                    <h1> Welcome back </h1>
-                    <h6> Log in to your account and experience seamless land administration. </h6>
+                    <h1> Welcome <span style={{  color: "#21B55A" }}> back</span> </h1>
+                    <h6>Log in to your account and connect with the best <br /> participants for your studies</h6>
                     <Form.Group>
                         <Form.Label className={classes.inputLabel}>Email address</Form.Label>
                         <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className={classes.inputLabel}>Password</Form.Label>
-                        <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} onKeyPress={handleKeyPress}/>
+                        <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField}/>
                         <button
                                 type="button"
                                 style={{
@@ -264,7 +242,7 @@ const handleLogin2 = () => {
                     <div style={{paddingTop: showErrorMessage === true ? 30 : 0}}>
                     <span  className={classes.loginclk} onClick={handleForgot}> Forgot password?</span>
                     </div>
-                    <Button onClick={handleLogin} variant="success" className={classes.btngreen} disabled={isButtonDisabled}>
+                    <Button variant="success" className={classes.btngreen} disabled={isButtonDisabled}>
                     {loading ? (
                             <>
                                 <Spinner size='sm' />

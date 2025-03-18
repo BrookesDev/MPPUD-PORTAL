@@ -1,8 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard"
-import Login from "./Pages/Login/Login"
-import Forgotpassword from "./Pages/Passwordpage/Forgotpassword"
+import Login from "./Pages/NewSignup/Login"
 import Verification from "./Pages/Verificationpage/Verification"
 import Reset from "./Pages/Resetpage/Reset"
 import Success from "./Pages/Successfulpage/Success"
@@ -18,6 +17,9 @@ import Budget from "./Pages/Budget/BudgetPerformance";
 import Settings from "./Pages/Settings/Profilesettings";
 import Account from "./Pages/Account/Account";
 import Application from "./Pages/Application/Application";
+import Welcome from "./Pages/NewSignup/Welcome";
+import ForgotPassword from "./Pages/NewSignup/ForgotPassword";
+import ForgotEmailVerify from "./Pages/NewSignup/ForgotEmailVerify";
 
 
 function App() {
@@ -51,10 +53,12 @@ function App() {
         {/* Routes without Sidebar (Login, Signup, Account) */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/" element={<Welcome />} />
         <Route path="/account" element={<Account />} />
         <Route path="/application" element={<Application />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgotpassword" element={<Forgotpassword />} />
+        <Route path="/forgot_password" element={<ForgotPassword />} />
+        <Route path="/verify_otp" element={<ForgotEmailVerify />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/success" element={<Success />} />
