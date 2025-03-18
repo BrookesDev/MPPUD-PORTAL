@@ -1,0 +1,152 @@
+.cont4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow-x: hidden;
+
+
+}
+
+.ogirslogosuccess {
+    width: 45px;
+    height: 44px;
+}
+
+.logoimg {
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    position: absolute; 
+    top: 50%; 
+    left: 70px; 
+    transform: translateY(-50%); 
+}
+
+.logoimgtxt {
+    font-size: 36px;
+    font-weight: 700;
+    margin-left: 140px; 
+    line-height: 100%;
+    color: #E9EAEE; 
+    padding-top: 265px;
+    font-family: inter;
+    letter-spacing: -2%;
+
+}
+
+.underlogotxt {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: inter;
+    line-height: 28px;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #E9EAEE;
+    margin-right: 10px;
+    /* padding-bottom: 15%px; */
+
+
+}
+
+
+.Done {
+    width: 118px;
+    height: 118px;
+}
+
+.rightsuccess {
+    width: 100%;
+    max-width: 768px;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-10px); 
+    /* padding: 30px; */
+   
+}
+
+.leftsuccess {
+    width: 50vw;
+    height: 100vh;
+    background-image: url('../../Asset/back.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left center;
+
+
+}
+
+
+.passwordbtnsuccess {
+    width: 486px;
+    height: 48px;
+    background-color: #2B975F;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    padding-top: 5px;
+    right: 67px;
+    padding-bottom: 5px;
+    /* left: 67px; */
+    margin-top: 40px;
+    padding: 10px;
+    font-family: Inter;
+    font-weight: 600;
+    line-height: 24px;
+
+
+
+}
+
+.rightsuccess h2 {
+    width: 358px;
+    height: 72px;
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #676767;
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    .cont4 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .leftsuccess {
+        display: none;
+    }
+
+    .rightsuccess {
+        width: 90%;
+        height: auto;
+        padding-top: 50px;
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .passwordbtnsuccess {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .rightsuccess h2 {
+        width: 100%;
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    
+}

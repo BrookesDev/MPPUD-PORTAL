@@ -1,0 +1,256 @@
+.cont3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative; 
+    overflow-x: hidden;
+    
+   
+    
+}
+
+.ogirslogoreset {
+    width: 45px;
+    height: 44px;
+
+}
+
+.logoimg {
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    position: absolute; 
+    top: 50%; 
+    left: 70px; 
+    transform: translateY(-50%); 
+}
+
+.logoimgtxt {
+    font-size: 36px;
+    font-weight: 700;
+    margin-left: 140px; 
+    line-height: 100%;
+    color: #E9EAEE; 
+    padding-top: 265px;
+    font-family: inter;
+    letter-spacing: -2%;
+
+}
+
+.underlogotxt {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: inter;
+    line-height: 28px;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #E9EAEE;
+    margin-right: 10px;
+    /* padding-bottom: 15%px; */
+
+
+}
+
+
+.rightreset {
+    /* justify-content: flex-end; */
+    max-width: 600px;
+    height: 100vh;
+    /* padding-top: 250px; */
+    margin-left: 125px; 
+    width: 100%;
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    
+}
+
+.leftreset {
+    width: 50vw;
+    height: 100vh;
+    background-image: url('../../Asset/back.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-position: left center;
+   
+    
+}
+
+.rightreset h1 {
+    font-size: 28px;
+    font-weight: 700;
+    /* height: 34px;
+    width: 249px; */
+    font-family: Inter;
+    line-height: 33.6px;
+    margin-bottom: 10px;
+}
+
+.rightreset h2 {
+    font-size: 18px;
+    color: #667185;
+    /* width: 462px;
+    height: 37px; */
+    font-weight: 400;
+    font-family: Inter;
+    line-height: 26.1px;
+    margin-bottom: 20px;
+}
+
+.rightreset p {
+    /* width: 456px;
+    height: 20px;
+    line-height: 20.3px; */
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Inter;
+    margin-bottom: 10px;
+    
+    
+}
+
+.rightreset input {
+    width: 445px;
+    /* height: 30px; */
+    border-radius: 6px;
+    padding: 16px;
+    /* gap: 12px; */
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.passwordbtnreset {
+    width: 483px;
+    height: 48px;
+    background-color: #2B975F;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    padding-top: 5px;
+    /* right: 67px; */
+    padding-bottom: 5px;
+    /* left: 67px; */
+    margin-top: 40px;
+    /* padding: 10px; */
+    font-family: Inter;
+    font-weight: 600;
+    line-height: 24px;
+    
+    
+
+}
+
+@media screen and (max-width: 768px) {
+    .cont3 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        padding: 20px;
+    }
+
+    
+    .leftreset {
+        display: none;
+    }
+
+    
+    .rightreset {
+        width: 100%;
+        padding: 20px;
+        max-width: 90%;
+        text-align: center;
+    }
+
+    
+    .passwordbtnreset {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    
+    .rightreset input {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    
+    .rightreset h1 {
+        font-size: 24px;
+    }
+
+    .rightreset h2 {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    .rightreset p {
+        font-size: 14px;
+    }
+}
+
+
+@media screen and (max-width: 390px) {
+    .rightreset {
+        padding: 15px;
+    }
+
+    .rightreset h1 {
+        font-size: 20px;
+    }
+
+    .rightreset h2 {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .rightreset input,
+    .passwordbtnreset {
+        max-width: 270px;
+    }
+
+    .ogirslogoreset {
+        width: 60px;
+        height: 60px;
+        padding-top: 15px;
+        padding-left: 15px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .rightreset {
+        padding: 10px;
+    }
+
+    .rightreset h1 {
+        font-size: 18px;
+    }
+
+    .rightreset h2 {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .rightreset input,
+    .passwordbtnreset {
+        max-width: 250px;
+    }
+
+    .ogirslogoreset {
+        width: 50px;
+        height: 50px;
+        padding-top: 10px;
+    }
+
+    .passwordbtnreset {
+        width: 100%;
+    }
+}
+
+

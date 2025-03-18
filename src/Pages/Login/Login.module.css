@@ -1,0 +1,166 @@
+.imageWrapper {
+    position: relative;
+  }
+  
+  .back {
+    width: 609px; 
+    /* Adjust based on your requirement */
+    height: auto;
+  }
+  .mWR {
+    position: absolute;
+    top: 40%;
+    left: 3%;
+    z-index: 1;
+    width: 40px;
+}
+  
+
+  .block{
+    width: 880px;
+    display: flex;
+    justify-content: center; 
+    margin-top: 90px;
+   
+  }
+  
+    
+  .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .group {
+      display: flex;
+      flex-direction: column;
+      margin-top:2px;
+    }
+    .group label {
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: 580px;
+    }
+    
+    .group input {
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 400px;
+    }
+    .but button {
+     
+        padding: 15px;
+        background-color:#55BB7C;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        width: 452px;
+        margin-top: 10px;
+      }
+    /* html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; 
+    } */
+    .main{
+      display: flex;
+      /* gap: 15px; */
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+  }
+  .password{
+    color: #55BB7C;
+  }
+
+
+  @media (max-width: 1024px) {
+    .main {
+        flex-direction: column; /* Stack elements vertically */
+        padding: 10px; /* Add some padding for smaller screens */
+    }
+
+    .block {
+        width: 100%; /* Full width on smaller screens */
+        margin-top: 50px; /* Adjust the margin */
+    }
+
+    .form {
+        gap: 15px; /* Increase the gap between form fields */
+    }
+
+    .group input {
+        width: 100%; /* Full width of the input fields */
+        max-width: none; /* Remove max-width restriction */
+    }
+
+    .but button {
+        width: 90%; /* Button takes up 90% of the screen width */
+    }
+
+    .mWR {
+        width: 30px; /* Reduce size of mWR */
+        top: 35%; /* Adjust position */
+    }
+}
+
+/* Media Query for Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+    .main {
+        padding: 10px;
+    }
+
+    .block {
+        width: 100%;
+        margin-top: 30px; /* Adjust margin */
+    }
+
+    .form {
+        flex-direction: column; /* Stack the form fields vertically */
+    }
+
+    .group input {
+        width: 100%; /* Full width for input fields */
+    }
+
+    .but button {
+        width: 90%; /* Button takes up 90% of screen width */
+    }
+
+    .mWR {
+        width: 25px; /* Further reduce size of mWR */
+        top: 30%; /* Adjust position */
+    }
+}
+
+/* Media Query for Very Small Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+    .main {
+        padding: 5px; /* Reduce padding for very small screens */
+    }
+
+    .block {
+        width: 100%;
+        margin-top: 20px; /* Adjust margin */
+    }
+
+    .form {
+        flex-direction: column; /* Stack form fields vertically */
+    }
+
+    .group input {
+        width: 100%; /* Input fields take up full width */
+    }
+
+    .but button {
+        width: 95%; /* Button takes up 95% of the screen width */
+    }
+
+    .mWR {
+        width: 20px; /* Further reduce mWR size */
+        top: 25%; /* Adjust position */
+    }
+}

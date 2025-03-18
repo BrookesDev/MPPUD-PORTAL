@@ -1,0 +1,116 @@
+.imageWrapper {
+    position: relative;
+  }
+  
+  .back {
+    width: 609px; 
+    /* Adjust based on your requirement */
+    height: auto;
+  }
+  
+  .mWR {
+    position: absolute;
+    top: 40%;
+    left: 3%;
+    z-index: 1;
+    width: 40px;
+}
+  
+  .fix{
+  
+      display: flex;
+      overflow: hidden;
+     
+  }
+  .block{
+    height: 100vh;
+    width: 65%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+    
+ 
+    .but button {
+     
+      padding: 15px;
+      background-color:#55BB7C;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      width: 492px;
+      margin-top: 30px;
+    }
+    /* html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; 
+    } */
+    .main{
+      display: flex;
+      /* gap: 15px; */
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+  }
+
+  @media (max-width: 1024px) {
+    .main {
+        flex-direction: column; /* Stack elements vertically */
+    }
+
+    .block {
+        width: 100%; /* Make the block take up full width on smaller screens */
+        height: auto; /* Allow height to adjust based on content */
+    }
+
+    .but button {
+        width: 80%; /* Make button responsive, take up 80% of the width */
+    }
+
+    .mWR {
+        width: 30px; /* Smaller width for mWR on smaller screens */
+        top: 35%; /* Adjust position if needed */
+    }
+}
+
+/* Media Query for even smaller devices (Mobile phones) */
+@media (max-width: 768px) {
+    .main {
+        padding: 10px; /* Add padding for smaller screens */
+    }
+
+    .block {
+        width: 100%;
+    }
+
+    .but button {
+        width: 90%; /* Make button take up 90% of the screen width on mobile */
+        padding: 12px; /* Adjust padding for mobile */
+    }
+
+    .mWR {
+        width: 25px; /* Make mWR even smaller for mobile */
+        top: 30%;
+    }
+}
+
+/* Media Query for extremely small devices (Portrait mobile) */
+@media (max-width: 480px) {
+    .mWR {
+        width: 20px; /* Further reduce the width of mWR */
+        top: 25%; /* Adjust the position for very small screens */
+    }
+
+    .but button {
+        width: 95%; /* Button takes nearly the full width */
+        padding: 10px; /* Adjust button padding for portrait mobile */
+    }
+
+    .block {
+        width: 100%;
+    }
+}

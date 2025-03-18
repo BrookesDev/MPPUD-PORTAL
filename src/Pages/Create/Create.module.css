@@ -1,0 +1,146 @@
+.imageWrapper {
+    position: relative;
+  }
+  
+  .back {
+    width: 609px; 
+    /* Adjust based on your requirement */
+    height: auto;
+  }
+  
+  .mWR {
+    position: absolute;
+    top: 40%;
+    left: 3%;
+    z-index: 1;
+    width: 40px;
+}
+  
+
+  .block{
+  
+    width: 880px;
+    display: flex;
+    justify-content: center; 
+    
+   
+  }
+  
+    
+  .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .group {
+      display: flex;
+      flex-direction: column;
+      margin-top:2px;
+    }
+    .group label {
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: 580px;
+    }
+    
+    .group input {
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      width: 400px;
+    }
+    .but button {
+     
+        padding: 15px;
+        background-color:#55BB7C;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        width: 452px;
+        margin-top: 30px;
+      }
+    /* html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; 
+    } */
+    .main{
+      display: flex;
+      /* gap: 15px; */
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+  }
+
+  @media (max-width: 1024px) {
+    .main {
+        flex-direction: column; /* Stack the main content vertically */
+    }
+
+    .block {
+        width: 100%; /* Full width for block on smaller screens */
+        padding: 0 20px; /* Add some padding */
+    }
+
+    .group input {
+        width: 100%; /* Make input field take up full width */
+    }
+
+    .but button {
+        width: 90%; /* Button takes up 90% of screen width */
+    }
+
+    .mWR {
+        width: 35px; /* Make mWR smaller */
+        top: 35%; /* Adjust positioning */
+    }
+}
+
+/* Media Query for mobile devices */
+@media (max-width: 768px) {
+    .main {
+        padding: 10px;
+    }
+
+    .block {
+        width: 100%;
+    }
+
+    .but button {
+        width: 90%; /* Make button take up 90% width on smaller devices */
+        padding: 12px;
+    }
+
+    .group input {
+        width: 100%; /* Input takes full width */
+    }
+
+    .mWR {
+        width: 30px;
+        top: 30%;
+    }
+}
+
+/* Media Query for very small mobile devices */
+@media (max-width: 480px) {
+    .mWR {
+        width: 25px; /* Make mWR even smaller */
+        top: 25%;
+    }
+
+    .but button {
+        width: 95%; /* Make button almost full width */
+        padding: 10px;
+    }
+
+    .block {
+        width: 100%;
+    }
+
+    .group input {
+        width: 100%;
+    }
+}
