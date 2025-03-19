@@ -4,8 +4,8 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { BASE_URL } from "../api/api";
-// import axios from "axios";
+import { BASE_URL } from "../../API/Api";
+import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -19,10 +19,11 @@ import Carousel from "react-bootstrap/Carousel";
 
 
 function SignUp() {
-   const [loading, setLoading] = useState(false);
-   const [showValidations, setShowValidations] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [checkedBox, setCheckedBox] = useState(false);
+  const [showValidations, setShowValidations] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,6 +45,8 @@ function SignUp() {
   const [showPassword2, setShowPassword2] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  console.log(checkedBox);
+
   const handleSelect = (selectedIndex) => {
     setActiveIndex(selectedIndex);
   };
@@ -63,48 +66,48 @@ function SignUp() {
     navigate('/verify_account');
   }
 
-  // const handleSignup = async () => {
-  //   setLoading(true);
-  //   setShowErrorMessage(false);
+  const handleSignup = async () => {
+    setLoading(true);
+    setShowErrorMessage(false);
 
-  //   if (password !== confirmPassword) {
-  //     setErrorMessage("Password and Confirm Password do not match");
-  //     setShowErrorMessage(true);
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   try {        
-  //     const response = await axios.post(`${BASE_URL}/signup`, {
-  //       // full_name: fullName,
-  //       email: email,
-  //       // password: password,
-  //       // confirm_password: confirmPassword
-  //     });  
-  //     navigate('/verify_otp', { state: { email, firstName, lastName, phone, password, confirmPassword } });
+    if (password !== confirmPassword) {
+      setErrorMessage("Password and Confirm Password do not match");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+    try {        
+      const response = await axios.post(`${BASE_URL}/signup`, {
+        // full_name: fullName,
+        email: email,
+        // password: password,
+        // confirm_password: confirmPassword
+      });  
+      navigate('/verify_otp', { state: { email, firstName, lastName, phone, password, confirmPassword } });
 
-  //   } catch (error) {
-  //     let errorMessage = 'An error occurred. Please try again.';
-  //     if (error.response && error.response.data && error.response.data.message) {
-  //       if (typeof error.response.data.message === 'string') {
-  //         errorMessage = error.response.data.message;
-  //       } else if (Array.isArray(error.response.data.message)) {
-  //         errorMessage = error.response.data.message.join('; ');
-  //       } else if (typeof error.response.data.message === 'object') {
-  //         errorMessage = JSON.stringify(error.response.data.message);
-  //       }
-  //       setErrorMessage(JSON.stringify(error.response.data.message));
-  //       setShowErrorMessage(true);
-  //       // Swal.fire({
-  //       //   icon: 'error',
-  //       //   title: 'Failed',
-  //       //   text: JSON.stringify(error.response.data.message),
-  //       // });
-  //     }
-      
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    } catch (error) {
+      let errorMessage = 'An error occurred. Please try again.';
+      if (error.response && error.response.data && error.response.data.message) {
+        if (typeof error.response.data.message === 'string') {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join('; ');
+        } else if (typeof error.response.data.message === 'object') {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        setErrorMessage(JSON.stringify(error.response.data.message));
+        setShowErrorMessage(true);
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Failed',
+        //   text: JSON.stringify(error.response.data.message),
+        // });
+      }
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
@@ -128,7 +131,7 @@ function SignUp() {
       uppercase: /[A-Z]/.test(value),
       lowercase: /[a-z]/.test(value),
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
-      match: confirmPassword === value, 
+      match: confirmPassword === value,
       number: /\d/.test(value),
     });
   };
@@ -154,37 +157,37 @@ function SignUp() {
       <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
           <Row>
-            <Col md={2}>
+            <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={ogunlogo} className={classes.logoimage} alt="logo" />
             </Col>
-            <Col md={10}>
+            <Col md={12}>
               <h1
-              style={{
-                color: 'white',  
-                fontSize: '30px',  
-                fontWeight: '600',
-                fontFamily: 'Inter, sans-serif',
-                margin: 0,
-              }}>
+                style={{
+                  color: 'white',
+                  fontSize: '30px',
+                  fontWeight: '600',
+                  fontFamily: 'Inter, sans-serif',
+                  marginBottom: 2,
+                }}>
                 Ogun State Budget System
               </h1>
             </Col>
           </Row>
           <Row>
-            <Col md={2}>
+            <Col md={12}>
             </Col>
-            <Col md={10}>
-            <p
-          style={{
-            color: 'white', 
-            fontSize: '14px',
-            fontWeight: '400',
-            fontFamily: 'Inter, sans-serif',
-            textAlign: 'center',
-            margin: 0,
-          }}>
-            Effortless Budget Management: Request, Track, and<br />Approve with Ease
-          </p>
+            <Col md={12}>
+              <p
+                style={{
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  fontFamily: 'Inter, sans-serif',
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                Effortless Budget Management: Request, Track, and<br />Approve with Ease
+              </p>
             </Col>
           </Row>
         </div>
@@ -192,16 +195,39 @@ function SignUp() {
           <div className={classes.maintext}>
             <h1> Create Account </h1>
             <h6> Sign up and Effortlessly manage Budget Management. </h6>
+            <div className="row">
+              <div className="col-md-6">
               <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label className={classes.inputLabel}>Full name</Form.Label>
+              <Form.Label className={classes.inputLabel}>First name <span style={{color: "red"}}>*</span></Form.Label>
               <Form.Control onChange={handleFirstName} type="name" placeholder="Enter your first name" className={classes.inputField} />
             </Form.Group>
+            </div>
+            <div className="col-md-6">
+            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+              <Form.Label className={classes.inputLabel}>Last name <span style={{color: "red"}}>*</span></Form.Label>
+              <Form.Control onChange={handleLastName} type="name" placeholder="Enter your last name" className={classes.inputField} />
+            </Form.Group>
+            </div>
+            </div>
+            <div className="row">
+            <div className="col-md-6">
             <Form.Group className={classes.errorCt12}>
-              <Form.Label className={classes.inputLabel}>Email address</Form.Label>
+              <Form.Label className={classes.inputLabel}>Email address <span style={{color: "red"}}>*</span></Form.Label>
               <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField} />             
             </Form.Group>
+            </div>
+            <div className="col-md-6">
+            <Form.Group  className={classes.errorCt12}>
+              <Form.Label className={classes.inputLabel}>Phone Number <span style={{color: "red"}}>*</span></Form.Label>
+              <Form.Control onChange={handlePhone} type="phone" placeholder="Enter your phone number" className={classes.inputField} />             
+            </Form.Group>
+            </div>
+            </div>
+
+            <div className="row">
+            <div className="col-md-6">
             <Form.Group >
-              <Form.Label className={classes.inputLabel}>Password</Form.Label>
+              <Form.Label className={classes.inputLabel}>Password <span style={{color: "red"}}>*</span></Form.Label>
               <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} />
               <button
                 type="button"
@@ -226,8 +252,10 @@ function SignUp() {
               </button>
 
             </Form.Group>
+            </div>
+            <div className="col-md-6">
             <Form.Group>
-              <Form.Label className={classes.inputLabel}>Confirm Password</Form.Label>
+              <Form.Label className={classes.inputLabel}>Confirm Password <span style={{color: "red"}}>*</span></Form.Label>
               <Form.Control onChange={handleConfirmPassword} type={showPassword2 ? 'text' : 'password'} placeholder="Confirm password" className={classes.inputField} />
               <button
                 type="button"
@@ -252,8 +280,11 @@ function SignUp() {
               </button>
 
             </Form.Group>
+            </div>
+            </div>
             {password && showValidations && (
             <ul style={{ listStyleType: "none", padding: 0 }}>
+            <div className={classes.passwordAut}>
   <li style={{ color: passwordValidations.number ? "green" : "red" }}>
     {passwordValidations.length ? "✔" : "❌"} Must contain at least a number
   </li>
@@ -272,6 +303,7 @@ function SignUp() {
   <li style={{ color: passwordValidations.match ? "green" : "red" }}>
     {passwordValidations.match ? "✔" : "❌"} Passwords must match
   </li>
+  </div>
 </ul>
             )}
 
@@ -282,7 +314,16 @@ function SignUp() {
               </div>
               )}
 
-            <Button disabled={isButtonDisabled} variant="success" className={classes.btngreen}  >
+              <div>
+              <Form.Check 
+        type="checkbox"
+        label="Agree to Terms and Conditions"
+        checked={checkedBox}
+        onChange={(e) => setCheckedBox(e.target.checked)}
+      />
+              </div>
+
+            <Button disabled={isButtonDisabled} variant="success" className={classes.btngreen} onClick={handleSignup} >
             {loading ? (
                             <>
                                 <Spinner size='sm' />
