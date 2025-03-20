@@ -22,6 +22,8 @@ import ForgotPassword from "./Pages/NewSignup/ForgotPassword";
 import ForgotEmailVerify from "./Pages/NewSignup/ForgotEmailVerify";
 import { ThemeProvider } from './ThemeContext.js';
 import GlobalStyles from './GlobalStyles.js';
+import Reports from "./Pages/New Reports/Reports.js";
+import FrequentQuestion from "./Pages/FAQs/FrequentQuestion.js";
 
 
 function App() {
@@ -57,6 +59,8 @@ function App() {
             <Route path="/verification" element={<Verification />} />
             <Route path="/reset" element={<Reset />} />
             <Route path="/success" element={<Success />} />
+            <Route path="/support_tickets" element={<Reports />} />
+            <Route path="/faqs" element={<FrequentQuestion />} />
           </Routes>
         </Router>
       </GlobalStyles>
