@@ -168,8 +168,9 @@ function SignUp() {
                   fontWeight: '600',
                   fontFamily: 'Inter, sans-serif',
                   marginBottom: 2,
+                  textAlign: 'center',
                 }}>
-                Ogun State Budget System
+                MPPUD PORTAL
               </h1>
             </Col>
           </Row>

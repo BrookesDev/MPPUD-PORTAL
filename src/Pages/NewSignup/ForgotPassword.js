@@ -97,10 +97,10 @@ const handleEmail = (e) => {
         <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
           <Row>
-            <Col md={2}>
+            <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={ogunlogo} className={classes.logoimage} alt="logo" />
             </Col>
-            <Col md={10}>
+            <Col md={12}>
               <h1
               style={{
                 color: 'white',  
@@ -108,15 +108,16 @@ const handleEmail = (e) => {
                 fontWeight: '600',
                 fontFamily: 'Inter, sans-serif',
                 margin: 0,
+                textAlign: 'center',
               }}>
-                Ogun State Budget System
+                MPPUD PORTAL
               </h1>
             </Col>
           </Row>
           <Row>
-            <Col md={2}>
+            <Col md={12}>
             </Col>
-            <Col md={10}>
+            <Col md={12}>
             <p
           style={{
             color: 'white', 

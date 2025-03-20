@@ -18,6 +18,12 @@
     box-shadow: 0 2px 4px -1px #101828;
   }
 
+  .logoimage{
+    width: 64px;
+    height: 62.58px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
 
   .maincontainer {
     display: flex;

@@ -35,6 +35,9 @@ function Login() {
     setActiveIndex(selectedIndex);
   };
 
+  const handleLogin = () => {
+    navigate('/');
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -166,10 +169,10 @@ const handleLogin2 = () => {
         <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
           <Row>
-            <Col md={2}>
+            <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={ogunlogo} className={classes.logoimage} alt="logo" />
             </Col>
-            <Col md={10}>
+            <Col md={12}>
               <h1
               style={{
                 color: 'white',  
@@ -177,15 +180,16 @@ const handleLogin2 = () => {
                 fontWeight: '600',
                 fontFamily: 'Inter, sans-serif',
                 margin: 0,
+                textAlign: 'center',
               }}>
-                Ogun State Budget System
+                MPPUD PORTAL
               </h1>
             </Col>
           </Row>
           <Row>
-            <Col md={2}>
+            <Col md={12}>
             </Col>
-            <Col md={10}>
+            <Col md={12}>
             <p
           style={{
             color: 'white', 
@@ -242,7 +246,7 @@ const handleLogin2 = () => {
                     <div style={{paddingTop: showErrorMessage === true ? 30 : 0}}>
                     <span  className={classes.loginclk} onClick={handleForgot}> Forgot password?</span>
                     </div>
-                    <Button variant="success" className={classes.btngreen} disabled={isButtonDisabled}>
+                    <Button variant="success" className={classes.btngreen} disabled={isButtonDisabled} onClick={handleLogin} >
                     {loading ? (
                             <>
                                 <Spinner size='sm' />
