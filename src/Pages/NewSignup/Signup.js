@@ -9,21 +9,24 @@ import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import TickIcon from "../../Asset/tick-circle.png"
 import logo from "../../Asset/olarmsLogo.svg"
 import slide from "../../Asset/slide.svg"
 import ogunlogo from "../../Asset/ogunlogonew.svg"
 import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
 import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
+import Swal from "sweetalert2";
+
 
 
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
-  const [checkedBox, setCheckedBox] = useState(false);
-  const [showValidations, setShowValidations] = useState(false);
+   const [showValidations, setShowValidations] = useState(false);
+   const [checkedBox, setCheckedBox] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,12 +48,11 @@ function SignUp() {
   const [showPassword2, setShowPassword2] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  console.log(checkedBox);
-
   const handleSelect = (selectedIndex) => {
     setActiveIndex(selectedIndex);
   };
 
+  console.log(checkedBox);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -69,22 +71,87 @@ function SignUp() {
   const handleSignup = async () => {
     setLoading(true);
     setShowErrorMessage(false);
-
-    if (password !== confirmPassword) {
-      setErrorMessage("Password and Confirm Password do not match");
+    
+    // Validation: Check if fields are empty
+    if (!firstName.trim()) {
+      setErrorMessage("First name is required.");
       setShowErrorMessage(true);
       setLoading(false);
       return;
     }
-    try {        
+    if (!lastName.trim()) {
+      setErrorMessage("Last name is required.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+    if (!email.trim()) {
+      setErrorMessage("Email address is required.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+    if (!phone.trim()) {
+      setErrorMessage("Phone number is required.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+    if (!password.trim()) {
+      setErrorMessage("Password is required.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+    if (!confirmPassword.trim()) {
+      setErrorMessage("Confirm Password is required.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+  
+    // Check if password and confirm password match
+    if (password !== confirmPassword) {
+      setErrorMessage("Password and Confirm Password do not match.");
+      setShowErrorMessage(true);
+      setLoading(false);
+      return;
+    }
+  
+    try {
       const response = await axios.post(`${BASE_URL}/signup`, {
-        // full_name: fullName,
+        first_name: firstName,
+        last_name: lastName,
         email: email,
-        // password: password,
-        // confirm_password: confirmPassword
-      });  
-      navigate('/verify_otp', { state: { email, firstName, lastName, phone, password, confirmPassword } });
-
+        phone: phone,
+        password: password,
+        confirm_password: confirmPassword
+      });
+     Swal.fire({
+               imageUrl: TickIcon,
+               imageWidth: 48,
+               imageHeight: 48,
+               title: "Success!",
+               confirmButtonText: "Okay",
+               text: response.data.message,
+               customClass: {
+                 title: classes.myTitle,
+                 popup: classes.myText,
+                 confirmButton: classes.myDeclineButton,
+               },
+               allowOutsideClick: false,
+               preConfirm: () => {
+                 Swal.close();
+               },
+             });
+      // navigate('/verify_otp', { state: { email, firstName, lastName, phone, password, confirmPassword } });
+  setFirstName('');
+  setLastName('');
+  setEmail('');
+  setPhone('');
+  setPassword('');
+  setConfirmPassword('');
+  navigate('/login');
     } catch (error) {
       let errorMessage = 'An error occurred. Please try again.';
       if (error.response && error.response.data && error.response.data.message) {
@@ -95,19 +162,14 @@ function SignUp() {
         } else if (typeof error.response.data.message === 'object') {
           errorMessage = JSON.stringify(error.response.data.message);
         }
-        setErrorMessage(JSON.stringify(error.response.data.message));
-        setShowErrorMessage(true);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Failed',
-        //   text: JSON.stringify(error.response.data.message),
-        // });
       }
-
+      setErrorMessage(errorMessage);
+      setShowErrorMessage(true);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
@@ -131,7 +193,7 @@ function SignUp() {
       uppercase: /[A-Z]/.test(value),
       lowercase: /[a-z]/.test(value),
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
-      match: confirmPassword === value,
+      match: confirmPassword === value, 
       number: /\d/.test(value),
     });
   };
