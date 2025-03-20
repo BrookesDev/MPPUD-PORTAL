@@ -112,14 +112,16 @@ const handleLogin = async () => {
       localStorage.setItem('stateOfOrigin', state);
       localStorage.setItem('isFilledState', isFilled);
       localStorage.setItem('customerPicture', customerPicture);
+
+      navigate('/dashboard');
    
-      if (isFilled === "0") {
-        navigate('/complete_your_registration');
-      } else if (isFilled === "1") {
-        navigate('/finish_onboarding_process');
-      } else if (isFilled === "2") {
-        navigate('/dashboard');
-      }
+//       if (isFilled === "0") {
+//         navigate('/complete_your_registration');
+//       } else if (isFilled === "1") {
+//         navigate('/finish_onboarding_process');
+//       } else if (isFilled === "2") {
+//         navigate('/dashboard');
+//       }
   
 
   } catch (error) {
