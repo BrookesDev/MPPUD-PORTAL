@@ -1,0 +1,187 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.panel {
+  background: white;
+  width: 660px;
+  height: 100vh;
+  z-index: 10000; 
+  /* overflow: hidden; */
+  position: fixed; /* Keep it fixed on screen */
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+  background: #21B55A;
+  color: white;
+  padding: 17px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding-bottom: 17px; */
+ 
+}
+
+.header > h3{
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+}
+
+.list {
+  padding: 10px;
+  padding-left: 24px;
+  padding-top: 24px;
+  padding-right: 34px;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px); 
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #F2F2F2;
+  cursor: pointer;
+}
+
+.text {
+  margin-left: 10px;
+}
+
+.text > p{
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-family: "Inter", sans-serif;
+}
+
+.goto{
+  margin-left: 70px;
+}
+
+.time {
+  font-size: 0.8em;
+  color: #4F4F4F;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  gap:6px;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+
+.notifyDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.nty{
+  width: 78px;
+  height: 78px;
+}
+
+.ntyHead{
+  color: #101828;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.ntyPrg{
+  font-size: 14px;
+  font-weight: 500;
+  color: #828282;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  
+}
+
+.successIcon {
+  color: green;
+}
+
+.errorIcon {
+  color: red;
+}
+
+.infoIcon {
+  color: blue;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.skeletonNotification {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.skeletonIcon {
+  width: 40px;
+  height: 40px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  margin-right: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeletonText {
+  flex: 1;
+}
+
+.skeletonLine {
+  width: 80%;
+  height: 10px;
+  background: #e0e0e0;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeletonLineSmall {
+  width: 50%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #d6d6d6;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}

@@ -1,0 +1,58 @@
+.logohead {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-image: url(../../Assets/bgswirly.png); */
+  }
+  .backText{
+    color: #fff;
+  }
+  .sticBgBk{
+    position:'sticky';
+    top:0;
+    height: 90px;
+    z-index:1;
+    /* background: red; */
+    background: linear-gradient(180deg, #21B55A, #0E4F27);
+  }
+  .backSvg{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    cursor: pointer;
+  }
+  .backSvg > p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .logoimage{
+    width: 183px;
+    height: 35px;
+    object-fit: contain;
+  }
+
+  
+  @media screen and (max-width: 768px) {
+    .logohead {
+      padding: 20px 10px;
+    }
+
+    .backSvg {
+        gap:4px
+      }
+    .backSvg > img{
+        height: 14px;
+        width: 14px;
+      }
+    .backSvg > p{
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+      }
+    
+  
+  }
+  
