@@ -13,7 +13,8 @@ import arrowwn from "../../Asset/arrow-down.png";
 import classes from "./horheader.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge, Button, Dropdown } from "react-bootstrap";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import localforage from 'localforage';
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FaRegBell } from "react-icons/fa6";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
@@ -56,13 +57,13 @@ export default function Horheader() {
 
   const readData = async () => {
     try {
-      const detail = await AsyncStorage.getItem("userName");
-      const details = await AsyncStorage.getItem("userToken");
-      const detailss = await AsyncStorage.getItem("userData");
-      const customerImageData = await AsyncStorage.getItem("customerImage");
-      const customerPicture = await AsyncStorage.getItem("customerPicture");
-      const firstName = await AsyncStorage.getItem("firstName");
-      const lastName = await AsyncStorage.getItem("secondName");
+      const detail = await localforage.getItem("userName");
+      const details = await localforage.getItem("userToken");
+      const detailss = await localforage.getItem("userData");
+      const customerImageData = await localforage.getItem("customerImage");
+      const customerPicture = await localforage.getItem("customerPicture");
+      const firstName = await localforage.getItem("firstName");
+      const lastName = await localforage.getItem("secondName");
 
       console.log(detail, "UserName")
 

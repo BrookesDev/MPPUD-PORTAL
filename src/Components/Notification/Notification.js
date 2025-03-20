@@ -8,7 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { BiSolidMessageRoundedError } from "react-icons/bi";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import localforage from 'localforage';
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import notify from "../../Asset/notify.svg";
 import SkeletonLoader from "./SkeletonLoader";
 import { Placeholder } from "react-bootstrap";
@@ -30,10 +31,10 @@ const Notification = ({setOpenNotification,openNotification}) => {
 
   const readData = async () => {
     try {
-      const detail = await AsyncStorage.getItem("userName");
-      const details = await AsyncStorage.getItem("userToken");
-      const detailss = await AsyncStorage.getItem("userData");
-      const customerImageData = await AsyncStorage.getItem("customerImage");
+      const detail = await localforage.getItem("userName");
+      const details = await localforage.getItem("userToken");
+      const detailss = await localforage.getItem("userData");
+      const customerImageData = await localforage.getItem("customerImage");
       console.log(customerImageData);
 
       if (detail !== null) {

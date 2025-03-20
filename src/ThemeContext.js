@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import localforage from 'localforage';
 
 const ThemeContext = createContext();
 
@@ -10,7 +11,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        const storedTheme = await AsyncStorage.getItem('theme');
+        const storedTheme = await localforage.getItem('theme');
         if (storedTheme !== null) {
           setIsDarkMode(storedTheme === 'dark');
         }
@@ -22,12 +23,12 @@ export const ThemeProvider = ({ children }) => {
     loadTheme();
   }, []);
 
-  // Toggle and save theme to AsyncStorage
+  // Toggle and save theme to localforage
   const toggleTheme = async () => {
     try {
       const newTheme = !isDarkMode;
       setIsDarkMode(newTheme);
-      await AsyncStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      await localforage.setItem('theme', newTheme ? 'dark' : 'light');
     } catch (error) {
       console.error('Error saving theme:', error);
     }

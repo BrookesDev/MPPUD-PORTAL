@@ -18,7 +18,8 @@ import featuredtwo from '../../Asset/4.png';
 import TotalIcon from '../../Asset/1.png';
 import PendingIcon from '../../Asset/3.png';
 import { Navbar, Container, Button } from 'react-bootstrap';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import localforage from 'localforage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BASE_URL } from '../../API/Api';
 import Notification from '../../Components/Notification/Notification';
@@ -67,11 +68,11 @@ const Dashboard = () => {
 
   const readData = async () => {
     try {
-      const detail = await AsyncStorage.getItem('userName');
-      const detail1 = await AsyncStorage.getItem('firstName');
-      const detail2 = await AsyncStorage.getItem('secondName');
-      const details = await AsyncStorage.getItem('userToken');
-      const detailss = await AsyncStorage.getItem('isFilledState');
+      const detail = await localforage.getItem('userName');
+      const detail1 = await localforage.getItem('firstName');
+      const detail2 = await localforage.getItem('secondName');
+      const details = await localforage.getItem('userToken');
+      const detailss = await localforage.getItem('isFilledState');
 
 
       if (detail !== null) {

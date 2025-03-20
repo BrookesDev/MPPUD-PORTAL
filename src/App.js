@@ -20,41 +20,47 @@ import Application from "./Pages/Application/Application";
 import Welcome from "./Pages/NewSignup/Welcome";
 import ForgotPassword from "./Pages/NewSignup/ForgotPassword";
 import ForgotEmailVerify from "./Pages/NewSignup/ForgotEmailVerify";
+import { ThemeProvider } from './ThemeContext.js';
+import GlobalStyles from './GlobalStyles.js';
 
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Routes that include the Sidebar */}
-        <Route path="/" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route
-          path="/request" element={ <Request /> } />
-        <Route path="/budget-performance" element={ <Layout> <Budget /> </Layout> }  />
-        <Route
-          path="/profile-settings"
-          element={
-            <Layout>
-              <Settings />
-            </Layout>
-          }
-        />
+    <ThemeProvider>
+      <GlobalStyles>
+        <Router>
+          <Routes>
+            {/* Routes that include the Sidebar */}
+            <Route path="/" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/request" element={ <Request /> } />
+            <Route path="/budget-performance" element={ <Layout> <Budget /> </Layout> }  />
+            <Route
+              path="/profile-settings"
+              element={
+                <Layout>
+                  <Settings />
+                </Layout>
+              }
+            />
 
-        {/* Routes without Sidebar (Login, Signup, Account) */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/" element={<Welcome />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/application" element={<Application />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot_password" element={<ForgotPassword />} />
-        <Route path="/verify_otp" element={<ForgotEmailVerify />} />
-        <Route path="/verification" element={<Verification />} />
-        <Route path="/reset" element={<Reset />} />
-        <Route path="/success" element={<Success />} />
-      </Routes>
-    </Router>
+            {/* Routes without Sidebar (Login, Signup, Account) */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/" element={<Welcome />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/application" element={<Application />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot_password" element={<ForgotPassword />} />
+            <Route path="/verify_otp" element={<ForgotEmailVerify />} />
+            <Route path="/verification" element={<Verification />} />
+            <Route path="/reset" element={<Reset />} />
+            <Route path="/success" element={<Success />} />
+          </Routes>
+        </Router>
+      </GlobalStyles>
+    </ThemeProvider>
   );
 }
 

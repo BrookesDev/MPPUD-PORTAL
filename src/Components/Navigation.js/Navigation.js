@@ -28,7 +28,8 @@ import reportInActive from '../../Asset/report-inactive.png';
 import loginActive from '../../Asset/logout-active.png';
 import report from '../../Asset/warning-2.png'
 import { Modal, Button } from 'react-bootstrap';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import localforage from 'localforage';
 import { BASE_URL } from '../../API/Api';
 import axios from 'axios';
 import { useTheme } from '../../ThemeContext';
@@ -48,9 +49,9 @@ export default function DashboardNav({ show, handleClose }) {
 
     const readData = async () => {
         try {
-            const detail = await AsyncStorage.getItem('userName');
-            const details = await AsyncStorage.getItem('userToken');
-             const detailx = await AsyncStorage.getItem("userType");
+            const detail = await localforage.getItem('userName');
+            const details = await localforage.getItem('userToken');
+             const detailx = await localforage.getItem("userType");
       
     
             if (detail !== null) {
