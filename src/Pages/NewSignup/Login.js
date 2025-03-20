@@ -4,8 +4,6 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { BASE_URL } from "../api/api";
-// import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -14,7 +12,9 @@ import slide from "../../Asset/slide.svg"
 import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
 import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "../../API/Api";
+// import localStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 // import Swal from "sweetalert2";
 
 
@@ -35,9 +35,9 @@ function Login() {
     setActiveIndex(selectedIndex);
   };
 
-  const handleLogin = () => {
-    navigate('/');
-  }
+  // const handleLogin = () => {
+  //   navigate('/dashboard');
+  // }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -49,105 +49,107 @@ const handleForgot = () => {
 
 
 
-// const handleLogin = async () => {
-//   setLoading(true);
-//   try {
-//       const response = await axios.post(`${BASE_URL}/login`,
-//           {
-//               email: email,
-//               password: password
-//           }
-//       );
+const handleLogin = async () => {
+  setLoading(true);
+  try {
+      const response = await axios.post(`${BASE_URL}/login`,
+          {
+              email: email,
+              password: password
+          }
+      );
     
-//       const result = response.data?.data?.user?.name;
-//       const cac = response.data?.data?.user?.customer?.cac;
-//       const businessName = response.data?.data?.user?.customer?.business_name;
-//       const add = response.data?.data?.user?.customer?.address;
-//       const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
-//       const em = response.data?.data?.user?.customer?.email;
-//       const ph = response.data?.data?.user?.customer?.phone;
-//       const st = response.data?.data?.user?.customer?.state;
-//       const lg = response.data?.data?.user?.customer?.lga;
-//       const tin = response.data?.data?.user?.customer?.tin;
-//       const nin = response.data?.data?.user?.customer?.nin;
-//       const gender = response.data?.data?.user?.customer?.gender;
-//       const userType = response.data?.data?.user?.user_type;
-//       const resulth = response.data?.data?.user?.first_name;
-//       const resulthh = response.data?.data?.user?.last_name;
-//       const resultx = response.data?.data?.user?.email;
-//       const resultxx = response.data?.data?.user?.phone;
-//       const address = response.data?.data?.user?.address;
-//       const dob = response.data?.data?.user?.customer?.dob;
-//       const state = response.data?.data?.user?.state;
-//       const results = response.data?.data?.token;
-//       const isFilled = response.data?.data?.user?.is_fill;
-//       const customerImage = response.data?.data?.user?.image;
-//       const customerPicture = response.data?.data?.user?.customer?.picture;
-//       const createdBy = response.data?.data?.user?.created_by;
+      const result = response.data?.data?.user?.name;
+      const cac = response.data?.data?.user?.customer?.cac;
+      const businessName = response.data?.data?.user?.customer?.business_name;
+      const add = response.data?.data?.user?.customer?.address;
+      const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
+      const em = response.data?.data?.user?.customer?.email;
+      const ph = response.data?.data?.user?.customer?.phone;
+      const st = response.data?.data?.user?.customer?.state;
+      const lg = response.data?.data?.user?.customer?.lga;
+      const tin = response.data?.data?.user?.customer?.tin;
+      const nin = response.data?.data?.user?.customer?.nin;
+      const gender = response.data?.data?.user?.customer?.gender;
+      const userType = response.data?.data?.user?.user_type;
+      const resulth = response.data?.data?.user?.first_name;
+      const resulthh = response.data?.data?.user?.last_name;
+      const resultx = response.data?.data?.user?.email;
+      const resultxx = response.data?.data?.user?.phone;
+      const address = response.data?.data?.user?.address;
+      const dob = response.data?.data?.user?.customer?.dob;
+      const state = response.data?.data?.user?.state;
+      const results = response.data?.data?.token;
+      const isFilled = response.data?.data?.user?.is_fill;
+      const customerImage = response.data?.data?.user?.image;
+      const customerPicture = response.data?.data?.user?.customer?.picture;
+      const createdBy = response.data?.data?.user?.created_by;
      
-//       console.log(response.data?.data?.user?.customer?.picture);
+      console.log(response.data?.data?.user?.customer?.picture);
 
-//       AsyncStorage.setItem('userName', result);
-//       AsyncStorage.setItem('createdBy', createdBy);
-//       AsyncStorage.setItem('businessName', businessName);
-//       AsyncStorage.setItem('customerImage', customerImage);
-//       AsyncStorage.setItem('cac', cac);
-//       AsyncStorage.setItem('gender', gender);
-//       AsyncStorage.setItem('tin', tin);
-//       AsyncStorage.setItem('nin', nin);
-//       AsyncStorage.setItem('add', add);
-//       AsyncStorage.setItem('incorporationDate', incorporationDate);
-//       AsyncStorage.setItem('em', em);
-//       AsyncStorage.setItem('ph', ph);
-//       AsyncStorage.setItem('st', st);
-//       AsyncStorage.setItem('lg', lg);
-//       AsyncStorage.setItem('userType', userType);
-//       AsyncStorage.setItem('firstName', resulth);
-//       AsyncStorage.setItem('secondName', resulthh);
-//       AsyncStorage.setItem('userToken', results);
-//       AsyncStorage.setItem('userEmail', resultx);
-//       AsyncStorage.setItem('userPhone', resultxx);
-//       AsyncStorage.setItem('userAddress', address);
-//       AsyncStorage.setItem('dateOfBirth', dob);
-//       AsyncStorage.setItem('stateOfOrigin', state);
-//       AsyncStorage.setItem('isFilledState', isFilled);
-//       AsyncStorage.setItem('customerPicture', customerPicture);
+      localStorage.setItem('userName', result);
+      localStorage.setItem('createdBy', createdBy);
+      localStorage.setItem('businessName', businessName);
+      localStorage.setItem('customerImage', customerImage);
+      localStorage.setItem('cac', cac);
+      localStorage.setItem('gender', gender);
+      localStorage.setItem('tin', tin);
+      localStorage.setItem('nin', nin);
+      localStorage.setItem('add', add);
+      localStorage.setItem('incorporationDate', incorporationDate);
+      localStorage.setItem('em', em);
+      localStorage.setItem('ph', ph);
+      localStorage.setItem('st', st);
+      localStorage.setItem('lg', lg);
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('firstName', resulth);
+      localStorage.setItem('secondName', resulthh);
+      localStorage.setItem('userToken', results);
+      localStorage.setItem('userEmail', resultx);
+      localStorage.setItem('userPhone', resultxx);
+      localStorage.setItem('userAddress', address);
+      localStorage.setItem('dateOfBirth', dob);
+      localStorage.setItem('stateOfOrigin', state);
+      localStorage.setItem('isFilledState', isFilled);
+      localStorage.setItem('customerPicture', customerPicture);
    
-//       if (isFilled === "0") {
-//         navigate('/complete_your_registration');
-//       } else if (isFilled === "1") {
-//         navigate('/dashboard');
-//       }
+      if (isFilled === "0") {
+        navigate('/complete_your_registration');
+      } else if (isFilled === "1") {
+        navigate('/finish_onboarding_process');
+      } else if (isFilled === "2") {
+        navigate('/dashboard');
+      }
   
 
-//   } catch (error) {
-//     let errorMessage = 'An error occurred. Please try again.';
-//     if (error.response && error.response.data && error.response.data.message) {
-//       if (typeof error.response.data.message === 'string') {
-//         errorMessage = error.response.data.message;
-//       } else if (Array.isArray(error.response.data.message)) {
-//         errorMessage = error.response.data.message.join('; ');
-//       } else if (typeof error.response.data.message === 'object') {
-//         errorMessage = JSON.stringify(error.response.data.message);
-//       }
-//       setErrorMessage(JSON.stringify(error.response.data.message));
-//       setShowErrorMessage(true);
+  } catch (error) {
+    let errorMessage = 'An error occurred. Please try again.';
+    if (error.response && error.response.data && error.response.data.message) {
+      if (typeof error.response.data.message === 'string') {
+        errorMessage = error.response.data.message;
+      } else if (Array.isArray(error.response.data.message)) {
+        errorMessage = error.response.data.message.join('; ');
+      } else if (typeof error.response.data.message === 'object') {
+        errorMessage = JSON.stringify(error.response.data.message);
+      }
+      setErrorMessage(JSON.stringify(error.response.data.message));
+      setShowErrorMessage(true);
 //       // Swal.fire({
 //       //   icon: 'error',
 //       //   title: 'Failed',
 //       //   text: JSON.stringify(error.response.data.message),
 //       // });
-//     }
-//   } finally {
-//       setLoading(false);
-//   }
-// }
+    }
+  } finally {
+      setLoading(false);
+  }
+}
 
-// const handleKeyPress = (e) => {
-//   if (e.key === 'Enter' && !isButtonDisabled) {
-//       handleLogin();
-//   }
-// };
+const handleKeyPress = (e) => {
+  if (e.key === 'Enter' && !isButtonDisabled) {
+      handleLogin();
+  }
+};
 
 const handleEmail = (e) => {
   setEmail(e.target.value);
@@ -215,7 +217,7 @@ const handleLogin2 = () => {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className={classes.inputLabel}>Password</Form.Label>
-                        <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField}/>
+                        <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} onKeyPress={handleKeyPress}/>
                         <button
                                 type="button"
                                 style={{

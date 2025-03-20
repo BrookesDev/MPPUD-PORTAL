@@ -27,20 +27,11 @@ function App() {
     <Router>
       <Routes>
         {/* Routes that include the Sidebar */}
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route
-          path="/request"
-          element={ <Request />
-          }
-        />
-        <Route
-          path="/budget-performance"
-          element={
-            <Layout>
-              <Budget />
-            </Layout>
-          }
-        />
+          path="/request" element={ <Request /> } />
+        <Route path="/budget-performance" element={ <Layout> <Budget /> </Layout> }  />
         <Route
           path="/profile-settings"
           element={
