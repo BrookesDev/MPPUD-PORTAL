@@ -24,6 +24,7 @@ import { ThemeProvider } from './ThemeContext.js';
 import GlobalStyles from './GlobalStyles.js';
 import Reports from "./Pages/New Reports/Reports.js";
 import FrequentQuestion from "./Pages/FAQs/FrequentQuestion.js";
+import MyAccount from "./Pages/My Account/MyAccount.js";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             <Route path="/success" element={<Success />} />
             <Route path="/support_tickets" element={<Reports />} />
             <Route path="/faqs" element={<FrequentQuestion />} />
+            <Route path="/my_account" element={<MyAccount />} />
           </Routes>
         </Router>
       </GlobalStyles>
