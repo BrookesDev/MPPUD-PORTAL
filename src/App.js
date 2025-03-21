@@ -25,6 +25,9 @@ import GlobalStyles from './GlobalStyles.js';
 import Reports from "./Pages/New Reports/Reports.js";
 import FrequentQuestion from "./Pages/FAQs/FrequentQuestion.js";
 import MyAccount from "./Pages/My Account/MyAccount.js";
+import Settingss from "./Pages/New Settings/Settingss.js";
+import AllApplications from "./Pages/All Applications/AllApplications.js";
+import Allinvoices from "./Pages/All Invoices/Allinvoices.js";
 
 
 function App() {
@@ -60,9 +63,12 @@ function App() {
             <Route path="/verification" element={<Verification />} />
             <Route path="/reset" element={<Reset />} />
             <Route path="/success" element={<Success />} />
+            <Route path='/settings' element={<Settingss />} />
+            <Route path='/applications' element={<AllApplications />} />
             <Route path="/support_tickets" element={<Reports />} />
             <Route path="/faqs" element={<FrequentQuestion />} />
             <Route path="/my_account" element={<MyAccount />} />
+            <Route path="/invoices" element={<Allinvoices />} />
           </Routes>
         </Router>
       </GlobalStyles>
