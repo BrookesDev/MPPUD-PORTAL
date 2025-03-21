@@ -28,6 +28,8 @@ import MyAccount from "./Pages/My Account/MyAccount.js";
 import Settingss from "./Pages/New Settings/Settingss.js";
 import AllApplications from "./Pages/All Applications/AllApplications.js";
 import Allinvoices from "./Pages/All Invoices/Allinvoices.js";
+import AllPayment from "./Pages/All Payments/AllPayment.js";
+import NewApplications from "./Pages/New Applicationss/NewApplications.js";
 
 
 function App() {
@@ -69,6 +71,9 @@ function App() {
             <Route path="/faqs" element={<FrequentQuestion />} />
             <Route path="/my_account" element={<MyAccount />} />
             <Route path="/invoices" element={<Allinvoices />} />
+            <Route path="/payments" element={<AllPayment />} />
+            <Route path='/new_applications' element={<NewApplications />} />
+
           </Routes>
         </Router>
       </GlobalStyles>
