@@ -34,7 +34,7 @@ function App() {
         <Router>
           <Routes>
             {/* Routes that include the Sidebar */}
-            <Route path="/" element={<Signup />} />
+            <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
               path="/request" element={ <Request /> } />
