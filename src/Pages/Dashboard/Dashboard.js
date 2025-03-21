@@ -11,10 +11,13 @@ import MoreIcon from '../../Asset/more.png';
 import DownloadIcon from '../../Asset/download.png';
 import TrackIcon from '../../Asset/track.png';
 import ContactIcon from '../../Asset/support.png';
+import Card from "../../Components/Card";
+import Chart from "../../Components/Chart";
 import notransaction from '../../Asset/no-transaction-icon.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import featured from '../../Asset/Featured icon.png';
 import featuredtwo from '../../Asset/4.png';
+import plus from '../../Asset/plus.png';
 import TotalIcon from '../../Asset/1.png';
 import PendingIcon from '../../Asset/3.png';
 import { Navbar, Container, Button } from 'react-bootstrap';
@@ -199,17 +202,17 @@ const Dashboard = () => {
 
   const toSentenceCase = (name) => {
     if (!name) return '';
-  
+
     // Check if the name is already in sentence case
-    const isSentenceCase = name.split(' ').every(word => 
-      word.charAt(0) === word.charAt(0).toUpperCase() && 
+    const isSentenceCase = name.split(' ').every(word =>
+      word.charAt(0) === word.charAt(0).toUpperCase() &&
       word.slice(1) === word.slice(1).toLowerCase()
     );
-  
+
     if (isSentenceCase) {
       return name;
     }
-  
+
     // Convert to sentence case
     return name
       .toLowerCase()
@@ -229,7 +232,7 @@ const Dashboard = () => {
           </Navbar>
           <Navbar bg="light" expand={false} className={`d-md-none ${classes.bglight}`}>
             <Container fluid>
-              <Button style={{ backgroundColor: "#21B55A", border: "none" }} variant="success" onClick={handleShow}>
+              <Button classes={{ backgroundColor: "#21B55A", border: "none" }} variant="success" onClick={handleShow}>
                 ☰
               </Button>
             </Container>
@@ -238,162 +241,128 @@ const Dashboard = () => {
         </div>
 
         <div className={classes.maincontent}>
-         
+
           <div className={classes.mobileHeader}>
             <Horheader />
           </div>
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
-              <div>
-                <p style={{color: isDarkMode ? "white" : "#000"}} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span style={{fontSize: 15}}><Badge style={{borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757"}} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
-                <p 
-  className={isFilled === "2" ? classes.wlcmintro : ""} 
-  style={(isFilled === "0" || isFilled === "1") ? {
-    background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
-    color: "#fff",
-    textAlign: "center",
-    padding: "10px",
-    // borderRadius: "5px",
-    fontWeight: 700,
-    cursor: "pointer",
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  } : {}}
-  onClick={isFilled === "0" ? () => navigate("/complete_your_registration") : isFilled === "1" ? () => navigate("/finish_onboarding_process") : undefined}
->
-  {isFilled === "2" ? 
-    "Here’s a summary of the current activity on your account." : 
-    <>
-      ⚠️ Application incomplete. 👉 Tap to complete!
-    </>
-  }
-</p>
-
-
+              <div className={classes.wlcmcont}>
+                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span classes={{ fontSize: 15 }}><Badge classes={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
+                <p
+                  className={isFilled === "2" ? classes.wlcmintro : ""}
+                  classes={(isFilled === "0" || isFilled === "1") ? {
+                    background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
+                    color: "#fff",
+                    textAlign: "center",
+                    padding: "10px",
+                    // borderRadius: "5px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  } : {}}
+                  onClick={isFilled === "0" ? () => navigate("/complete_your_registration") : isFilled === "1" ? () => navigate("/finish_onboarding_process") : undefined}
+                >
+                  {isFilled === "2" ?
+                    "Here’s a summary of the current activity on your account." :
+                    <span className={classes.classesdpText} >
+                      Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.
+                    </span>
+                  }
+                </p>
               </div>
+              <button className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
+                <span> Make New Request</span>
+              </button>
             </div>
 
 
 
 
             <div className={classes.allcards}>
-              <div className={classes.onekad}>
-                <div className={classes.onekadfrstp}>
-                  <p className={classes.walltp}>Wallet balance</p>
-                  <p className={classes.walltpm}>₦0.00</p>
-                  <p className={classes.walltp1}>View transactions</p>
+              <div className={classes.card_rd}>
+                <div className={classes.card1}>
+                  {" "}
+                  <Card title="Overall Amount Requested" amount={50000000} />
+                  <Card title="Total Amount Approved" amount={40000000} />
                 </div>
-                <img src={featured} className={classes.featuredicon} />
-              </div>
-
-              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
-                <div className={classes.twokadfrstp}>
-                  <img src={TotalIcon} className={classes.featuredicon2} />
-                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Applications</p>
-                  <p className={`${isDarkMode ? classes.walltpmblkk : classes.walltpmblk} ${classes.walltpmblka}`}>
-                  {benLoading ? (
-                                                <Placeholder  animation="glow">
-                                                <Placeholder xs={12} />
-                                              </Placeholder>
-                                            ) : (
-                                                totalApplications
-                                            )}
-                  </p>
+                <div className={classes.card2}>
+                  {" "}
+                  <Card title="Total Amount Utilized" amount={25000000} />
                 </div>
               </div>
-
-              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
-                <div className={classes.twokadfrstp}>
-                  <img src={PendingIcon} className={classes.featuredicon2} />
-                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Pending Applications</p>
-                  <p className={isDarkMode ? classes.walltpmblkk : classes.walltpmblk}>{benLoading ? (
-                                               <Placeholder  animation="glow">
-                                               <Placeholder xs={12} />
-                                             </Placeholder>
-                                            ) : (
-                                                totalPending
-                                            )}</p>
-                </div>
-              </div>
-
-              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
-                <div className={classes.twokadfrstp}>
-                  <img src={featuredtwo} className={classes.featuredicon2} />
-                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Completed Applications</p>
-                  <p className={isDarkMode ? classes.walltpmblkk : classes.walltpmblk}>{benLoading ? (
-                                               <Placeholder  animation="glow">
-                                               <Placeholder xs={12} />
-                                             </Placeholder>
-                                            ) : (
-                                                totalCompleted
-                                            )}</p>
-                </div>
+              <div className={classes.chartSection}>
+                <Chart />
               </div>
 
             </div>
 
-            <div className={isDarkMode ? classes.applicationHistory1 :  classes.applicationHistory}>
+
+            {/* Table container starts here */}
+
+            <div className={isDarkMode ? classes.applicationHistory1 : classes.applicationHistory}>
               <h1>Recent Transactions</h1>
               <div className={classes.mainTables}>
-              {benLoading ? (
-                <>
-                <Placeholder xs={6} />
-                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                </>
-      // <p>Loading data, Please wait...</p>
-    ) : currentEntries.length === 0 ? (
-      <div className={classes.notFound}>
-                <img src={notransaction} alt="not-found" />
-                <p>No Applications found</p>
-                </div> 
-    ) : (
+                {benLoading ? (
+                  <>
+                    <Placeholder xs={6} />
+                    <Placeholder className="w-75" /> <Placeholder classes={{ width: '25%' }} />
+                  </>
+                  // <p>Loading data, Please wait...</p>
+                ) : currentEntries.length === 0 ? (
+                  <div className={classes.notFound}>
+                    <img src={notransaction} alt="not-found" />
+                    <p>No Applications found</p>
+                  </div>
+                ) : (
                   <div >
-                    <table style={{ width: "98%" }}>
+                    <table classes={{ width: "98%" }}>
 
-                      <thead style={{ whiteSpace: 'nowrap' }}>
+                      <thead classes={{ whiteSpace: 'nowrap' }}>
                         <tr>
-                          <th style={{color:isDarkMode && "white"}}>Application Type</th>
-                          <th style={{color:isDarkMode && "white"}}>Payment Code</th>
-                          <th style={{color:isDarkMode && "white"}}>Date</th>
-                          <th style={{color:isDarkMode && "white"}}>Amount</th>
-                          <th style={{color:isDarkMode && "white"}}>Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Payment Code</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Date</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Amount</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Status</th>
                           <th></th>
                         </tr>
                       </thead>
-                      
-                      <tbody style={{ whiteSpace: "nowrap" }}>
+
+                      <tbody classes={{ whiteSpace: "nowrap" }}>
                         {currentEntries.map((rowId) => (
                           <tr key={rowId}>
-                            <td style={{ padding: 10, width: 100 }}>{rowId?.service?.name}</td>
-                            <td style={{ padding: 10, fontWeight: 500, color: isDarkMode ? "#21B55A" : "#0E4F27", }}>{rowId.payment[0]?.payment_code}</td>
-                            <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                            <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                            <td classes={{ padding: 10, width: 100 }}>{rowId?.service?.name}</td>
+                            <td classes={{ padding: 10, fontWeight: 500, color: isDarkMode ? "#21B55A" : "#0E4F27", }}>{rowId.payment[0]?.payment_code}</td>
+                            <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
+                            <td classes={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
                               minimumIntegerDigits: 1,
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}</td>
-                            <td style={{ padding: 10 }}>
+                            <td classes={{ padding: 10 }}>
                               <img
                                 className={classes.statusIcon}
                                 src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
                                 alt="status"
                               />
                             </td>
-                            <td style={{ padding: 10 }} className={classes.moreTxt}>
-                              <div style={{ position: "relative" }}>
+                            <td classes={{ padding: 10 }} className={classes.moreTxt}>
+                              <div classes={{ position: "relative" }}>
                                 <img
                                   className={classes.moreIcon}
                                   src={MoreIcon}
                                   alt="more"
                                   onClick={() => handleMoreClick(rowId)}
-                                  style={{ cursor: "pointer" }}
+                                  classes={{ cursor: "pointer" }}
                                 />
                                 {visibleDropdown === rowId && (
                                   <div
                                     ref={dropdownRef} // Attach ref to the dropdown
-                                    style={{
+                                    classes={{
                                       position: "absolute",
                                       top: "100%",
                                       right: 0,
@@ -405,30 +374,30 @@ const Dashboard = () => {
                                   >
                                     {rowId.payment_status === "0" ? (
                                       <div
-                                        style={{
+                                        classes={{
                                           display: "flex",
                                           alignItems: "center",
                                           padding: "5px 10px",
                                           cursor: "pointer",
                                         }}
                                       >
-                                         <a
-                                    href={rowId.payment[0]?.payment_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      textDecoration: "none",
-                                      color: "#101828",
-                                      padding: 0,
-                                    }}
-                                  >
+                                        <a
+                                          href={rowId.payment[0]?.payment_url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          classes={{
+                                            textDecoration: "none",
+                                            color: "#101828",
+                                            padding: 0,
+                                          }}
+                                        >
 
-                                        Make Payment
-                                  </a>
+                                          Make Payment
+                                        </a>
                                       </div>
                                     ) : (
                                       <div
-                                        style={{
+                                        classes={{
                                           display: "flex",
                                           alignItems: "center",
                                           padding: "5px 10px",
@@ -457,7 +426,7 @@ const Dashboard = () => {
                   ) : (
                     <div
                       className={classes.tableCon}
-                      style={{
+                      classes={{
                         overflowX: "auto", // Horizontal scroll for table
                         whiteSpace: "nowrap", // Prevent table from wrapping
                         maxWidth: "100%", // Limit container width to screen size
@@ -466,7 +435,7 @@ const Dashboard = () => {
                     >
                       <table
                         className="table display table-hover m-0 card-table"
-                        style={{
+                        classes={{
                           minWidth: "600px", // Minimum table width to ensure visibility
                         }}
                       >
@@ -483,28 +452,28 @@ const Dashboard = () => {
                         <tbody>
                           {currentEntries.map((rowId) => (
                             <tr key={rowId}>
-                              <td style={{ padding: 10, width: 100 }}>{rowId.service.name}</td>
-                              <td style={{ padding: 10, color: "#0E4F27", fontWeight: 500 }}>{rowId.payment[0]?.payment_code}</td>
-                              <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                              <td style={{ padding: 10, color: "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                              <td classes={{ padding: 10, width: 100 }}>{rowId.service.name}</td>
+                              <td classes={{ padding: 10, color: "#0E4F27", fontWeight: 500 }}>{rowId.payment[0]?.payment_code}</td>
+                              <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
+                              <td classes={{ padding: 10, color: "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
                                 minimumIntegerDigits: 1,
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })}</td>
-                              <td style={{ padding: 10 }}>
+                              <td classes={{ padding: 10 }}>
                                 <img
                                   className={classes.statusIcon}
                                   src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
                                   alt="status"
                                 />
                               </td>
-                              {/* <td style={{ padding: 10 }}>Tue 28th June - 9:30 AM</td> */}
-                              <td style={{ padding: 10 }} className={classes.moreTxt}>
-                                <div style={{ display: 'flex', flexDirection: "row", gap: 10 }}>
+                              {/* <td classes={{ padding: 10 }}>Tue 28th June - 9:30 AM</td> */}
+                              <td classes={{ padding: 10 }} className={classes.moreTxt}>
+                                <div classes={{ display: 'flex', flexDirection: "row", gap: 10 }}>
                                   <img
                                     src={rowId?.payment_status === "0" ? MakePaymentIcon : TrackIcon} // Replace with your actual path
                                     alt="download"
-                                    style={{ width: "20px", marginRight: "10px" }}
+                                    classes={{ width: "20px", marginRight: "10px" }}
                                   />
                                 </div>
                               </td>
@@ -520,19 +489,19 @@ const Dashboard = () => {
                 <div className={classes.endded}>
                   <div className={classes.showTxt}>
                     <div className={classes.show}>
-                      <label style={{
+                      <label classes={{
                         fontSize: 14,
-                        color: isDarkMode ? '#ffffff':'#333333',
+                        color: isDarkMode ? '#ffffff' : '#333333',
                         fontWeight: 600,
                         gap: 10
                       }} className="d-flex justify-content-start align-items-center">
                         Showing
-                        <Form.Select style={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
-                         value={entriesPerPage}
-                            onChange={(e) => {
+                        <Form.Select classes={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
+                          value={entriesPerPage}
+                          onChange={(e) => {
                             setEntriesPerPage(parseInt(e.target.value));
                             setCurrentPage(1);
-                            }}
+                          }}
                         >
                           <option value={10} >10 entries</option>
                           <option value={25} >25 entries</option>
@@ -544,9 +513,9 @@ const Dashboard = () => {
                   </div>
 
                   <div className={classes.btmPagination}>
-                    <div style={{ display: 'flex' }}>
+                    <div classes={{ display: 'flex' }}>
                       <button
-                        style={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
+                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
                       >
@@ -558,7 +527,7 @@ const Dashboard = () => {
                           return (
                             <button
                               key={page + 1}
-                              style={{
+                              classes={{
                                 textAlign: "center",
                                 marginLeft: '0.4rem',
                                 marginRight: '0.4rem',
@@ -582,7 +551,7 @@ const Dashboard = () => {
                         return null;
                       })}
                       <button
-                        style={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
+                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                       >
@@ -599,7 +568,7 @@ const Dashboard = () => {
                 </div> */}
             </div>
 
-
+            {/* Table container ends here */}
           </div>
         </div>
       </div>
