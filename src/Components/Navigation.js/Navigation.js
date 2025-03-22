@@ -98,13 +98,13 @@ export default function DashboardNav({ show, handleClose }) {
             '/dashboard': 'Dashboard',
             // ...(userData === "corporate" ? {"/user_management": "User Management"} : {}),
             '/applications': 'Applications',
-            // '/invoices': 'Invoices',
+            '/invoices': 'Invoices',
             '/payments': 'Payments',
-            '/support_tickets': 'Support',
-            '/contact': 'Contacts',
+            '/support_tickets': 'Support Tickets',
+            // '/contact': 'Contacts',
             '/settings': 'Settings',
-            '/faqs': 'FAQs',
-            '/my_account': 'Account',
+            // '/faqs': 'FAQs',
+            // '/my_account': 'Account',
            
         };
 
@@ -151,12 +151,12 @@ export default function DashboardNav({ show, handleClose }) {
     // ];
     const navItems = [
         { to: '/dashboard', name: 'Dashboard', icon: [dshbrd, dshbrdActive] },
-        { to: '/my_account', name: 'Account', icon: [Invoices, InvoicesActive] },
-        { to: '/settings', name: 'Settings', icon: [setting, settingActive] },
-        // { to: '/invoices', name: 'Invoices', icon: [Invoices, InvoicesActive] },
         { to: '/applications', name: 'Applications', icon: [app, appActive] },
-        { to: '/faqs', name: 'FAQs', icon: [wallet, walletActive] },
-        { to: '/support_tickets', name: 'Support', icon: [reportInActive, reportActive] },
+        // { to: '/settings', name: 'Settings', icon: [setting, settingActive] },
+        { to: '/invoices', name: 'Invoices', icon: [Invoices, InvoicesActive] },
+        { to: '/payments', name: 'Payments', icon: [app, appActive] },
+        { to: '/settings', name: 'Settings', icon: [setting, settingActive] },
+        { to: '/support_tickets', name: 'Support Tickets', icon: [reportInActive, reportActive] },
         // { to: '/contact', name: 'Contacts', icon: [support, supportActive] },
        
         // { to: '/login', name: 'Logout', icon: [login, loginActive] }
