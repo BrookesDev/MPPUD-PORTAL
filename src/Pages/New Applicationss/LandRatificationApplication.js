@@ -2863,6 +2863,52 @@ const LandRatificationApp = () => {
                   <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
                 </Col>
               </Row>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Select Land Use Type
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      onChange={handleProposedBuild}
+                    >
+                      <option value="">Select Land Use Type</option>
+                      <option value="1">Single-Family Home</option>
+                      <option value="2">Multi-Family Home</option>
+                      <option value="3">Townhouse</option>
+                      <option value="4">Apartment</option>
+                      <option value="5">Bungalow</option>
+                      <option value="6">Villa</option>
+                      <option value="7">Duplex</option>
+                      <option value="8">Penthouse</option>
+                      <option value="9">Studio Apartment</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Select Type
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Timeline"
+                      value={timeLine}
+                      onChange={e => setTimeLine(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
               <Row className="mb-3">
                 <Col md={12}>
