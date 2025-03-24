@@ -343,7 +343,7 @@ export default function Horheader() {
               <Dropdown.Menu>
 
                 {/* <Dropdown.Item as={Link} to="/my_account" style={{fontSize:17,fontWeight:'500'}}>My Account</Dropdown.Item> */}
-                {/* <Dropdown.Item as={Link} to="/settings" style={{fontSize:17,fontWeight:'500'}}>Settings</Dropdown.Item> */}
+                <Dropdown.Item as={Link} to="/my_account" style={{fontSize:17,fontWeight:'500'}}>User Profile</Dropdown.Item>
                 {/* <Dropdown.Item as={Link} to="/contact" style={{ fontSize: 17, fontWeight: '500' }}>
                   Contact Us
                 </Dropdown.Item> */}
