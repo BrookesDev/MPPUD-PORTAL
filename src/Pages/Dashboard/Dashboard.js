@@ -286,12 +286,12 @@ const Dashboard = () => {
               <div className={classes.card_rd}>
                 <div className={classes.card1}>
                   {" "}
-                  <Card title="Overall Amount Requested" amount={50000000} />
-                  <Card title="Total Amount Approved" amount={40000000} />
+                  <Card title="Overall Amount Requested" amount={'00,000,000'} />
+                  <Card title="Total Amount Approved" amount={'00,000,000'} />
                 </div>
                 <div className={classes.card2}>
                   {" "}
-                  <Card title="Total Amount Utilized" amount={25000000} />
+                  <Card title="Total Amount Utilized" amount={'00,000,000'} />
                 </div>
               </div>
               <div className={classes.chartSection}>
