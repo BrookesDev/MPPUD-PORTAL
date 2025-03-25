@@ -4786,7 +4786,7 @@ const NewApplications = () => {
                                     <span style={{ marginLeft: "5px" }}>
                                       Processing, please wait...
                                     </span>
-                                  </>
+                                  </>  
                                 ) : (
                                   "Continue"
                                 )}
