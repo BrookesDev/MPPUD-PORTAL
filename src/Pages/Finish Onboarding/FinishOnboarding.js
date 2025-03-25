@@ -192,6 +192,7 @@ const FinishOnboarding = () => {
       }
       if (customerPicture !== null) {
         setCustomerPicture(customerPicture);
+        console.log(customerPicture);
       }
       if (gender !== null) {
         setGender(gender);
@@ -743,7 +744,8 @@ const createInformation3 = async () => {
                   </div>
                   <div className={classes.profileContainer}>
                   <img
-  src={customerImage || customerPicture || ProfileIcon}
+  // src={customerImage || customerPicture || ProfileIcon}
+  src={customerPicture || ProfileIcon}
   className={classes.imgPass}
   alt="profileImage"
   onError={(e) => (e.target.src = ProfileIcon)}

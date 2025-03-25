@@ -1113,7 +1113,7 @@ padding: 10px;
   background-color: #21B55A;
   color: white;
   border-radius: 10px;
-  height: 25px;
+  /* height: 25px; */
   border: none;
 }
 .submitBtnn{
@@ -1122,7 +1122,7 @@ padding: 10px;
   color: #000000;
   border: 1px solid #21B55A !important;
   border-radius: 10px;
-  height: 25px;
+  /* height: 25px; */
  white-space: nowrap;
 
 }

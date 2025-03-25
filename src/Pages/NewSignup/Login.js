@@ -65,7 +65,7 @@ const handleLogin = async () => {
       const add = response.data?.data?.user?.customer?.address;
       const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
       const em = response.data?.data?.user?.customer?.email;
-      const ph = response.data?.data?.user?.customer?.phone;
+      const ph = response.data?.data?.user?.phone_number;
       const st = response.data?.data?.user?.customer?.state;
       const lg = response.data?.data?.user?.customer?.lga;
       const tin = response.data?.data?.user?.customer?.tin;
@@ -82,10 +82,10 @@ const handleLogin = async () => {
       const results = response.data?.data?.token;
       const isFilled = response.data?.data?.user?.is_fill;
       const customerImage = response.data?.data?.user?.image;
-      const customerPicture = response.data?.data?.user?.customer?.picture;
+      const customerPicture = response.data?.data?.user?.customer?.photo;
       const createdBy = response.data?.data?.user?.created_by;
      
-      console.log(response.data?.data?.user?.customer?.picture);
+      console.log(response.data?.data?.user?.customer?.photo);
 
       localStorage.setItem('userName', result);
       localStorage.setItem('createdBy', createdBy);

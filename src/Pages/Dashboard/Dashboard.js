@@ -21,7 +21,7 @@ import plus from '../../Asset/plus.png';
 import TotalIcon from '../../Asset/1.png';
 import PendingIcon from '../../Asset/3.png';
 import { Navbar, Container, Button } from 'react-bootstrap';
-import localforage from 'localforage';
+// import localforage from 'localforage';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BASE_URL } from '../../API/Api';
@@ -71,11 +71,11 @@ const Dashboard = () => {
 
   const readData = async () => {
     try {
-      const detail = await localforage.getItem('userName');
-      const detail1 = await localforage.getItem('firstName');
-      const detail2 = await localforage.getItem('secondName');
-      const details = await localforage.getItem('userToken');
-      const detailss = await localforage.getItem('isFilledState');
+      const detail = await localStorage.getItem('userName');
+      const detail1 = await localStorage.getItem('firstName');
+      const detail2 = await localStorage.getItem('secondName');
+      const details = await localStorage.getItem('userToken');
+      const detailss = await localStorage.getItem('isFilledState');
 
 
       if (detail !== null) {
@@ -98,6 +98,8 @@ const Dashboard = () => {
       if (detailss !== null) {
         setIsFilled(detailss);
       }
+
+      console.log("isFilled");
 
     } catch (e) {
       alert('Failed to fetch the input from storage');
