@@ -848,9 +848,10 @@ const NewApplications = () => {
   const handleNewClicks = (id, name) => {
     console.log("Clicked item:", id);
 
-    setSelectedAppId(id);
-    setApplicationName(name);
-    handleShowPaymentModal();
+    // setSelectedAppId(id);
+    // setApplicationName(name);
+    navigate('/land_ratification_application');
+    // handleShowPaymentModal();
   };
 
 
@@ -2731,20 +2732,23 @@ const NewApplications = () => {
             <div style={{ marginTop: 20 }} />
             <div className={isDarkMode ? classes.layoutcardss : classes.layoutcards}>
               <div className={classes.servicesCont}>
-                <h2 className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}>
-                  Services Offered by <span>OLARMS</span>
-                </h2>
-                <p className={isDarkMode ? classes.sectionSubtitles : classes.sectionSubtitle}>
-                  Effortless land administration at your fingertips explore services
-                  like land allocation, property registration, C of O processing,
-                  transaction tracking, and more with OLARMS.
-                </p>
-              </div>
-              <div className={classes.layoutcard}>
-                {roleLoading
-                  ? // Display placeholders when loading
-                  Array.from({ length: 10 }).map((_, index) => (
-                    <div key={index}>
+                        <h2  className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}>
+                        Services Offered by <span>MPPUD</span>
+                          </h2>
+                          <p className={isDarkMode ? classes.sectionSubtitles : classes.sectionSubtitle}>
+                          Seamless urban planning at your fingertips! 
+                          The Ministry of Physical Planning and Urban Development offers services such as 
+                          land allocation, property registration processing, 
+                          development control, and transaction tracking to ensure 
+                          organized and sustainable growth and more with MPPUD.
+                          </p>
+                          </div>
+            <div className={classes.layoutcard}>
+              {/* roleLoading */}
+                {/* // ?  */}
+                {/* // Display placeholders when loading */}
+                  {/* // Array.from({ length: 10 }).map((_, index) => ( */}
+                    {/* <div>
                       <Card>
                         <Card.Img variant="top" src="holder.js/100px180" />
                         <Card.Body>
@@ -2759,12 +2763,13 @@ const NewApplications = () => {
                           <Placeholder.Button variant="primary" xs={6} />
                         </Card.Body>
                       </Card>
-                    </div>
-                  ))
-                  : // Display actual data when loading is false
-                  allApplications.map((application, index) => (
+                    </div> */}
+                  {/* // )) */}
+                {/* // :  */}
+                {/* // Display actual data when loading is false */}
+                  {/* // allApplications.map((application, index) => ( */}
                     <div
-                      key={index}
+                      // key={index}
                       className={classes.card}
                     // onClick={() =>
                     //   handleClicks(application.id, application.name)
@@ -2781,7 +2786,8 @@ const NewApplications = () => {
                             className={classes.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            {application.name} Application
+                            {/* {application.name} Application */}
+                            Building Permit Application
                           </h3>
                         </div>
                       </div>
@@ -2791,18 +2797,19 @@ const NewApplications = () => {
                       >
                         To apply for{" "}
                         <span style={{ fontWeight: 700 }}>
-                          {application.name}
+                          Building Permit
+                          {/* {application.name} */}
                         </span>
                         ; <br />
-                        1. Click the Generate Invoice Button. <br />
-                        2. Make your payment.
+                        1. Click the Apply Button. <br />
+                        {/* 2. Make your payment. */}
                         <br />
-                        3. Click the Apply Button to continue your application
-                        process.
+                        {/* 3. Click the Apply Button to continue your application */}
+                        {/* process. */}
                         {/* {application.description} */}
                       </p>
                       <div className={classes.bottomBtn}>
-                        <Button
+                        {/* <Button
                           onClick={() =>
                             handleGenerateNewInvoice(application.id, application.name)
                           }
@@ -2819,10 +2826,11 @@ const NewApplications = () => {
                           ) : (
                             "Generate Invoice"
                           )}
-                        </Button>
+                        </Button> */}
                         <Button
                           onClick={() =>
-                            handleNewClicks(application.id, application.name)
+                            // handleNewClicks(application.id, application.name)
+                            handleNewClicks()
                           }
                           variant="success"
                           className={classes.appBtn}
@@ -2831,8 +2839,8 @@ const NewApplications = () => {
                         </Button>
                       </div>
                     </div>
-                  ))}
-              </div>
+                  {/* // ))} */}
+            </div>
             </div>
             <Modal
               show={showPaymentModal}

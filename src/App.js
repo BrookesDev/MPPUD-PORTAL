@@ -30,6 +30,7 @@ import AllApplications from "./Pages/All Applications/AllApplications.js";
 import Allinvoices from "./Pages/All Invoices/Allinvoices.js";
 import AllPayment from "./Pages/All Payments/AllPayment.js";
 import NewApplications from "./Pages/New Applicationss/NewApplications.js";
+import LandRatificationApp from "./Pages/New Applicationss/LandRatificationApplication.js";
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
             <Route path="/invoices" element={<Allinvoices />} />
             <Route path="/payments" element={<AllPayment />} />
             <Route path='/new_applications' element={<NewApplications />} />
+            <Route path='/land_ratification_application' element={<LandRatificationApp />} />
 
           </Routes>
         </Router>
