@@ -31,7 +31,7 @@ function CompletedSuccess() {
   return (
     <div >
       <div style={{position:"sticky",top:0,zIndex:'1'}}>
-      <SubHeader />
+      {/* <SubHeader /> */}
      </div>
       <div className={classes.maincontainer}>
       

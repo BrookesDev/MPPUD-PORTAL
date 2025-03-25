@@ -71,6 +71,14 @@
     padding: 20% 2% 20% 2%;  
   }
 
+
+  .logoimage{
+    width: 64px;
+    height: 62.58px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
     .logoimage{
         width: 100%;
         }
