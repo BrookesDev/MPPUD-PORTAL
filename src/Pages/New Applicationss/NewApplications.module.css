@@ -214,7 +214,7 @@
 }
 
 .bottomBtnns{
-  margin-top: 54px;
+  /* margin-top: 54px; */
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -443,15 +443,11 @@ text-decoration-skip-ink: none;
     /* height: 200px; */
     cursor: pointer;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    padding-bottom: 10px;
-    /* justify-content: center; */
-    /* align-items: center; */
     gap: 10px;
-    padding-left: 10px;
-    padding-top: 10px;
+    padding: 20px;
     border: 1px solid #0e4f2712;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -462,7 +458,6 @@ text-decoration-skip-ink: none;
   transform: scale(1.05);
 }
 .bottomBtn{
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -487,9 +482,8 @@ text-decoration-skip-ink: none;
 .appBtn{
   background-color: #21B55A;
   color: white;
-  height: 20px;
-  padding: 10px;
-  width: 100px;
+  padding: 5px;
+  width: 30%;
   border-radius: 8px;
   border: none;
   font-weight: 700;
@@ -608,7 +602,6 @@ text-decoration-skip-ink: none;
 }
 
 .bottomBtnn{
-  margin-top: 54px;
   display: flex;
   flex-direction: row;
   gap: 24px;
