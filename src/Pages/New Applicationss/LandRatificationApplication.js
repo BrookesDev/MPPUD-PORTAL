@@ -876,7 +876,6 @@ const LandRatificationApp = () => {
       formData.append("code", paymentCode);
       formData.append("location_name", selectedLocationName);
       formData.append("app_number", appNumber);
-
       formData.append("area_name", selectedAreaName);
 
       // console.log(selectedFile);
@@ -912,7 +911,7 @@ const LandRatificationApp = () => {
           popup: classes.myText,
           confirmButton: classes.myButton,
         },
-        allowOutsideClick: false, // Prevent closing by clicking outside
+        allowOutsideClick: false,
         preConfirm: () => {
           Swal.close(); // Explicitly close the modal
         },
@@ -941,6 +940,8 @@ const LandRatificationApp = () => {
       setFileName("Survey Plan");
       setSelectedFile("Other Supporting documents");
       setFileName30("Purchase Agreement");
+      setFileName31("Purchase Agreement");
+      setFileName32("Purchase Agreement");
       setSelectedFile15("");
       setSelectedFile40("");
       setFileName40();
