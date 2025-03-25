@@ -979,7 +979,7 @@ const NewApplications = () => {
       setShowSelection(true); // Open modal
       return;
     }
-  
+
     setLoadingStates((prev) => ({ ...prev, [id]: true }));
     try {
       const formData = new FormData();
@@ -989,7 +989,7 @@ const NewApplications = () => {
       if (selectedLandStatus) {
         formData.append("cofo_type", selectedLandStatus);
       }
-  
+
 
       const headers = {
         "Content-Type": "multipart/form-data",
@@ -1034,8 +1034,8 @@ const NewApplications = () => {
         }
         Swal.fire({
           imageUrl: crop,
-          imageWidth: 48, 
-          imageHeight: 48, 
+          imageWidth: 48,
+          imageHeight: 48,
           title: "Failed!",
           confirmButtonText: "Okay",
           text: JSON.stringify(error.response.data.message),
@@ -1067,26 +1067,26 @@ const NewApplications = () => {
       const formData = new FormData();
       formData.append("service_id", selectedAppId);
       formData.append("code", paymentCode);
-  
+
       const headers = {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${bearer}`,
       };
-  
+
       const response = await axios.post(
         `${BASE_URL}/application/verify-payment`,
         formData,
         { headers }
       );
-const cofoName = response.data?.data?.cofo_type?.id
+      const cofoName = response.data?.data?.cofo_type?.id
       setCofoType(cofoName);
-    
 
-  
+
+
       if (response.data && response.data.data && response.data.data.service) {
         const service = response.data.data.service;
         const serviceName = service.name;
-  
+
         const routes = [
           "/governors_consent_application",
           "/certificate_of_occupancy_application",
@@ -1100,16 +1100,16 @@ const cofoName = response.data?.data?.cofo_type?.id
           "/land_allocation_application",
           "/land_ratification_application",
         ];
-  
+
         const formattedServiceName = serviceName
           .replace(/'/g, "")
           .replace(/\s+/g, "_")
           .toLowerCase();
-  
+
         const matchedRoute = routes.find((route) =>
           route.includes(formattedServiceName)
         );
-  
+
         if (matchedRoute) {
           if (formattedServiceName === "certificate_of_occupancy") {
             navigate(matchedRoute, {
@@ -1129,7 +1129,7 @@ const cofoName = response.data?.data?.cofo_type?.id
           }
         }
       }
-  
+
       handleClosePaymentModal();
       setPaymentCode("");
     } catch (error) {
@@ -1169,8 +1169,8 @@ const cofoName = response.data?.data?.cofo_type?.id
       setCreateLoading(false);
     }
   };
-  
-  
+
+
 
   const createApplication20 = async () => {
     setCreateLoading(true);
@@ -2687,17 +2687,17 @@ const cofoName = response.data?.data?.cofo_type?.id
       });
       return;
     }
-    
+
     // Fire the invoice generation with selected ID and Land Status
     handleGenerateNewInvoice(selectedAppId, "Certificate of Occupancy");
-    
+
     // Optionally close the modal if desired
     setShowSelection(false);
   };
-  
+
 
   // console.log(allApplications)
-  const { isDarkMode} = useTheme();
+  const { isDarkMode } = useTheme();
   return (
     <>
       <div className={classes.appcontainer}>
@@ -2728,32 +2728,21 @@ const cofoName = response.data?.data?.cofo_type?.id
             <Horheader />
           </div>
           <div className={classes.dashBoardCont}>
-            {/* <div className={classes.usrwlcm}> */}
-              {/* <div className={classes.appCLS}>
-                <p className={classes.wlcm}>Applications</p>
-                <p style={{ marginTop: -15, fontWeight: 600 }}>
-                  Tap to select all the applications you wish to proceed with
-                </p>
-              </div> */}
-              {/* <div onClick={() => navigate(-1)}>
-                <button className={classes.applctnbtn}>Go back</button>
-              </div> */}
-            {/* </div> */}
             <div style={{ marginTop: 20 }} />
             <div className={isDarkMode ? classes.layoutcardss : classes.layoutcards}>
               <div className={classes.servicesCont}>
-                        <h2  className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}>
-                        Services Offered by <span>OLARMS</span>
-                          </h2>
-                          <p className={isDarkMode ? classes.sectionSubtitles : classes.sectionSubtitle}>
-                          Effortless land administration at your fingertips explore services
-                        like land allocation, property registration, C of O processing,
-                        transaction tracking, and more with OLARMS.
-                          </p>
-                          </div>
-            <div className={classes.layoutcard}>
-              {roleLoading
-                ? // Display placeholders when loading
+                <h2 className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}>
+                  Services Offered by <span>OLARMS</span>
+                </h2>
+                <p className={isDarkMode ? classes.sectionSubtitles : classes.sectionSubtitle}>
+                  Effortless land administration at your fingertips explore services
+                  like land allocation, property registration, C of O processing,
+                  transaction tracking, and more with OLARMS.
+                </p>
+              </div>
+              <div className={classes.layoutcard}>
+                {roleLoading
+                  ? // Display placeholders when loading
                   Array.from({ length: 10 }).map((_, index) => (
                     <div key={index}>
                       <Card>
@@ -2772,14 +2761,14 @@ const cofoName = response.data?.data?.cofo_type?.id
                       </Card>
                     </div>
                   ))
-                : // Display actual data when loading is false
+                  : // Display actual data when loading is false
                   allApplications.map((application, index) => (
                     <div
                       key={index}
                       className={classes.card}
-                      // onClick={() =>
-                      //   handleClicks(application.id, application.name)
-                      // }
+                    // onClick={() =>
+                    //   handleClicks(application.id, application.name)
+                    // }
                     >
                       <div className={classes.imageContt}>
                         {/* <img
@@ -2843,7 +2832,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                       </div>
                     </div>
                   ))}
-            </div>
+              </div>
             </div>
             <Modal
               show={showPaymentModal}
@@ -2903,46 +2892,46 @@ const cofoName = response.data?.data?.cofo_type?.id
               </div>
             </Modal>
 
-            
+
 
             <Modal show={showModalSuccess} onHide={() => setShowModalSuccess(false)}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>Success</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body className={classes.modalbodynew}>
-                        <img src={verified} alt="Verify"  className={classes.picverfied}/>
-                        <div className={classes.textss}>
-                        <p>{modalMessage}</p>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                        <Button
-                          className={classes.btnmodal}
-                          variant="success"
-                          onClick={() => setShowModalSuccess(false)}
-                        >
-                          Okay
-                        </Button>
-                        </div>
-                      </Modal.Body>
-                    </Modal>
-                    <Modal show={showModalError} onHide={handleErrorClose}>
-                      <Modal.Header closeButton>
-                        {/* <Modal.Title>Warning!</Modal.Title> */}
-                      </Modal.Header>
-                      <Modal.Body style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}  className={classes.modalbodynew21}>
-                        <img src={crop} style={{height: 48, width: 48, objectFit: "contain"}} alt="error" />
-                        <p style={{fontWeight: 700, marginTop: 17, fontSize: 16, color: "#000000"}}>Verification Failed</p>
-                        <p style={{fontWeight: 400, marginTop: 17, fontSize: 14, color: "#2E2E2E"}}>{modalMessage}</p>
-                        <Button
-                        style={{borderRadius: 8, width: 185, height: 44, fontWeight: 500, marginTop: 20, fontSize: 16, color: "#fff", backgroundColor: "#D92D20"}}
-                          className={classes.btnmodalerror}
-                          variant="danger"
-                          onClick={handleErrorClose}
-                        >
-                          Okay
-                        </Button>
-                      </Modal.Body>
-                    </Modal>
+              <Modal.Header closeButton>
+                <Modal.Title>Success</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className={classes.modalbodynew}>
+                <img src={verified} alt="Verify" className={classes.picverfied} />
+                <div className={classes.textss}>
+                  <p>{modalMessage}</p>
+                </div>
+                <div className="d-flex justify-content-center">
+                  <Button
+                    className={classes.btnmodal}
+                    variant="success"
+                    onClick={() => setShowModalSuccess(false)}
+                  >
+                    Okay
+                  </Button>
+                </div>
+              </Modal.Body>
+            </Modal>
+            <Modal show={showModalError} onHide={handleErrorClose}>
+              <Modal.Header closeButton>
+                {/* <Modal.Title>Warning!</Modal.Title> */}
+              </Modal.Header>
+              <Modal.Body style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} className={classes.modalbodynew21}>
+                <img src={crop} style={{ height: 48, width: 48, objectFit: "contain" }} alt="error" />
+                <p style={{ fontWeight: 700, marginTop: 17, fontSize: 16, color: "#000000" }}>Verification Failed</p>
+                <p style={{ fontWeight: 400, marginTop: 17, fontSize: 14, color: "#2E2E2E" }}>{modalMessage}</p>
+                <Button
+                  style={{ borderRadius: 8, width: 185, height: 44, fontWeight: 500, marginTop: 20, fontSize: 16, color: "#fff", backgroundColor: "#D92D20" }}
+                  className={classes.btnmodalerror}
+                  variant="danger"
+                  onClick={handleErrorClose}
+                >
+                  Okay
+                </Button>
+              </Modal.Body>
+            </Modal>
 
             <Modal show={show10} onHide={handleClose10} centered>
               <Modal.Header closeButton>
@@ -3858,7 +3847,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                         <Col md={12}>
                           <Form.Group controlId="landUse">
                             <Form.Label className={classes.labelTxt}>
-                             C of O Type
+                              C of O Type
                             </Form.Label>
                             <Form.Select
                               className={classes.optioncss}
@@ -3875,26 +3864,26 @@ const cofoName = response.data?.data?.cofo_type?.id
                         </Col>
                       </Row>
                       <Row className="mb-3">
-                                          <Col md={12} className="text-center">
-                                          <Button
-  className={classes.modBtnn}
-  variant="success"
-  onClick={handleContinueFromModal}
->
-  {loadingStates[selectedAppId] ? (
-    <>
-      <Spinner size="sm" />
-      <span style={{ marginLeft: "5px" }}>
-        Processing, please wait...
-      </span>
-    </>
-  ) : (
-    "Continue"
-  )}
-</Button>
+                        <Col md={12} className="text-center">
+                          <Button
+                            className={classes.modBtnn}
+                            variant="success"
+                            onClick={handleContinueFromModal}
+                          >
+                            {loadingStates[selectedAppId] ? (
+                              <>
+                                <Spinner size="sm" />
+                                <span style={{ marginLeft: "5px" }}>
+                                  Processing, please wait...
+                                </span>
+                              </>
+                            ) : (
+                              "Continue"
+                            )}
+                          </Button>
 
-                                          </Col>
-                                        </Row>
+                        </Col>
+                      </Row>
                     </Form>
                   </Container>
                 </div>
@@ -4230,7 +4219,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createApplication20}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -4521,13 +4510,11 @@ const cofoName = response.data?.data?.cofo_type?.id
               </Modal.Body>
             </Modal>
 
-            <Modal
-              show={showLandInfo}
+            <Modal show={showLandInfo}
               onHide={handleCloseLandInfo}
               size="lg"
               centered
-              animation={false}
-            >
+              animation={false}>
               {/* <Modal.Header style={{backgroundColor: "#F9FAFB",}}> */}
               {/* <Modal.Title>Land Allocation</Modal.Title> */}
               {/* </Modal.Header> */}
@@ -5278,7 +5265,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createApplication}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -5411,7 +5398,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createLandSearch}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -6730,7 +6717,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createApplication1}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -7273,7 +7260,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createAmensty}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -7434,7 +7421,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createTrueCopy}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -7595,7 +7582,7 @@ const cofoName = response.data?.data?.cofo_type?.id
                             className={classes.modBtnn}
                             variant="success"
                             onClick={createConfirm}
-                            // disabled={!isFormValid}
+                          // disabled={!isFormValid}
                           >
                             {createLoading ? (
                               <>
@@ -8316,6 +8303,8 @@ const cofoName = response.data?.data?.cofo_type?.id
                 <Button variant="success"> </Button>
               </Modal.Footer> */}
             </Modal>
+
+            
           </div>
         </div>
       </div>

@@ -585,9 +585,6 @@ const Allinvoices = () => {
     }
   };
 
-
-
-
   const handleStationChange = (e) => {
     const selectedId = e.target.value;
     const stationName =
