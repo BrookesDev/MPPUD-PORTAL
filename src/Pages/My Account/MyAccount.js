@@ -1707,56 +1707,90 @@ const MyAccount = () => {
                   </div>
 
 
-                  <p>Select Land Use Type*</p>
-                  <div className={classes.selectContainer}>
-                    <select>
-                      <option>Select Land Use Type</option>
-                      <option>Residential</option>
-                      <option>Commercial</option>
-                    </select>
 
+<div className={classes.selectContainer}>
+  {/* Land Use Type Select */}
+  <div className={classes.selectWrapper}>
+    <label className={classes.selectLabel}>Land Use Type</label>
+    <select>
+      <option>Select Land Use Type</option>
+      <option>Residential</option>
+      <option>Commercial</option>
+    </select>
+  </div>
 
-
-                    <select>
-                      <option>Select Type</option>
-                      <option>Type A</option>
-                      <option>Type B</option>
-                    </select>
-                  </div>
+  {/* Select Type Select */}
+  <div className={classes.selectWrapper}>
+    <label className={classes.selectLabel}>Select Type*</label>
+    <select>
+      <option>Select Type</option>
+      <option>Type A</option>
+      <option>Type B</option>
+    </select>
+  </div>
+</div>
 
 
                   <button className={classes.addMoreBtn} onClick={addConsultant}>
                     Add More
                   </button>
+                  <div className={classes.bill}>
+  {consultants.map((consultant) => (
+    <div key={consultant.id} className={classes.consultantRow}>
+      
+      {/* Consultant Select Dropdown */}
+      <div className={classes.inputGroup}>
+        <label htmlFor={`consultant-${consultant.id}`}>Consultant</label>
+        <select id={`consultant-${consultant.id}`}>
+          <option>Choose Consultant</option>
+          <option>John Doe</option>
+          <option>Jane Smith</option>
+        </select>
+      </div>
 
+      {/* Email Input */}
+      <div className={classes.inputGroup}>
+        <label htmlFor={`email-${consultant.id}`}>Email</label>
+        <input 
+          type="email" 
+          id={`email-${consultant.id}`} 
+          placeholder="" 
+        />
+      </div>
 
-                  {consultants.map((consultant) => (
-                    <div key={consultant.id} className={classes.consultantRow}>
-                      <select>
-                        <option>Choose Consultant</option>
-                        <option>John Doe</option>
-                        <option>Jane Smith</option>
-                      </select>
-                      <input type="email" placeholder="Email" />
-                      <input type="text" placeholder="Designation" />
-                      <button
-                        className={classes.deleteBtn}
-                        onClick={() => removeConsultant(consultant.id)}
-                      >
-                        Del
-                      </button>
+      {/* Designation Input */}
+      <div className={classes.inputGroup}>
+        <label htmlFor={`designation-${consultant.id}`}>Designated*</label>
+        <input 
+          type="text" 
+          id={`designation-${consultant.id}`} 
+          placeholder="" 
+        />
+      </div>
+
+      {/* Delete Button */}
+      <div className={classes.inputGroup}>
+        <label>Del*</label>
+        <button
+          className={classes.deleteBtn}
+          onClick={() => removeConsultant(consultant.id)}
+        >
+          Del
+        </button>
+      </div>
                       
+
                     </div>
 
                     
 
 
                   ))}
-                  <div className={classes.editDetailsBtn}>
-                      <button>Change Password</button>
-                    </div>
+                    <button className={classes.Btn}>
+                    Submit
+                  </button>
                 </div>
-
+                </div>
               </Tab>
 
               <Tab eventKey="payments" title="Payments">
