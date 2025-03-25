@@ -6,19 +6,20 @@ import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { BASE_URL } from "../api/api";
 // import axios from "axios";
-import Valid from '../../Assets/valid.png';
-import Invalid from '../../Assets/invalid.png';
+import ogunlogo from "../../Asset/ogunlogonew.svg"
+import Valid from '../../Asset/valid.png';
+import Invalid from '../../Asset/invalid.png';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import logo from "../../Assets/olarmsLogo.svg"
-import slide from "../../Assets/slide.svg"
-import crossedEyeIcon from '../../Assets/crossedEyeIcon.svg';
-import errorIcon from '../../Assets/error.svg';
+import logo from "../../Asset/olarmsLogo.svg"
+import slide from "../../Asset/slide.svg"
+import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
+import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import localStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -66,8 +67,8 @@ const [activeIndex, setActiveIndex] = useState(0);
  
   const readData = async () => {
     try {
-      const detail = await AsyncStorage.getItem('userName');
-      const details = await AsyncStorage.getItem('userToken');
+      const detail = await localStorage.getItem('userName');
+      const details = await localStorage.getItem('userToken');
 
 
       if (detail !== null) {
@@ -224,62 +225,42 @@ const [activeIndex, setActiveIndex] = useState(0);
   return (
     <div >
       <div className={classes.maincontainer}>
-        <div className={classes.lftcontainer}>
-          <div className={classes.logohead}>
-            <img src={logo} alt="Olarms Logo" className={classes.logoimage} />
-          </div>
-
-          <Carousel
-            activeIndex={activeIndex}
-            onSelect={handleSelect}
-            controls={false}
-            indicators={false}
-            className={classes.customCarousel}
-          >
-            <Carousel.Item className={classes.textdown}>
-              <h6 className={classes.textdownH}>
-                {" "}
-                Seamless Land <br />
-                Administration Starts Here
-              </h6>
-              <p className={classes.textdownP}>
-                Welcome to the Ogun State Land Administration <br />
-                and Revenue Management System (OLARMS).
-              </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-              <h6 className={classes.textdownH}>
-                {" "}
-                Your Gateway to Owning Land <br />
-                Starts Here!
-              </h6>
-              <p className={classes.textdownP}>
-                Discover the simplicity of land ownership with Ogun State's <br />
-                premier Land Administration and Revenue Management System.
-              </p>{" "}
-            </Carousel.Item>
-            <Carousel.Item className={classes.textdown}>
-              <h6 className={classes.textdownH}>
-                {" "}
-                Invest in Your Future <br />
-                with Land in Ogun State!
-              </h6>
-              <p className={classes.textdownP}>
-                Unlock seamless access to affordable and secure land <br />
-                ownership through Ogun State’s trusted OLARMS.
-              </p>{" "}
-            </Carousel.Item>
-          </Carousel>
-          <div className={classes.slidehead4}>
-            {[0, 1, 2].map((index) => (
-              <span
-                key={index}
-                onClick={() => handleSelect(index)}
-                className={`${classes.indicator} ${activeIndex === index ? classes.activeIndicator : ""
-                  }`}
-              ></span>
-            ))}
-          </div>
+      <div className={classes.lftcontainer}>
+          <Row>
+            <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
+              <img src={ogunlogo} className={classes.logoimage} alt="logo" />
+            </Col>
+            <Col md={12}>
+              <h1
+                style={{
+                  color: 'white',
+                  fontSize: '30px',
+                  fontWeight: '600',
+                  fontFamily: 'Inter, sans-serif',
+                  margin: 0,
+                  textAlign: 'center',
+                }}>
+                MPPUD PORTAL
+              </h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+            </Col>
+            <Col md={12}>
+              <p
+                style={{
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  fontFamily: 'Inter, sans-serif',
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                Effortless Budget Management: Request, Track, and<br />Approve with Ease
+              </p>
+            </Col>
+          </Row>
         </div>
         <div className={classes.rgtcontainer}>
           <div className={classes.maintext}>

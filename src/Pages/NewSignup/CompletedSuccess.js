@@ -9,9 +9,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import logo from "../../Assets/olarmsLogo.svg";
-import slide from "../../Assets/slide.svg";
-import success from "../../Assets/success.svg";
+import logo from "../../Asset/olarmsLogo.svg";
+import slide from "../../Asset/slide.svg";
+import success from "../../Asset/success.svg";
 import Carousel from "react-bootstrap/Carousel";
 import SubHeader from "../../Components/SubHeader/SubHeader";
 
@@ -31,7 +31,7 @@ function CompletedSuccess() {
   return (
     <div >
       <div style={{position:"sticky",top:0,zIndex:'1'}}>
-      <SubHeader />
+      {/* <SubHeader /> */}
      </div>
       <div className={classes.maincontainer}>
       

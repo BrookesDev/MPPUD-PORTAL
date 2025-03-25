@@ -13,7 +13,7 @@ import arrowwn from "../../Asset/arrow-down.png";
 import classes from "./horheader.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge, Button, Dropdown } from "react-bootstrap";
-import localforage from 'localforage';
+// import localStorage from 'localStorage';
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FaRegBell } from "react-icons/fa6";
 import { BASE_URL } from "../../API/Api";
@@ -57,13 +57,13 @@ export default function Horheader() {
 
   const readData = async () => {
     try {
-      const detail = await localforage.getItem("userName");
-      const details = await localforage.getItem("userToken");
-      const detailss = await localforage.getItem("userData");
-      const customerImageData = await localforage.getItem("customerImage");
-      const customerPicture = await localforage.getItem("customerPicture");
-      const firstName = await localforage.getItem("firstName");
-      const lastName = await localforage.getItem("secondName");
+      const detail = await localStorage.getItem("userName");
+      const details = await localStorage.getItem("userToken");
+      const detailss = await localStorage.getItem("userData");
+      const customerImageData = await localStorage.getItem("customerImage");
+      const customerPicture = await localStorage.getItem("customerPicture");
+      const firstName = await localStorage.getItem("firstName");
+      const lastName = await localStorage.getItem("secondName");
 
       console.log(detail, "UserName")
 
@@ -320,7 +320,8 @@ export default function Horheader() {
             <Dropdown style={{ display: "flex", justifyContent: "flex-end" }}>
               <Dropdown.Toggle className={isDarkMode ? classes.usrinfos : classes.usrinfo}>
                 <img
-                  src={customerImages || customerPicture || ProfileIcon}
+                  // src={customerImages || customerPicture || ProfileIcon}
+                  src={customerPicture || ProfileIcon}
                   alt="profile-picture"
                   className={classes.bel}
                   onError={(e) => (e.target.src = ProfileIcon)}

@@ -41,31 +41,31 @@ function Login() {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-};
+  };
 
-const handleForgot = () => {
-  navigate('/forgot_password');
-}
+  const handleForgot = () => {
+    navigate('/forgot_password');
+  }
 
 
 
-const handleLogin = async () => {
-  setLoading(true);
-  try {
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
       const response = await axios.post(`${BASE_URL}/login`,
-          {
-              email: email,
-              password: password
-          }
+        {
+          email: email,
+          password: password
+        }
       );
-    
+
       const result = response.data?.data?.user?.name;
       const cac = response.data?.data?.user?.customer?.cac;
       const businessName = response.data?.data?.user?.customer?.business_name;
       const add = response.data?.data?.user?.customer?.address;
       const incorporationDate = response.data?.data?.user?.customer?.date_incorporated;
       const em = response.data?.data?.user?.customer?.email;
-      const ph = response.data?.data?.user?.customer?.phone;
+      const ph = response.data?.data?.user?.phone_number;
       const st = response.data?.data?.user?.customer?.state;
       const lg = response.data?.data?.user?.customer?.lga;
       const tin = response.data?.data?.user?.customer?.tin;
@@ -82,10 +82,10 @@ const handleLogin = async () => {
       const results = response.data?.data?.token;
       const isFilled = response.data?.data?.user?.is_fill;
       const customerImage = response.data?.data?.user?.image;
-      const customerPicture = response.data?.data?.user?.customer?.picture;
+      const customerPicture = response.data?.data?.user?.customer?.photo;
       const createdBy = response.data?.data?.user?.created_by;
      
-      console.log(response.data?.data?.user?.customer?.picture);
+      console.log(response.data?.data?.user?.customer?.photo);
 
       localStorage.setItem('userName', result);
       localStorage.setItem('createdBy', createdBy);
@@ -113,64 +113,64 @@ const handleLogin = async () => {
       localStorage.setItem('isFilledState', isFilled);
       localStorage.setItem('customerPicture', customerPicture);
 
-      navigate('/dashboard');
-   
-//       if (isFilled === "0") {
-//         navigate('/complete_your_registration');
-//       } else if (isFilled === "1") {
-//         navigate('/finish_onboarding_process');
-//       } else if (isFilled === "2") {
-//         navigate('/dashboard');
-//       }
-  
+      // navigate('/dashboard');
 
-  } catch (error) {
-    let errorMessage = 'An error occurred. Please try again.';
-    if (error.response && error.response.data && error.response.data.message) {
-      if (typeof error.response.data.message === 'string') {
-        errorMessage = error.response.data.message;
-      } else if (Array.isArray(error.response.data.message)) {
-        errorMessage = error.response.data.message.join('; ');
-      } else if (typeof error.response.data.message === 'object') {
-        errorMessage = JSON.stringify(error.response.data.message);
+      if (isFilled === "0") {
+        navigate('/complete_your_registration');
+      } else if (isFilled === "1") {
+        navigate('/finish_onboarding_process');
+      } else if (isFilled === "2") {
+        navigate('/dashboard');
       }
-      setErrorMessage(JSON.stringify(error.response.data.message));
-      setShowErrorMessage(true);
-//       // Swal.fire({
-//       //   icon: 'error',
-//       //   title: 'Failed',
-//       //   text: JSON.stringify(error.response.data.message),
-//       // });
-    }
-  } finally {
+
+
+    } catch (error) {
+      let errorMessage = 'An error occurred. Please try again.';
+      if (error.response && error.response.data && error.response.data.message) {
+        if (typeof error.response.data.message === 'string') {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join('; ');
+        } else if (typeof error.response.data.message === 'object') {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        setErrorMessage(JSON.stringify(error.response.data.message));
+        setShowErrorMessage(true);
+        //       // Swal.fire({
+        //       //   icon: 'error',
+        //       //   title: 'Failed',
+        //       //   text: JSON.stringify(error.response.data.message),
+        //       // });
+      }
+    } finally {
       setLoading(false);
+    }
   }
-}
 
-const handleKeyPress = (e) => {
-  if (e.key === 'Enter' && !isButtonDisabled) {
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !isButtonDisabled) {
       handleLogin();
+    }
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    setShowErrorMessage(false);
+  };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    setShowErrorMessage(false);
+  };
+
+  const isButtonDisabled = !email || !password || loading;
+
+  const handleLogin2 = () => {
+    navigate('/signup');
   }
-};
-
-const handleEmail = (e) => {
-  setEmail(e.target.value);
-  setShowErrorMessage(false);
-};
-const handlePassword = (e) => {
-  setPassword(e.target.value);
-  setShowErrorMessage(false);
-};
-
-const isButtonDisabled = !email || !password || loading;
-
-const handleLogin2 = () => {
-  navigate('/signup');
-}
 
   return (
     <div >
-        <div className={classes.maincontainer}>
+      <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
           <Row>
             <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -178,14 +178,14 @@ const handleLogin2 = () => {
             </Col>
             <Col md={12}>
               <h1
-              style={{
-                color: 'white',  
-                fontSize: '30px',  
-                fontWeight: '600',
-                fontFamily: 'Inter, sans-serif',
-                margin: 0,
-                textAlign: 'center',
-              }}>
+                style={{
+                  color: 'white',
+                  fontSize: '30px',
+                  fontWeight: '600',
+                  fontFamily: 'Inter, sans-serif',
+                  margin: 0,
+                  textAlign: 'center',
+                }}>
                 MPPUD PORTAL
               </h1>
             </Col>
@@ -194,82 +194,82 @@ const handleLogin2 = () => {
             <Col md={12}>
             </Col>
             <Col md={12}>
-            <p
-          style={{
-            color: 'white', 
-            fontSize: '14px',
-            fontWeight: '400',
-            fontFamily: 'Inter, sans-serif',
-            textAlign: 'center',
-            margin: 0,
-          }}>
-            Effortless Budget Management: Request, Track, and<br />Approve with Ease
-          </p>
+              <p
+                style={{
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  fontFamily: 'Inter, sans-serif',
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                Effortless Budget Management: Request, Track, and<br />Approve with Ease
+              </p>
             </Col>
           </Row>
         </div>
 
-            <div className={classes.rgtcontainer}>
-                <div className={classes.maintext}>
-                    <h1> Welcome <span style={{  color: "#21B55A" }}> back</span> </h1>
-                    <h6>Log in to your account and connect with the best <br /> participants for your studies</h6>
-                    <Form.Group>
-                        <Form.Label className={classes.inputLabel}>Email address</Form.Label>
-                        <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label className={classes.inputLabel}>Password</Form.Label>
-                        <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} onKeyPress={handleKeyPress}/>
-                        <button
-                                type="button"
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    float: 'right',
-                                    left: "-2%",
-                                    marginTop: '-45px',
-                                    position: 'relative',
-                                    zIndex: 2
-                                }}
-                                onClick={togglePasswordVisibility}
-                            >
-                                {showPassword ? (
-                                    <img src={crossedEyeIcon} alt="Hide Password" style={{ height: "17px", width: "17px" }} />
-                                ) : (
-                                    '👁️'
-                                )}
-                          </button>
-                          {showErrorMessage === true && (
-                          <div className={classes.errorCt}>
-                            <p>{errorMessage}</p>
-                            <img src={errorIcon} alt="Hide Password" style={{ height: "20px", width: "20px" }} />
-                        </div>
-                        )}
-                    </Form.Group>
-                    <div style={{paddingTop: showErrorMessage === true ? 30 : 0}}>
-                    <span  className={classes.loginclk} onClick={handleForgot}> Forgot password?</span>
-                    </div>
-                    <Button variant="success" className={classes.btngreen} disabled={isButtonDisabled} onClick={handleLogin} >
-                    {loading ? (
-                            <>
-                                <Spinner size='sm' />
-                                <span style={{ marginLeft: '5px' }}>Signing in...</span>
-                            </>
-                        ) : (
-                            "Login"
-                        )}           
-                    </Button>
+        <div className={classes.rgtcontainer}>
+          <div className={classes.maintext}>
+            <h1> Welcome <span style={{ color: "#21B55A" }}> back</span> </h1>
+            <h6>Log in to your account to start seamless applications with MPPUD</h6>
+            <Form.Group>
+              <Form.Label className={classes.inputLabel}>Email address</Form.Label>
+              <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField} />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className={classes.inputLabel}>Password</Form.Label>
+              <Form.Control onChange={handlePassword} type={showPassword ? 'text' : 'password'} placeholder="Enter password" className={classes.inputField} onKeyPress={handleKeyPress} />
+              <button
+                type="button"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  float: 'right',
+                  left: "-2%",
+                  marginTop: '-45px',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <img src={crossedEyeIcon} alt="Hide Password" style={{ height: "17px", width: "17px" }} />
+                ) : (
+                  '👁️'
+                )}
+              </button>
+              {showErrorMessage === true && (
+                <div className={classes.errorCt}>
+                  <p>{errorMessage}</p>
+                  <img src={errorIcon} alt="Hide Password" style={{ height: "20px", width: "20px" }} />
+                </div>
+              )}
+            </Form.Group>
+            <div style={{ paddingTop: showErrorMessage === true ? 30 : 0 }}>
+              <span className={classes.loginclk} onClick={handleForgot}> Forgot password?</span>
+            </div>
+            <Button variant="success" className={classes.btngreen} disabled={isButtonDisabled} onClick={handleLogin} >
+              {loading ? (
+                <>
+                  <Spinner size='sm' />
+                  <span style={{ marginLeft: '5px' }}>Signing in...</span>
+                </>
+              ) : (
+                "Login"
+              )}
+            </Button>
 
-                    <p style={{ textAlign: 'left', color: '#333333', fontSize: '15px', fontWeight: '400', marginTop: '12px'}}>
+            <p style={{ textAlign: 'left', color: '#333333', fontSize: '15px', fontWeight: '400', marginTop: '12px' }}>
               {" "}
               You don't have an account?{" "}
               <span onClick={handleLogin2} style={{ textAlign: 'center', color: "#21B55A", cursor: 'pointer' }} className={classes.textsign} > Sign Up</span>{" "}
             </p>
 
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
   );
 }
