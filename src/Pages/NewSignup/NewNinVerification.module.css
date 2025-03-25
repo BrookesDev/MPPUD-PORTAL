@@ -69,7 +69,7 @@
   .btnall {
     display: flex;
     justify-content: center;
-    flex-direction: column;  
+    /* flex-direction: column;   */
     /* width: 50% !important; */
     /* width: 50%; */
 }
@@ -338,7 +338,8 @@ text-decoration-skip-ink: none;
 .rgbtn {
   background-color: #21B55A;
   color: white;
-  padding: 10px 130px;
+  /* padding: 10px 130px; */
+  border: none;
   font-weight: 700;
   font-size: 16px;
   border-radius: 8px;

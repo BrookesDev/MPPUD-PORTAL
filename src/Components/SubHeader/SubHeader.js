@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "../../Assets/olarmslogoftrlt.png";
+import logo from "../../Asset/olarmslogoftrlt.png";
 import classes from "./SubHeader.module.css";
-import back from '../../Assets/back.svg'
+import back from '../../Asset/back.svg'
 import { Navigate, useNavigate } from "react-router-dom";
 
 const SubHeader = () => {

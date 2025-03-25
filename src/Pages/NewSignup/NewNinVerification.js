@@ -6,19 +6,19 @@ import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { BASE_URL } from "../api/api";
 // import axios from "axios";
-import Invalid from '../../Assets/invalid.png';
+import Invalid from '../../Asset/invalid.png';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Valid from '../../Assets/valid.png';
-import logo from "../../Assets/olarmsLogo.svg"
-import slide from "../../Assets/slide.svg"
-import crossedEyeIcon from '../../Assets/crossedEyeIcon.svg';
-import errorIcon from '../../Assets/error.svg';
+import Valid from '../../Asset/valid.png';
+import logo from "../../Asset/olarmsLogo.svg"
+import slide from "../../Asset/slide.svg"
+import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
+import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import localStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -63,10 +63,10 @@ function NewNinVerification() {
   };
   const readData = async () => {
     try {
-        const detail = await AsyncStorage.getItem('userName');
-        const details = await AsyncStorage.getItem('userToken');
-        const detailss = await AsyncStorage.getItem('firstName');
-            const detailsss = await AsyncStorage.getItem('secondName');
+        const detail = await localStorage.getItem('userName');
+        const details = await localStorage.getItem('userToken');
+        const detailss = await localStorage.getItem('firstName');
+            const detailsss = await localStorage.getItem('secondName');
   
         if (detail !== null) {
             // const firstName = detail.split(' ')[0];
@@ -419,8 +419,9 @@ function NewNinVerification() {
     <span style={{color: "green", fontSize: 14, fontWeight: 500}}>{responseMessage}</span>
   </div>
 )}
-                    <div className={classes.btnall}>
-                        <Button disabled={taxLoading} variant="success" onClick={validateTaxPayer} className={classes.rgbtn}>
+                      <Row style={{ paddingTop: "15px" }}>
+                        <Col md={6}>
+                        <Button disabled={taxLoading} variant="success" onClick={validateTaxPayer}>
                             {taxLoading ? (
                                                                                         <>
                                                                                             <Spinner size='sm' />
@@ -430,8 +431,15 @@ function NewNinVerification() {
                                                                                         "Verify & Continue"
                                                                                     )}         
                         </Button>
-                        <p onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})} className={classes.skpbtn}>Skip</p>
-                    </div>
+                        </Col>
+                        <Col md={6}>
+                        <Button variant="light" onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})}>
+                          Skip
+                        </Button>
+                        {/* <p  className={classes.skpbtn}>Skip</p> */}
+                        </Col>
+                      </Row>
+                    {/* </div> */}
                 </div>
           </div>
         </div>

@@ -31,6 +31,11 @@ import Allinvoices from "./Pages/All Invoices/Allinvoices.js";
 import AllPayment from "./Pages/All Payments/AllPayment.js";
 import NewApplications from "./Pages/New Applicationss/NewApplications.js";
 import LandRatificationApp from "./Pages/New Applicationss/LandRatificationApplication.js";
+import OnboardingCompleteReg from "./Pages/NewSignup/OnboardingCompleteReg.js";
+import FinishOnboarding from "./Pages/Finish Onboarding/FinishOnboarding.js";
+import NewNinVerification from "./Pages/NewSignup/NewNinVerification.js";
+import OnboardingStin from "./Pages/NewSignup/OnboardingStin.js";
+import CompletedSuccess from "./Pages/NewSignup/CompletedSuccess.js";
 
 
 function App() {
@@ -59,6 +64,11 @@ function App() {
             <Route path="/create" element={<Create />} />
             <Route path="/" element={<Welcome />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/complete_your_registration" element={<OnboardingCompleteReg />} />
+            <Route path="/finish_onboarding_process" element={<FinishOnboarding />} />
+            <Route path="/nin_verificaation" element={<NewNinVerification />} />
+            <Route path="/complete_your_registration_stin" element={<OnboardingStin />} />
+            <Route path="/completed_registration_successful" element={<CompletedSuccess />} />
             <Route path="/application" element={<Application />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />

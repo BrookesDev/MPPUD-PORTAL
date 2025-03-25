@@ -6,19 +6,19 @@ import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { BASE_URL } from "../api/api";
 // import axios from "axios";
-import Valid from '../../Assets/valid.png';
-import Invalid from '../../Assets/invalid.png';
+import Valid from '../../Asset/valid.png';
+import Invalid from '../../Asset/invalid.png';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import logo from "../../Assets/olarmsLogo.svg"
-import slide from "../../Assets/slide.svg"
-import crossedEyeIcon from '../../Assets/crossedEyeIcon.svg';
-import errorIcon from '../../Assets/error.svg';
+import logo from "../../Asset/olarmsLogo.svg"
+import slide from "../../Asset/slide.svg"
+import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
+import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import localStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -66,8 +66,8 @@ const [activeIndex, setActiveIndex] = useState(0);
  
   const readData = async () => {
     try {
-      const detail = await AsyncStorage.getItem('userName');
-      const details = await AsyncStorage.getItem('userToken');
+      const detail = await localStorage.getItem('userName');
+      const details = await localStorage.getItem('userToken');
 
 
       if (detail !== null) {

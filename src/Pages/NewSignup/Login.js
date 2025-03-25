@@ -113,15 +113,15 @@ const handleLogin = async () => {
       localStorage.setItem('isFilledState', isFilled);
       localStorage.setItem('customerPicture', customerPicture);
 
-      navigate('/dashboard');
+      // navigate('/dashboard');
    
-//       if (isFilled === "0") {
-//         navigate('/complete_your_registration');
-//       } else if (isFilled === "1") {
-//         navigate('/finish_onboarding_process');
-//       } else if (isFilled === "2") {
-//         navigate('/dashboard');
-//       }
+      if (isFilled === "0") {
+        navigate('/complete_your_registration');
+      } else if (isFilled === "1") {
+        navigate('/finish_onboarding_process');
+      } else if (isFilled === "2") {
+        navigate('/dashboard');
+      }
   
 
   } catch (error) {
@@ -212,7 +212,7 @@ const handleLogin2 = () => {
             <div className={classes.rgtcontainer}>
                 <div className={classes.maintext}>
                     <h1> Welcome <span style={{  color: "#21B55A" }}> back</span> </h1>
-                    <h6>Log in to your account and connect with the best <br /> participants for your studies</h6>
+                    <h6>Log in to your account to start seamless applications with MPPUD</h6>
                     <Form.Group>
                         <Form.Label className={classes.inputLabel}>Email address</Form.Label>
                         <Form.Control onChange={handleEmail} type="email" placeholder="Enter your email address" className={classes.inputField}/>
