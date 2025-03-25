@@ -31,14 +31,22 @@
   .lftcontainer {
       background: linear-gradient(180deg, #21B55A, #0E4F27);
       height: 100vh;
-      width: 35%;  
+      width: 35%; 
+      padding: 20% 2% 20% 2%;  
     }
 
-    .logoimage{
+    /* .logoimage{
         width: 183px;
         height: 35px;
         object-fit: contain;
-      }
+      } */
+
+      .logoimage{
+        width: 64px;
+        height: 62.58px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
 
       .loginclk{
         color: #21B55A;

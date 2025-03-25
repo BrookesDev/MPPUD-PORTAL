@@ -158,37 +158,38 @@ function ForgotEmailVerify() {
         <div className={classes.maincontainer}>
         <div className={classes.lftcontainer}>
           <Row>
-            <Col md={2}>
+            <Col md={12} style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={ogunlogo} className={classes.logoimage} alt="logo" />
             </Col>
-            <Col md={10}>
+            <Col md={12}>
               <h1
-              style={{
-                color: 'white',  
-                fontSize: '30px',  
-                fontWeight: '600',
-                fontFamily: 'Inter, sans-serif',
-                margin: 0,
-              }}>
-                Ogun State Budget System
+                style={{
+                  color: 'white',
+                  fontSize: '30px',
+                  fontWeight: '600',
+                  fontFamily: 'Inter, sans-serif',
+                  margin: 0,
+                  textAlign: 'center',
+                }}>
+                MPPUD PORTAL
               </h1>
             </Col>
           </Row>
           <Row>
-            <Col md={2}>
+            <Col md={12}>
             </Col>
-            <Col md={10}>
-            <p
-          style={{
-            color: 'white', 
-            fontSize: '14px',
-            fontWeight: '400',
-            fontFamily: 'Inter, sans-serif',
-            textAlign: 'center',
-            margin: 0,
-          }}>
-            Effortless Budget Management: Request, Track, and<br />Approve with Ease
-          </p>
+            <Col md={12}>
+              <p
+                style={{
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  fontFamily: 'Inter, sans-serif',
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                Effortless Budget Management: Request, Track, and<br />Approve with Ease
+              </p>
             </Col>
           </Row>
         </div>
