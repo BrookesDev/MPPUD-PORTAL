@@ -414,9 +414,9 @@ function NewNinVerification() {
                         </Button>
                         </Col>
                         <Col md={6}>
-                        <Button variant="light" onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})}>
+                        {/* <Button variant="light" onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})}>
                           Skip
-                        </Button>
+                        </Button> */}
                         {/* <p  className={classes.skpbtn}>Skip</p> */}
                         </Col>
                       </Row>
