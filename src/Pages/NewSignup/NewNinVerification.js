@@ -419,8 +419,9 @@ function NewNinVerification() {
     <span style={{color: "green", fontSize: 14, fontWeight: 500}}>{responseMessage}</span>
   </div>
 )}
-                    <div className={classes.btnall}>
-                        <Button disabled={taxLoading} variant="success" onClick={validateTaxPayer} className={classes.rgbtn}>
+                      <Row style={{ paddingTop: "15px" }}>
+                        <Col md={6}>
+                        <Button disabled={taxLoading} variant="success" onClick={validateTaxPayer}>
                             {taxLoading ? (
                                                                                         <>
                                                                                             <Spinner size='sm' />
@@ -430,8 +431,15 @@ function NewNinVerification() {
                                                                                         "Verify & Continue"
                                                                                     )}         
                         </Button>
-                        <p onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})} className={classes.skpbtn}>Skip</p>
-                    </div>
+                        </Col>
+                        <Col md={6}>
+                        <Button variant="light" onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})}>
+                          Skip
+                        </Button>
+                        {/* <p  className={classes.skpbtn}>Skip</p> */}
+                        </Col>
+                      </Row>
+                    {/* </div> */}
                 </div>
           </div>
         </div>
