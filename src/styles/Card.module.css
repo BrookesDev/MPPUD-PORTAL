@@ -13,7 +13,7 @@
   }
   
   .card p {
-    font-size: 24px;
+    font-size: 33.61px;
     font-weight: bold;
     color: rgb(0, 0, 0);
   }
@@ -28,6 +28,12 @@
     flex-direction: column;
     justify-content: space-between;
   }
+
+  .litnmbr {
+    font-size: 18.67px;
+    font-weight: 700;
+    color: #000000;
+  }
   
   .cardContent {
     position: relative;
@@ -35,9 +41,10 @@
   }
   
   .title {
-    font-size: 14px;
-    color: #6b7280;
+    font-size: 13.07px;
+    color: #000000;
     margin-bottom: 8px;
+    font-family: 'Inter';
   }
   
   .amount {

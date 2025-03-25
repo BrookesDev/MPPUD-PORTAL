@@ -4,8 +4,8 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { BASE_URL } from "../api/api";
-// import axios from "axios";
+import { BASE_URL } from "../../API/Api";
+import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -77,80 +77,80 @@ function ForgotEmailVerify() {
 
   const getOtpString = () => otp.join("");
 
-  // const handleSignup = async () => {
-  //   setLoading(true);
-  //   try {
+  const handleSignup = async () => {
+    setLoading(true);
+    try {
       
-  //     const otpString = getOtpString();
-  //     const response = await axios.post(`${BASE_URL}/verifyOtp`, {
-  //       email: email,
-  //       otp: otpString
-  //     });
+      const otpString = getOtpString();
+      const response = await axios.post(`${BASE_URL}/verifyOtp`, {
+        email: email,
+        otp: otpString
+      });
   
-  //     navigate('/success');
+      navigate('/success');
 
-  //   } catch (error) {
-  //     let errorMessage = 'An error occurred. Please try again.';
-  //     if (error.response && error.response.data && error.response.data.message) {
-  //       if (typeof error.response.data.message === 'string') {
-  //         errorMessage = error.response.data.message;
-  //       } else if (Array.isArray(error.response.data.message)) {
-  //         errorMessage = error.response.data.message.join('; ');
-  //       } else if (typeof error.response.data.message === 'object') {
-  //         errorMessage = JSON.stringify(error.response.data.message);
-  //       }
-  //       setErrorMessage(JSON.stringify(error.response.data.message));
-  //       setShowErrorMessage(true);
-  //       // Swal.fire({
-  //       //   icon: 'error',
-  //       //   title: 'Failed',
-  //       //   text: JSON.stringify(error.response.data.message),
-  //       // });
-  //     }
+    } catch (error) {
+      let errorMessage = 'An error occurred. Please try again.';
+      if (error.response && error.response.data && error.response.data.message) {
+        if (typeof error.response.data.message === 'string') {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join('; ');
+        } else if (typeof error.response.data.message === 'object') {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        setErrorMessage(JSON.stringify(error.response.data.message));
+        setShowErrorMessage(true);
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Failed',
+        //   text: JSON.stringify(error.response.data.message),
+        // });
+      }
       
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    } finally {
+      setLoading(false);
+    }
+  };
   
-  // const handleResendOtp = async () => {
-  //   setOtpLoading(true);
-  //   setShowErrorMessage(false);
-  //   setOtp(Array(5).fill(""));
-  //   try {
+  const handleResendOtp = async () => {
+    setOtpLoading(true);
+    setShowErrorMessage(false);
+    setOtp(Array(5).fill(""));
+    try {
       
-  //     const otpString = getOtpString();
-  //     const response = await axios.post(`${BASE_URL}/resend_otp`, {
-  //       email: email,
-  //     });
-  //     setSeconds(34); 
-  //   setIsCounting(true); 
-  //   setMessage("");
+      const otpString = getOtpString();
+      const response = await axios.post(`${BASE_URL}/resend_otp`, {
+        email: email,
+      });
+      setSeconds(34); 
+    setIsCounting(true); 
+    setMessage("");
  
   
-  //   } catch (error) {
-  //     let errorMessage = 'An error occurred. Please try again.';
-  //     if (error.response && error.response.data && error.response.data.message) {
-  //       if (typeof error.response.data.message === 'string') {
-  //         errorMessage = error.response.data.message;
-  //       } else if (Array.isArray(error.response.data.message)) {
-  //         errorMessage = error.response.data.message.join('; ');
-  //       } else if (typeof error.response.data.message === 'object') {
-  //         errorMessage = JSON.stringify(error.response.data.message);
-  //       }
-  //       setErrorMessage(JSON.stringify(error.response.data.message));
-  //       setShowErrorMessage(true);
-  //       // Swal.fire({
-  //       //   icon: 'error',
-  //       //   title: 'Failed',
-  //       //   text: JSON.stringify(error.response.data.message),
-  //       // });
-  //     }
+    } catch (error) {
+      let errorMessage = 'An error occurred. Please try again.';
+      if (error.response && error.response.data && error.response.data.message) {
+        if (typeof error.response.data.message === 'string') {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join('; ');
+        } else if (typeof error.response.data.message === 'object') {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        setErrorMessage(JSON.stringify(error.response.data.message));
+        setShowErrorMessage(true);
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Failed',
+        //   text: JSON.stringify(error.response.data.message),
+        // });
+      }
       
-  //   } finally {
-  //     setOtpLoading(false);
-  //   }
-  // };
+    } finally {
+      setOtpLoading(false);
+    }
+  };
 
   const isButtonDisabled = !otp || loading;
   return (
