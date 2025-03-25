@@ -107,6 +107,36 @@ const MyAccount = () => {
   const [CompEmail, setCompEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [selectedFiles, setSelectedFiles] = useState({});
+  const [consultants, setConsultants] = useState([{ id: 1 }]);
+
+  const handleFileChange = (event, fieldName) => {
+    const file = event.target.files[0];
+    setSelectedFiles((prev) => ({
+      ...prev,
+      [fieldName]: file ? file.name : "No file chosen",
+    }));
+  };
+
+  const addConsultant = () => {
+    setConsultants([...consultants, { id: Date.now() }]);
+  };
+
+  const removeConsultant = (id) => {
+    setConsultants(consultants.filter((c) => c.id !== id));
+  };
+
+  const fields = [
+    "Survey plan",
+    "Building Architectural Plan",
+    "Electrical Architectural Plan",
+    "Mechanical Architectural Plan",
+    "Structural Engineering",
+    "Title Document",
+
+  ];
+
+
   const handleClockTime = () => {
     setClockTime(!clockTime);
   };
@@ -129,10 +159,10 @@ const MyAccount = () => {
     whatsapp: false,
   });
 
-useEffect(() => {
+  useEffect(() => {
     const loadNotificationType = async () => {
       const notificationType = await localStorage.getItem("notificationType");
-  
+
       if (notificationType !== null) {
         const updatedPreferences = {};
         Object.keys(preferences).forEach((key) => {
@@ -141,21 +171,21 @@ useEffect(() => {
         setPreferences(updatedPreferences);
       }
     };
-  
+
     loadNotificationType();
   }, []);
 
   const handleToggle = async (type) => {
     const updatedPreferences = {};
-  
+
     // Reset all to false and activate only the selected one
     Object.keys(preferences).forEach((key) => {
       updatedPreferences[key] = false;
     });
     updatedPreferences[type] = true;
-  
+
     setPreferences(updatedPreferences);
-  
+
     try {
       const response = await axios.post(
         `${BASE_URL}/customer/update_notification`,
@@ -167,7 +197,7 @@ useEffect(() => {
           },
         }
       );
-  
+
       await localStorage.setItem("notificationType", type); // Save new type
       console.log('Preference updated:', response.data);
     } catch (error) {
@@ -175,526 +205,526 @@ useEffect(() => {
     }
   };
 
-const handleDeleteConfirm = () => {
-  // Add your delete logic here
-  console.log("Item deleted");
-  setShowModal(false);
-};
-const [selectedOption, setSelectedOption] = useState(null);
-const [customerLoading, setCustomerLoading] = useState(false);
-const totalPages = 10; // Total number of pages
-const [currentPage, setCurrentPage] = useState(1);
-const [visibleDropdown, setVisibleDropdown] = useState(null);
-const [customerPicture, setCustomerPicture] = useState("");
-const [businessName, setBusinessName] = useState("");
-const fileInputRef = useRef(null);
+  const handleDeleteConfirm = () => {
+    // Add your delete logic here
+    console.log("Item deleted");
+    setShowModal(false);
+  };
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [customerLoading, setCustomerLoading] = useState(false);
+  const totalPages = 10; // Total number of pages
+  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleDropdown, setVisibleDropdown] = useState(null);
+  const [customerPicture, setCustomerPicture] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const fileInputRef = useRef(null);
 
-const handleClick = () => {
-  fileInputRef.current.click();
-};
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
 
-const readData = async () => {
-  try {
-    const detail = await localStorage.getItem("userType");
-    const details = await localStorage.getItem("userToken");
-    const detailss = await localStorage.getItem("cac");
-    const detailsss = await localStorage.getItem("userName");
-    const businessName = await localStorage.getItem("businessName");
-    const add = await localStorage.getItem("add");
-    const inc = await localStorage.getItem("incorporationDate");
-    const em = await localStorage.getItem("em");
-    const ph = await localStorage.getItem("ph");
-    const st = await localStorage.getItem("st");
-    const lg = await localStorage.getItem("lg");
-    const tin = await localStorage.getItem("tin");
-    const nin = await localStorage.getItem("nin");
-    const dateOfBirth = await localStorage.getItem("dateOfBirth");
-    const gender = await localStorage.getItem("gender");
-    const firstName = await localStorage.getItem("firstName");
-    const secondName = await localStorage.getItem("secondName");
-    const customerImage = await localStorage.getItem("customerImage");
-    const customerPicture = await localStorage.getItem("customerPicture");
-    const customerPhone = await localStorage.getItem("userPhone");
-    const customerAddress = await localStorage.getItem("userAddress");
-    const dob = await localStorage.getItem("dateBirth");
-    const customerState = await localStorage.getItem("stateOfOrigin");
-    const jobTitle = await localStorage.getItem("businessType");
-    console.log(jobTitle, "Fetch job title");
-    const companyAddress = await localStorage.getItem("companyAddress");
-    const companyPhone = await localStorage.getItem("companyPhone");
-    const companyEmail = await localStorage.getItem("companyEmail");
-    const nextOfKinFirstName = await localStorage.getItem(
-      "nextOfKinFirstName"
-    );
-    const nextOfKinLastName = await localStorage.getItem("nextOfKinLastName");
-    const nextOfKinEmail = await localStorage.getItem("nextOfKinEmail");
-    const nextOfKinPhone = await localStorage.getItem("nextOfKinPhone");
-    const nextOfKinAddress = await localStorage.getItem("nextOfKinAddress");
-    const maritalStatus = await localStorage.getItem("maritalStatus");
-    const nationality = await localStorage.getItem("nationality");
+  const readData = async () => {
+    try {
+      const detail = await localStorage.getItem("userType");
+      const details = await localStorage.getItem("userToken");
+      const detailss = await localStorage.getItem("cac");
+      const detailsss = await localStorage.getItem("userName");
+      const businessName = await localStorage.getItem("businessName");
+      const add = await localStorage.getItem("add");
+      const inc = await localStorage.getItem("incorporationDate");
+      const em = await localStorage.getItem("em");
+      const ph = await localStorage.getItem("ph");
+      const st = await localStorage.getItem("st");
+      const lg = await localStorage.getItem("lg");
+      const tin = await localStorage.getItem("tin");
+      const nin = await localStorage.getItem("nin");
+      const dateOfBirth = await localStorage.getItem("dateOfBirth");
+      const gender = await localStorage.getItem("gender");
+      const firstName = await localStorage.getItem("firstName");
+      const secondName = await localStorage.getItem("secondName");
+      const customerImage = await localStorage.getItem("customerImage");
+      const customerPicture = await localStorage.getItem("customerPicture");
+      const customerPhone = await localStorage.getItem("userPhone");
+      const customerAddress = await localStorage.getItem("userAddress");
+      const dob = await localStorage.getItem("dateBirth");
+      const customerState = await localStorage.getItem("stateOfOrigin");
+      const jobTitle = await localStorage.getItem("businessType");
+      console.log(jobTitle, "Fetch job title");
+      const companyAddress = await localStorage.getItem("companyAddress");
+      const companyPhone = await localStorage.getItem("companyPhone");
+      const companyEmail = await localStorage.getItem("companyEmail");
+      const nextOfKinFirstName = await localStorage.getItem(
+        "nextOfKinFirstName"
+      );
+      const nextOfKinLastName = await localStorage.getItem("nextOfKinLastName");
+      const nextOfKinEmail = await localStorage.getItem("nextOfKinEmail");
+      const nextOfKinPhone = await localStorage.getItem("nextOfKinPhone");
+      const nextOfKinAddress = await localStorage.getItem("nextOfKinAddress");
+      const maritalStatus = await localStorage.getItem("maritalStatus");
+      const nationality = await localStorage.getItem("nationality");
 
-    console.log(customerImage);
-    if (details !== null) {
-      setBearer(details);
+      console.log(customerImage);
+      if (details !== null) {
+        setBearer(details);
+      }
+      if (nin !== null) {
+        setNin(nin);
+      }
+      if (customerPhone !== null) {
+        setCustomerPhone(customerPhone);
+      }
+      if (customerAddress !== null) {
+        setCustomerAddress(customerAddress);
+      }
+      if (dob !== null) {
+        setDateBirth(dob);
+      }
+      if (jobTitle !== null) {
+        console.log(jobTitle);
+        setJobTitle(jobTitle);
+      }
+      if (companyAddress !== null) {
+        setAddress(companyAddress);
+      }
+      if (nextOfKinFirstName !== null) {
+        setNokFirstName(nextOfKinFirstName);
+      }
+      if (nextOfKinLastName !== null) {
+        setNokLastName(nextOfKinLastName);
+      }
+      if (nationality !== null) {
+        setNationality(nationality);
+      }
+      if (nextOfKinEmail !== null) {
+        setNokEmail(nextOfKinEmail);
+      }
+      if (nextOfKinPhone !== null) {
+        setNokPhone(nextOfKinPhone);
+      }
+      if (companyEmail !== null) {
+        setCompEmail(companyEmail);
+      }
+      if (nextOfKinAddress !== null) {
+        setNokAddress(nextOfKinAddress);
+      }
+      if (nationality !== null) {
+        setNokAddress(nextOfKinAddress);
+      }
+      if (maritalStatus !== null) {
+        setStatus(maritalStatus);
+      }
+      if (companyPhone !== null) {
+        setcompPhone(companyPhone);
+      }
+      if (customerState !== null) {
+        console.log(customerState);
+        setCustomerState(customerState);
+      }
+      if (businessName !== null) {
+        setBusinessName(businessName);
+      }
+      if (dateOfBirth !== null) {
+        setDateBirth(dateOfBirth);
+      }
+      if (customerImage !== null) {
+        setCustomerImage(customerImage);
+      }
+      if (customerPicture !== null) {
+        setCustomerPicture(customerPicture);
+      }
+      if (gender !== null) {
+        setGender(gender);
+      }
+      if (firstName !== null) {
+        setFirstName(firstName);
+      }
+      if (secondName !== null) {
+        setLastName(secondName);
+      }
+      if (detail !== null) {
+        setUserData(detail);
+      }
+      if (detailsss !== null) {
+        setCustomerName(detailsss);
+      }
+      if (detailss !== null) {
+        setCac(detailss);
+      }
+      if (add !== null) {
+        setCustomerAddress(add);
+      }
+      if (inc !== null) {
+        setDateInc(inc);
+      }
+      if (em !== null) {
+        setCustomerEmail(em);
+      }
+      if (tin !== null) {
+        setStin(tin);
+      }
+      if (ph !== null) {
+        setCustomerPhone(ph);
+      }
+      if (st !== null) {
+        setCustomerState(st);
+      }
+      if (lg !== null) {
+        setCustomerLga(lg);
+      }
+    } catch (e) {
+      alert("Failed to fetch the input from storage");
     }
-    if (nin !== null) {
-      setNin(nin);
-    }
-    if (customerPhone !== null) {
-      setCustomerPhone(customerPhone);
-    }
-    if (customerAddress !== null) {
-      setCustomerAddress(customerAddress);
-    }
-    if (dob !== null) {
-      setDateBirth(dob);
-    }
-    if (jobTitle !== null) {
-      console.log(jobTitle);
-      setJobTitle(jobTitle);
-    }
-    if (companyAddress !== null) {
-      setAddress(companyAddress);
-    }
-    if (nextOfKinFirstName !== null) {
-      setNokFirstName(nextOfKinFirstName);
-    }
-    if (nextOfKinLastName !== null) {
-      setNokLastName(nextOfKinLastName);
-    }
-    if (nationality !== null) {
-      setNationality(nationality);
-    }
-    if (nextOfKinEmail !== null) {
-      setNokEmail(nextOfKinEmail);
-    }
-    if (nextOfKinPhone !== null) {
-      setNokPhone(nextOfKinPhone);
-    }
-    if (companyEmail !== null) {
-      setCompEmail(companyEmail);
-    }
-    if (nextOfKinAddress !== null) {
-      setNokAddress(nextOfKinAddress);
-    }
-    if (nationality !== null) {
-      setNokAddress(nextOfKinAddress);
-    }
-    if (maritalStatus !== null) {
-      setStatus(maritalStatus);
-    }
-    if (companyPhone !== null) {
-      setcompPhone(companyPhone);
-    }
-    if (customerState !== null) {
-      console.log(customerState);
-      setCustomerState(customerState);
-    }
-    if (businessName !== null) {
-      setBusinessName(businessName);
-    }
-    if (dateOfBirth !== null) {
-      setDateBirth(dateOfBirth);
-    }
-    if (customerImage !== null) {
-      setCustomerImage(customerImage);
-    }
-    if (customerPicture !== null) {
-      setCustomerPicture(customerPicture);
-    }
-    if (gender !== null) {
-      setGender(gender);
-    }
-    if (firstName !== null) {
-      setFirstName(firstName);
-    }
-    if (secondName !== null) {
-      setLastName(secondName);
-    }
-    if (detail !== null) {
-      setUserData(detail);
-    }
-    if (detailsss !== null) {
-      setCustomerName(detailsss);
-    }
-    if (detailss !== null) {
-      setCac(detailss);
-    }
-    if (add !== null) {
-      setCustomerAddress(add);
-    }
-    if (inc !== null) {
-      setDateInc(inc);
-    }
-    if (em !== null) {
-      setCustomerEmail(em);
-    }
-    if (tin !== null) {
-      setStin(tin);
-    }
-    if (ph !== null) {
-      setCustomerPhone(ph);
-    }
-    if (st !== null) {
-      setCustomerState(st);
-    }
-    if (lg !== null) {
-      setCustomerLga(lg);
-    }
-  } catch (e) {
-    alert("Failed to fetch the input from storage");
-  }
-};
+  };
 
-useEffect(() => {
-  readData();
-}, []);
+  useEffect(() => {
+    readData();
+  }, []);
 
   const { isDarkMode, toggleTheme } = useTheme();
 
-const statesInNigeria = [
-  "Ogun",
-  "Abia",
-  "Adamawa",
-  "Akwa Ibom",
-  "Anambra",
-  "Bauchi",
-  "Bayelsa",
-  "Benue",
-  "Borno",
-  "Cross River",
-  "Delta",
-  "Ebonyi",
-  "Edo",
-  "Ekiti",
-  "Enugu",
-  "Gombe",
-  "Imo",
-  "Jigawa",
-  "Kaduna",
-  "Kano",
-  "Katsina",
-  "Kebbi",
-  "Kogi",
-  "Kwara",
-  "Lagos",
-  "Nasarawa",
-  "Niger",
+  const statesInNigeria = [
+    "Ogun",
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Gombe",
+    "Imo",
+    "Jigawa",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nasarawa",
+    "Niger",
 
-  "Ondo",
-  "Osun",
-  "Oyo",
-  "Plateau",
-  "Rivers",
-  "Sokoto",
-  "Taraba",
-  "Yobe",
-  "Zamfara",
-  "FCT (Federal Capital Territory)",
-];
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+    "FCT (Federal Capital Territory)",
+  ];
 
-const ogunStateLGAs = [
-  "Abeokuta North",
-  "Abeokuta South",
-  "Ado-Odo/Ota",
-  "Ewekoro",
-  "Ifo",
-  "Ijebu East",
-  "Ijebu North",
-  "Ijebu North East",
-  "Ijebu Ode",
-  "Ikenne",
-  "Imeko Afon",
-  "Ipokia",
-  "Obafemi Owode",
-  "Odeda",
-  "Odogbolu",
-  "Ogun Waterside",
-  "Remo North",
-  "Shagamu",
-  "Yewa North",
-  "Yewa South",
-];
+  const ogunStateLGAs = [
+    "Abeokuta North",
+    "Abeokuta South",
+    "Ado-Odo/Ota",
+    "Ewekoro",
+    "Ifo",
+    "Ijebu East",
+    "Ijebu North",
+    "Ijebu North East",
+    "Ijebu Ode",
+    "Ikenne",
+    "Imeko Afon",
+    "Ipokia",
+    "Obafemi Owode",
+    "Odeda",
+    "Odogbolu",
+    "Ogun Waterside",
+    "Remo North",
+    "Shagamu",
+    "Yewa North",
+    "Yewa South",
+  ];
 
-const handleFileChange2 = (event) => {
-  const files = event.target.files;
-  console.log(files);
-  if (files.length > 0) {
-    const file = files[0];
-    if (file.size > 2 * 1024 * 1024) {
-      setImgError1("File is larger than 2MB. Max upload size is 2MB.");
-      setFileName("");
-      return;
-    } // Get the first selected file
-    setFileName(file.name); // Set the file name
-    setSelectedFile2([file]);
-    setImgError1(""); // Store the file in state
-  }
-};
+  const handleFileChange2 = (event) => {
+    const files = event.target.files;
+    console.log(files);
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.size > 2 * 1024 * 1024) {
+        setImgError1("File is larger than 2MB. Max upload size is 2MB.");
+        setFileName("");
+        return;
+      } // Get the first selected file
+      setFileName(file.name); // Set the file name
+      setSelectedFile2([file]);
+      setImgError1(""); // Store the file in state
+    }
+  };
 
-const createApplication = async () => {
-  setCreateLoading(true);
-  try {
-    const formData = new FormData();
+  const createApplication = async () => {
+    setCreateLoading(true);
+    try {
+      const formData = new FormData();
 
-    formData.append("photo", selectedFile2);
+      formData.append("photo", selectedFile2);
 
-    const response = await axios.post(
-      `${BASE_URL}/customer/update_picture`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${bearer}`,
+      const response = await axios.post(
+        `${BASE_URL}/customer/update_picture`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
+
+      console.log(response.data.message);
+    } catch (error) {
+      let errorMessage = "An error occurred. Please try again.";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        if (typeof error.response.data.message === "string") {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join("; ");
+        } else if (typeof error.response.data.message === "object") {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: JSON.stringify(error.response.data.message),
+        });
+      }
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${bearer}`,
+  };
+
+  const customerInfo = async () => {
+    setCustomerLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("email", customerEmail);
+      formData.append("address", customerAddress);
+      formData.append("phone", customerPhone);
+      formData.append("dob", dateBirth);
+      formData.append("gender", gender);
+      formData.append("state", customerState);
+      formData.append("lga", customerLga);
+      formData.append("marital_status", status);
+      formData.append("nationality", nationality);
+      formData.append("image", selectedFile2[0]);
+      const response = await axios.post(
+        `${BASE_URL}/customer/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Successful",
+        text: response.data.message,
+      });
+
+      setCompName("");
+      setJobTitle("");
+
+      setAddress("");
+      setcompPhone("");
+      setCompEmail("");
+      setAddress("");
+      setNokFirstName("");
+      setNokLastName("");
+      setNokEmail("");
+      setNokPhone("");
+      setNokAddress("");
+      // return
+      // toast.success(response.data.message);
+      console.log(response.data);
+    } catch (error) {
+      let errorMessage = "An error occurred. Please try again.";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        if (typeof error.response.data.message === "string") {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join("; ");
+        } else if (typeof error.response.data.message === "object") {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: JSON.stringify(error.response.data.message),
+        });
+      }
+    } finally {
+      setCustomerLoading(false);
+    }
+  };
+  const occupationInformation = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/customer/update`,
+        {
+          business_name: businessName,
+          business_industry: selectedBusinessIndustry,
+          company_address: compAddress,
+          company_phone: compPhone,
+          company_email: CompEmail,
+          job_title: jobTitle,
+          employment_status: selectedEmploymentStatus,
+          kin_first_name: nokFirstName,
+          kin_last_name: nokLastName,
+          kin_phone: nokPhone,
+          kin_address: nokAddress,
+          kin_email: nokEmail,
+
+          // landuse_id: selectedLandUse,
         },
-      }
-    );
-
-    console.log(response.data.message);
-  } catch (error) {
-    let errorMessage = "An error occurred. Please try again.";
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.message
-    ) {
-      if (typeof error.response.data.message === "string") {
-        errorMessage = error.response.data.message;
-      } else if (Array.isArray(error.response.data.message)) {
-        errorMessage = error.response.data.message.join("; ");
-      } else if (typeof error.response.data.message === "object") {
-        errorMessage = JSON.stringify(error.response.data.message);
-      }
+        { headers }
+      );
       Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: JSON.stringify(error.response.data.message),
+        icon: "success",
+        title: "Successful",
+        text: response.data.message,
       });
-    }
-  } finally {
-    setCreateLoading(false);
-  }
-};
 
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${bearer}`,
-};
-
-const customerInfo = async () => {
-  setCustomerLoading(true);
-
-  try {
-    const formData = new FormData();
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", customerEmail);
-    formData.append("address", customerAddress);
-    formData.append("phone", customerPhone);
-    formData.append("dob", dateBirth);
-    formData.append("gender", gender);
-    formData.append("state", customerState);
-    formData.append("lga", customerLga);
-    formData.append("marital_status", status);
-    formData.append("nationality", nationality);
-    formData.append("image", selectedFile2[0]);
-    const response = await axios.post(
-      `${BASE_URL}/customer/update`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${bearer}`,
-        },
+      // return
+      // toast.success(response.data.message);
+      console.log(response.data);
+    } catch (error) {
+      let errorMessage = "An error occurred. Please try again.";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        if (typeof error.response.data.message === "string") {
+          errorMessage = error.response.data.message;
+        } else if (Array.isArray(error.response.data.message)) {
+          errorMessage = error.response.data.message.join("; ");
+        } else if (typeof error.response.data.message === "object") {
+          errorMessage = JSON.stringify(error.response.data.message);
+        }
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: JSON.stringify(error.response.data.message),
+        });
       }
-    );
-    Swal.fire({
-      icon: "success",
-      title: "Successful",
-      text: response.data.message,
-    });
-
-    setCompName("");
-    setJobTitle("");
-
-    setAddress("");
-    setcompPhone("");
-    setCompEmail("");
-    setAddress("");
-    setNokFirstName("");
-    setNokLastName("");
-    setNokEmail("");
-    setNokPhone("");
-    setNokAddress("");
-    // return
-    // toast.success(response.data.message);
-    console.log(response.data);
-  } catch (error) {
-    let errorMessage = "An error occurred. Please try again.";
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.message
-    ) {
-      if (typeof error.response.data.message === "string") {
-        errorMessage = error.response.data.message;
-      } else if (Array.isArray(error.response.data.message)) {
-        errorMessage = error.response.data.message.join("; ");
-      } else if (typeof error.response.data.message === "object") {
-        errorMessage = JSON.stringify(error.response.data.message);
-      }
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: JSON.stringify(error.response.data.message),
-      });
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setCustomerLoading(false);
-  }
-};
-const occupationInformation = async () => {
-  setLoading(true);
+  };
 
-  try {
-    const response = await axios.post(
-      `${BASE_URL}/customer/update`,
-      {
-        business_name: businessName,
-        business_industry: selectedBusinessIndustry,
-        company_address: compAddress,
-        company_phone: compPhone,
-        company_email: CompEmail,
-        job_title: jobTitle,
-        employment_status: selectedEmploymentStatus,
-        kin_first_name: nokFirstName,
-        kin_last_name: nokLastName,
-        kin_phone: nokPhone,
-        kin_address: nokAddress,
-        kin_email: nokEmail,
+  // const createInformation = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     // if (selectedFile && selectedFile.length > 0) {
+  //     //   formData.append('image', selectedFile[0]);
+  //     // }
+  //     formData.append('business_name', compName);
 
-        // landuse_id: selectedLandUse,
-      },
-      { headers }
-    );
-    Swal.fire({
-      icon: "success",
-      title: "Successful",
-      text: response.data.message,
-    });
+  //     // formData.append('business_industry', industry);
 
-    // return
-    // toast.success(response.data.message);
-    console.log(response.data);
-  } catch (error) {
-    let errorMessage = "An error occurred. Please try again.";
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.message
-    ) {
-      if (typeof error.response.data.message === "string") {
-        errorMessage = error.response.data.message;
-      } else if (Array.isArray(error.response.data.message)) {
-        errorMessage = error.response.data.message.join("; ");
-      } else if (typeof error.response.data.message === "object") {
-        errorMessage = JSON.stringify(error.response.data.message);
-      }
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: JSON.stringify(error.response.data.message),
-      });
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+  //     formData.append('company_address', compAddress);
+  //     formData.append('phone', compPhone);
+  //     formData.append('email', CompEmail);
+  //     formData.append('job_title', jobTitle);
 
-// const createInformation = async () => {
-//   setLoading(true);
-//   try {
-//     const formData = new FormData();
-//     // if (selectedFile && selectedFile.length > 0) {
-//     //   formData.append('image', selectedFile[0]);
-//     // }
-//     formData.append('business_name', compName);
+  //     // formData.append('employment_status', status);
 
-//     // formData.append('business_industry', industry);
+  //     formData.append('kin_first_name', nokFirstName);
+  //     formData.append('kin_last_name', nokLastName);
+  //     formData.append('kin_phone', nokPhone);
+  //     formData.append('kin_address', nokAddress);
+  //     formData.append('kin_email', nokEmail);
 
-//     formData.append('company_address', compAddress);
-//     formData.append('phone', compPhone);
-//     formData.append('email', CompEmail);
-//     formData.append('job_title', jobTitle);
+  //     const headers = {
+  //       'Content-Type': 'multipart/form-data',
+  //       'Authorization': `Bearer ${bearer}`,
+  //     };
 
-//     // formData.append('employment_status', status);
+  //     const response = await axios.post(`${BASE_URL}/customer/update`,
+  //       formData,
+  //       { headers }
+  //     );
 
-//     formData.append('kin_first_name', nokFirstName);
-//     formData.append('kin_last_name', nokLastName);
-//     formData.append('kin_phone', nokPhone);
-//     formData.append('kin_address', nokAddress);
-//     formData.append('kin_email', nokEmail);
+  //     console.log(response.data.message)
 
-//     const headers = {
-//       'Content-Type': 'multipart/form-data',
-//       'Authorization': `Bearer ${bearer}`,
-//     };
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: 'Successful',
+  //       text: response.data.message,
+  //     });
 
-//     const response = await axios.post(`${BASE_URL}/customer/update`,
-//       formData,
-//       { headers }
-//     );
+  //     // fetchDashboardData();
+  //     // navigate(-1);
+  //     // handleCloseModal();
+  //     setCompName();
+  //     setJobTitle();
 
-//     console.log(response.data.message)
+  //     setAddress();
+  //     setcompPhone();
+  //     setCompEmail();
+  //     setAddress();
+  //     setNokFirstName();
+  //     setNokLastName();
+  //     setNokEmail();
+  //     setNokPhone();
+  //     setNokAddress();
 
-//     Swal.fire({
-//       icon: 'success',
-//       title: 'Successful',
-//       text: response.data.message,
-//     });
+  //     // return
+  //     console.log(response.data);
 
-//     // fetchDashboardData();
-//     // navigate(-1);
-//     // handleCloseModal();
-//     setCompName();
-//     setJobTitle();
+  //   } catch (error) {
+  //     let errorMessage = 'An error occurred. Please try again.';
+  //     if (error.response && error.response.data && error.response.data.message) {
+  //       if (typeof error.response.data.message === 'string') {
+  //         errorMessage = error.response.data.message;
+  //       } else if (Array.isArray(error.response.data.message)) {
+  //         errorMessage = error.response.data.message.join('; ');
+  //       } else if (typeof error.response.data.message === 'object') {
+  //         errorMessage = JSON.stringify(error.response.data.message);
+  //       }
 
-//     setAddress();
-//     setcompPhone();
-//     setCompEmail();
-//     setAddress();
-//     setNokFirstName();
-//     setNokLastName();
-//     setNokEmail();
-//     setNokPhone();
-//     setNokAddress();
-
-//     // return
-//     console.log(response.data);
-
-//   } catch (error) {
-//     let errorMessage = 'An error occurred. Please try again.';
-//     if (error.response && error.response.data && error.response.data.message) {
-//       if (typeof error.response.data.message === 'string') {
-//         errorMessage = error.response.data.message;
-//       } else if (Array.isArray(error.response.data.message)) {
-//         errorMessage = error.response.data.message.join('; ');
-//       } else if (typeof error.response.data.message === 'object') {
-//         errorMessage = JSON.stringify(error.response.data.message);
-//       }
-
-//       // setErrorMessage(JSON.stringify(error.response.data.message));
-//       // setShowErrorMessage(true);
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Failed',
-//         text: JSON.stringify(error.response.data.message),
-//       });
-//     }
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+  //       // setErrorMessage(JSON.stringify(error.response.data.message));
+  //       // setShowErrorMessage(true);
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: 'Failed',
+  //         text: JSON.stringify(error.response.data.message),
+  //       });
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -748,7 +778,7 @@ const occupationInformation = async () => {
               }}
             >
               <Tab eventKey="information" title="Personal Information" >
-              <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
+                <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
                   <div className={classes.firstDiv}>
                     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
                       <h1>
@@ -1576,7 +1606,7 @@ const occupationInformation = async () => {
                   </>
                 )}
 
-                <div style={{ marginTop: -70 }} />
+                {/* <div style={{ marginTop: -70 }} />
                 <div className={isDarkMode ? classes.applicationHistory11 : classes.applicationHistory1}>
                   <div className={classes.firstDiv}>
                     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
@@ -1656,11 +1686,81 @@ const occupationInformation = async () => {
                       <button>Change Password</button>
                     </div>
                   </div>
+                </div> */}
+                <div className={classes.cont}>
+                  <div className={classes.container}>
+                    {fields.map((field, index) => (
+                      <div key={index} className={classes.fileInput}>
+                        <label>{field}*</label>
+                        <div className={classes.inputWrapper}>
+                          <span className={classes.fileName}>
+                            {selectedFiles[field] || "Choose File"}
+                          </span>
+                          <input
+                            type="file"
+                            onChange={(e) => handleFileChange(e, field)}
+                            accept=".pdf,.doc,.docx,.jpg,.png"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+
+                  <p>Select Land Use Type*</p>
+                  <div className={classes.selectContainer}>
+                    <select>
+                      <option>Select Land Use Type</option>
+                      <option>Residential</option>
+                      <option>Commercial</option>
+                    </select>
+
+
+
+                    <select>
+                      <option>Select Type</option>
+                      <option>Type A</option>
+                      <option>Type B</option>
+                    </select>
+                  </div>
+
+
+                  <button className={classes.addMoreBtn} onClick={addConsultant}>
+                    Add More
+                  </button>
+
+
+                  {consultants.map((consultant) => (
+                    <div key={consultant.id} className={classes.consultantRow}>
+                      <select>
+                        <option>Choose Consultant</option>
+                        <option>John Doe</option>
+                        <option>Jane Smith</option>
+                      </select>
+                      <input type="email" placeholder="Email" />
+                      <input type="text" placeholder="Designation" />
+                      <button
+                        className={classes.deleteBtn}
+                        onClick={() => removeConsultant(consultant.id)}
+                      >
+                        Del
+                      </button>
+                      
+                    </div>
+
+                    
+
+
+                  ))}
+                  <div className={classes.editDetailsBtn}>
+                      <button>Change Password</button>
+                    </div>
                 </div>
+
               </Tab>
 
               <Tab eventKey="payments" title="Payments">
-                <div className={isDarkMode ? classes.applicationHistory22 :classes.applicationHistory2}>
+                <div className={isDarkMode ? classes.applicationHistory22 : classes.applicationHistory2}>
                   <div className={classes.firstDiv}>
                     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
                       <h1>Manage Cards</h1>
@@ -1677,7 +1777,7 @@ const occupationInformation = async () => {
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
                               You saved cards
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
                               Manage cards that you have saved{" "}
                             </p>
                           </Col>
@@ -1739,7 +1839,7 @@ const occupationInformation = async () => {
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
                               Add new card
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
                               Input the details of your card to add a new one
                             </p>
                           </Col>
@@ -1800,7 +1900,7 @@ const occupationInformation = async () => {
                 </div>
               </Tab>
               <Tab eventKey="delegates" title="Account Delegates">
-              <div className={isDarkMode ? classes.applicationHistory22 :classes.applicationHistory2}>
+                <div className={isDarkMode ? classes.applicationHistory22 : classes.applicationHistory2}>
                   <div className={classes.firstDiv}>
                     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
                       <h1>Manage Cards</h1>
@@ -1817,7 +1917,7 @@ const occupationInformation = async () => {
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
                               You saved cards
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
                               Manage cards that you have saved{" "}
                             </p>
                           </Col>
@@ -1879,7 +1979,7 @@ const occupationInformation = async () => {
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
                               Add new card
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
                               Input the details of your card to add a new one
                             </p>
                           </Col>
@@ -1940,7 +2040,7 @@ const occupationInformation = async () => {
                 </div>
               </Tab>
               <Tab eventKey="settings" title="Settings">
-              <div className={isDarkMode ? classes.applicationHistory22 :classes.applicationHistory2}>
+                <div className={isDarkMode ? classes.applicationHistory22 : classes.applicationHistory2}>
                   <div className={classes.firstDiv}>
                     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
                       <h1>Settings</h1>
@@ -1955,10 +2055,10 @@ const occupationInformation = async () => {
                           {/* Left Section with Text */}
                           <Col md={6}>
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                            Notification Preference
+                              Notification Preference
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
-                            Please select how you want to receive your application notification{" "}
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
+                              Please select how you want to receive your application notification{" "}
                             </p>
                           </Col>
 
@@ -1966,26 +2066,26 @@ const occupationInformation = async () => {
                           <Col md={6}>
                             <div className={classes.carddContainers}>
                               <div className={isDarkMode ? classes.carddContainerr : classes.carddContainer}>
-                               
-                                 {Object.keys(preferences).map((type) => (
-                                                <Form.Group 
-                                                  key={type} 
-                                                  className="d-flex align-items-center"
-                                                  style={{  gap: 10 }}
-                                                >
-                                                  <Form.Check
-                                                    type="switch"
-                                                    id={`switch-${type}`}
-                                                    checked={preferences[type]}
-                                                    onChange={() => handleToggle(type)}
-                                                  />
-                                                  <Form.Label style={{fontSize: 15, fontWeight: 500, textTransform: "capitalize", marginTop: 10,   color: isDarkMode ? "white" : "inherit"}} >{type}</Form.Label>
-                                                  
-                                                </Form.Group>
-                                              ))}
+
+                                {Object.keys(preferences).map((type) => (
+                                  <Form.Group
+                                    key={type}
+                                    className="d-flex align-items-center"
+                                    style={{ gap: 10 }}
+                                  >
+                                    <Form.Check
+                                      type="switch"
+                                      id={`switch-${type}`}
+                                      checked={preferences[type]}
+                                      onChange={() => handleToggle(type)}
+                                    />
+                                    <Form.Label style={{ fontSize: 15, fontWeight: 500, textTransform: "capitalize", marginTop: 10, color: isDarkMode ? "white" : "inherit" }} >{type}</Form.Label>
+
+                                  </Form.Group>
+                                ))}
                               </div>
 
-                            
+
                             </div>
                           </Col>
                         </Row>
@@ -1995,46 +2095,46 @@ const occupationInformation = async () => {
                           {/* Left Section with Text */}
                           <Col md={6}>
                             <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                            App Preference
+                              App Preference
                             </Form.Label>
-                            <p className={isDarkMode ? "text-light": "text-muted"}>
-                            Please select your app mode preference
+                            <p className={isDarkMode ? "text-light" : "text-muted"}>
+                              Please select your app mode preference
                             </p>
                           </Col>
 
                           {/* Right Section with Input */}
                           <Col md={6}>
                             <div className={classes.carddContainers}>
-                              <div className={isDarkMode ? classes.carddContainerr :classes.carddContainer}>
-                               
-                                <Form.Group 
-                                               
-                                                  className="d-flex align-items-center mb-4 "
-                                                  style={{  gap: 10 }}
-                                                >
-                                                  <Form.Check
-                                          type="switch"
-                                          id="theme-switch"
-                                          checked={isDarkMode}
-                                          onChange={toggleTheme}
-                                        />
-                                        <Form.Label
-                                          htmlFor="theme-switch"
-                                          style={{
-                                            fontSize: 15,
-                                            fontWeight: 500,
-                                            textTransform: "capitalize",
-                                            marginTop: 10,
-                                            color: isDarkMode ? "white" : "inherit"
-                                          }}
-                                        >
-                                           Toggle {isDarkMode ? 'Light' : 'Dark'} Mode
-                                        </Form.Label>
-                                                  
-                                                </Form.Group>
+                              <div className={isDarkMode ? classes.carddContainerr : classes.carddContainer}>
+
+                                <Form.Group
+
+                                  className="d-flex align-items-center mb-4 "
+                                  style={{ gap: 10 }}
+                                >
+                                  <Form.Check
+                                    type="switch"
+                                    id="theme-switch"
+                                    checked={isDarkMode}
+                                    onChange={toggleTheme}
+                                  />
+                                  <Form.Label
+                                    htmlFor="theme-switch"
+                                    style={{
+                                      fontSize: 15,
+                                      fontWeight: 500,
+                                      textTransform: "capitalize",
+                                      marginTop: 10,
+                                      color: isDarkMode ? "white" : "inherit"
+                                    }}
+                                  >
+                                    Toggle {isDarkMode ? 'Light' : 'Dark'} Mode
+                                  </Form.Label>
+
+                                </Form.Group>
                               </div>
 
-                            
+
                             </div>
                           </Col>
                         </Row>
