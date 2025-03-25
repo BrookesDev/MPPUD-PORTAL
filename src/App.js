@@ -5,6 +5,9 @@ import Login from "./Pages/NewSignup/Login"
 import Verification from "./Pages/Verificationpage/Verification"
 import Reset from "./Pages/Resetpage/Reset"
 import Success from "./Pages/Successfulpage/Success"
+import Welly from "./Pages/Welly/Welly"
+import Fill from "./Pages/Fill/Fill"
+import Process from "./Pages/Process/Process"
 
 
 import Layout from "./Components/Layout";
@@ -61,6 +64,9 @@ function App() {
             <Route path="/success" element={<Success />} />
             <Route path="/support_tickets" element={<Reports />} />
             <Route path="/faqs" element={<FrequentQuestion />} />
+            <Route path="/Welly" element={<Welly/>} />
+        <Route path="/Fill" element={<Fill />} />
+        <Route path="/Process" element={<Process/>} />
           </Routes>
         </Router>
       </GlobalStyles>
