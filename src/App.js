@@ -36,6 +36,7 @@ import FinishOnboarding from "./Pages/Finish Onboarding/FinishOnboarding.js";
 import NewNinVerification from "./Pages/NewSignup/NewNinVerification.js";
 import OnboardingStin from "./Pages/NewSignup/OnboardingStin.js";
 import CompletedSuccess from "./Pages/NewSignup/CompletedSuccess.js";
+import NewCacCompleteReg from "./Pages/CAC Complete Reg/NewCacCompleteReg.js";
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
             <Route path="/nin_verificaation" element={<NewNinVerification />} />
             <Route path="/complete_your_registration_stin" element={<OnboardingStin />} />
             <Route path="/completed_registration_successful" element={<CompletedSuccess />} />
+            <Route path="/complete_your_registration_cac" element={<NewCacCompleteReg />} />
             <Route path="/application" element={<Application />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />
