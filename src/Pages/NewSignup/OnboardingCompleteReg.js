@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import logo from "../../Asset/olarmsLogo.svg"
+import logo from "../../Asset/ogunlogonew.svg"
 import slide from "../../Asset/slide.svg"
 import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
 import errorIcon from '../../Asset/error.svg';
