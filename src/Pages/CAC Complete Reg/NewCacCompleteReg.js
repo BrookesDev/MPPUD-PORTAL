@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import classes from "./NewNinVerification.module.css";
+import classes from "./NewCacCompleteReg.module.css";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { BASE_URL } from "../api/api";
 // import axios from "axios";
-import Invalid from '../../Asset/invalid.png';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Valid from '../../Asset/valid.png';
 import logo from "../../Asset/olarmsLogo.svg"
 import slide from "../../Asset/slide.svg"
 import crossedEyeIcon from '../../Asset/crossedEyeIcon.svg';
@@ -19,11 +17,26 @@ import Carousel from "react-bootstrap/Carousel";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
 // import localStorage from "@react-native-async-storage/async-storage";
+import Valid from '../../Asset/valid.png';
+import Invalid from '../../Asset/invalid.png';
 
 
 
-function NewNinVerification() {
-  const [bearer, setBearer] = useState('');
+function NewCacCompleteReg() {
+  const location = useLocation();
+    const navigate = useNavigate();
+     const [taxLoading, setTaxLoading] = useState(false);
+    const [bearer, setBearer] = useState('');
+    const [name, setName] = useState('');
+    const [responseMessage, setResponseMessage] = useState('');  
+          const [showResponseMessage, setShowResponseMessage] = useState(false);
+     const [showErrorMessage1, setShowErrorMessage1] = useState(false);
+      const {
+        selectedRegType
+      } = location.state || '';
+   
+    const [cac, setCac] = useState('');
+
    const [loading, setLoading] = useState(false);
    const [showValidations, setShowValidations] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,65 +44,43 @@ function NewNinVerification() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-      const [nin, setNin] = useState('');
-          const [responseMessage, setResponseMessage] = useState('');  
-            const [showResponseMessage, setShowResponseMessage] = useState(false);
+
   const [phone, setPhone] = useState('');
-    const [showErrorMessage1, setShowErrorMessage1] = useState(false);
-  //  const [selectedRegType, setSelectedRegType] = useState('');
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [passwordValidations, setPasswordValidations] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    specialChar: false,
-    match: false,
-    number: false
-  });
-  const selectedRegType = location.state?.selectedRegType || '';
+
+
+  const selectedPlan = location.state?.selectedPlan;
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-   const [taxLoading, setTaxLoading] = useState(false);
-
-  //  console.log(selectedRegType);
 
   const handleSelect = (selectedIndex) => {
     setActiveIndex(selectedIndex);
   };
   const readData = async () => {
     try {
-        const detail = await localStorage.getItem('userName');
-        const details = await localStorage.getItem('userToken');
-        const detailss = await localStorage.getItem('firstName');
-            const detailsss = await localStorage.getItem('secondName');
-  
-        if (detail !== null) {
-            // const firstName = detail.split(' ')[0];
-            setName(detail);
-  
-        }
-  
-  
-        if (details !== null) {
-            setBearer(details);
-        }
-        if (detailss !== null) {
-          setFirstName(detailss);
+      const detail = await localStorage.getItem('userName');
+      const details = await localStorage.getItem('userToken');
+
+
+      if (detail !== null) {
+        // const firstName = detail.split(' ')[0];
+        setName(detail);
+
       }
-      if (detailsss !== null) {
-          setLastName(detailsss);
+
+
+      if (details !== null) {
+        setBearer(details);
       }
-       
+
     } catch (e) {
-        alert('Failed to fetch the input from storage');
+      alert('Failed to fetch the input from storage');
     }
   };
-  
+
   useEffect(() => {
     readData();
   }, []);
@@ -145,41 +136,6 @@ function NewNinVerification() {
     }
   };
 
-  const validateTaxPayer = async () => {
-    setTaxLoading(true);
-    setShowErrorMessage1(false);
-    setShowResponseMessage(false);
-    try {
-      const response = await axios.get(`${BASE_URL}/verify-nin`, {
-        params: { 
-          nin: nin, 
-        //   type:selectedRegType,
-          first_name: firstName,
-          last_name: lastName
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${bearer}`,
-        },
-      });
-  
-      const responseData = response.data;
-     setResponseMessage(responseData?.message);
-     setShowResponseMessage(true);
-     navigate('/complete_your_registration_stin', {state:{selectedRegType}});
-    } catch (error) {
-      setResponseMessage(JSON.stringify(error.response?.data?.message));
-      setShowErrorMessage1(true);
-      setNin("");
-      console.log(error.response?.data?.message);
-    
-  
-    } finally {
-      setTaxLoading(false);
-    }
-  };
-
-
   const handleNext = () => {
     if (selectedRegType === "individual") {
       navigate("/nin_verificaation", { state: { selectedRegType } });
@@ -233,14 +189,46 @@ function NewNinVerification() {
     }
   };
 
+  const validateTaxPayer = async () => {
+    setTaxLoading(true);
+    setShowErrorMessage1(false);
+    setShowResponseMessage(false);
+    try {
+      const response = await axios.get(`${BASE_URL}/verify-cac`, {
+        params: { 
+          cac_number: cac, 
+       
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${bearer}`,
+        },
+      });
+  
+      const responseData = response.data;
+     setResponseMessage(responseData?.message);
+     setShowResponseMessage(true);
+     navigate('/complete_your_registration_stin', {state:{selectedRegType}});
+    } catch (error) {
+      setResponseMessage(JSON.stringify(error.response?.data?.message));
+      setShowErrorMessage1(true);
+      setCac("");
+      console.log(error.response?.data?.message);
+    
+  
+    } finally {
+      setTaxLoading(false);
+    }
+  };
+
   const handleNinChange = (e) => {
-    setNin(e.target.value);
+    setCac(e.target.value);
     setShowErrorMessage1(false);
     setShowResponseMessage(false);
   };
 
   const handleBlur = async () => {
-    if (!nin) {
+    if (!cac) {
       setShowErrorMessage1(false);
       setShowResponseMessage(false);
       return;
@@ -251,49 +239,6 @@ function NewNinVerification() {
   
     await validateTaxPayer(); // `stin` will be cleared inside validateTaxPayer if there’s an error
   };
-
-  const handleFirstName = (e) => {
-    setFirstName(e.target.value);
-    setShowErrorMessage(false);
-  };
-  const handleLastName = (e) => {
-    setLastName(e.target.value);
-    setShowErrorMessage(false);
-  };
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-    setShowErrorMessage(false);
-  };
-  const handlePassword = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    setShowErrorMessage(false);
-    setShowValidations(true);
-    setPasswordValidations({
-      length: value.length >= 6,
-      uppercase: /[A-Z]/.test(value),
-      lowercase: /[a-z]/.test(value),
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
-      match: confirmPassword === value, 
-      number: /\d/.test(value),
-    });
-  };
-  const handlePhone = (e) => {
-    setPhone(e.target.value);
-    setShowErrorMessage(false);
-  };
-  const handleConfirmPassword = (e) => {
-    const value = e.target.value;
-    setConfirmPassword(value);
-    setShowErrorMessage(false);
-
-    setPasswordValidations((prev) => ({
-      ...prev,
-      match: password === value,
-    }));
-  };
-
-  const isButtonDisabled = !email || !password || !firstName || !lastName || !confirmPassword || loading || !Object.values(passwordValidations).every(Boolean);
 
   return (
     <div >
@@ -357,56 +302,15 @@ function NewNinVerification() {
         </div>
         <div className={classes.rgtcontainer}>
           <div className={classes.maintext}>
-            <h1> NIN Verification </h1>
-            <h6> To continue, please enter your NIN</h6>
+            <h1> CAC Number </h1>
+            <h6> To continue, please enter CAC Number</h6>
 
-            <div className={classes.finbtn}>
-
-                    
-                    <label style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'start',
-                        alignItems: "flex-start",
-                        
-                        // margin: '0 auto',
-                        color: "#333333",
-                    }}>
-                        NIN
-                        <input
-                        value={nin}
-                        onChange={handleNinChange}
-                        onBlur={handleBlur}
-                            id="status"
-                            placeholder="Enter NIN"
-                            style={{
-                                width: "500px",
-                                height: "45px",
-                                borderRadius: 8,
-                                padding: 10,
-                                fontSize: 14,
-                                fontWeight: 600,
-                                marginTop: 10,
-                                
-                                border: "1px solid #D9DCE0",
-                                backgroundColor: "transparent",
-                                // outline: 'none'
-
-                            }} className={classes.inputfield} />
-
-
-
-                    </label>
-                    {/* {taxLoading && (
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                            <Spinner size='sm' />
-                                            <span style={{ marginLeft: 5 }}>Verifying... please wait</span>
-                                        </div>
-                                    )} */}
-
-{showErrorMessage1 && (
+            <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+              <Form.Label className={classes.inputLabel}>CAC Number</Form.Label>
+              <Form.Control className={classes.formInput} onChange={handleNinChange} onBlur={handleBlur} placeholder="Enter CAC" size="lg" type="text" id="cacregnumber" />
+            </Form.Group>
+           
+            {showErrorMessage1 && (
   <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 10 }}>
     <img src={Invalid} alt="Invalid Tin" style={{ width: '20px', height: '20px' }} />
     <span style={{color: "red", fontSize: 14, fontWeight: 500}}>{responseMessage}</span>
@@ -419,20 +323,23 @@ function NewNinVerification() {
     <span style={{color: "green", fontSize: 14, fontWeight: 500}}>{responseMessage}</span>
   </div>
 )}
-                    <div className={classes.btnall}>
-                        <Button disabled={taxLoading} variant="success" onClick={validateTaxPayer} className={classes.rgbtn}>
-                            {taxLoading ? (
-                                                                                        <>
-                                                                                            <Spinner size='sm' />
-                                                                                            <span style={{ marginLeft: '5px' }}>Verifying, Please wait...</span>
-                                                                                        </>
-                                                                                    ) : (
-                                                                                        "Verify & Continue"
-                                                                                    )}         
-                        </Button>
-                        <p onClick={() => navigate('/complete_your_registration_stin', {state: {selectedRegType}})} className={classes.skpbtn}>Skip</p>
-                    </div>
-                </div>
+           
+
+           
+<Button  disabled={taxLoading}  variant="success" className={classes.btngreen} onClick={validateTaxPayer}>
+           {taxLoading ? (
+                             <>
+                               <Spinner size='sm' />
+                               <span style={{ marginLeft: '5px' }}>Verifying, Please wait...</span>
+                             </>
+                           ) : (
+                              "Verify & Continue"
+                           )}
+            </Button>
+            <div className={classes.btmTxt}>
+            {/* <p onClick={() => navigate('/dashboard')}> Skip</p> */}
+            {/* <p style={{marginTop: 10}}> By Signing up, you agree to our <span style={{ color: "#21B55A" }}> Terms of Services</span> </p> */}
+            </div>
           </div>
         </div>
       </div>
@@ -440,4 +347,4 @@ function NewNinVerification() {
   );
 }
 
-export default NewNinVerification;
+export default NewCacCompleteReg;
