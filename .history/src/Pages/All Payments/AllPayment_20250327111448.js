@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import DashboardNav from "../../Components/Navigation.js/Navigation";
 import Horheader from "../../Components/horheader/horheader";
-import classes from "./AllPayment.module.css";
+import classes from "./AllApplications.module.css";
 import PdfIcon from "../../Asset/pdf.svg";
 import UploadIcon from "../../Asset/upload.png";
 import agent from "../../Asset/agent.svg";
@@ -697,7 +697,9 @@ const AllPayment = () => {
               <div>
                 <p className={classes.wlcm}>Payments</p>
               </div>
-             
+              <div onClick={handleNewApplication}>
+                <button className={classes.applctnbtn}>New Payment</button>
+              </div>
             </div>
             <Modal
               show={showModal}

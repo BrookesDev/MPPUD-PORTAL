@@ -1,0 +1,67 @@
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .card p {
+    font-size: 33.61px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+
+  .card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    width: 22fit0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .litnmbr {
+    font-size: 18.67px;
+    font-weight: 700;
+    color: #000000;
+  }
+  
+  .cardContent {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .title {
+    font-size: 13.07px;
+    color: #000000;
+    margin-bottom: 8px;
+    font-family: 'Inter';
+  }
+  
+  .amount {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .percentage {
+    font-size: 12px;
+    color: #22c55e;
+    font-weight: bold;
+  }
+  
+  /* Chart container - positioned at the bottom */
+  .chartContainer {
+    width: 60%;
+    height: 40px;
+    margin-top: 10px;
+  }
+  

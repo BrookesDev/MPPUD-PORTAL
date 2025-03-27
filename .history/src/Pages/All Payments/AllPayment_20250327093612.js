@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import DashboardNav from "../../Components/Navigation.js/Navigation";
 import Horheader from "../../Components/horheader/horheader";
-import classes from "./AllPayment.module.css";
+import classes from "./AllApplications.module.css";
 import PdfIcon from "../../Asset/pdf.svg";
 import UploadIcon from "../../Asset/upload.png";
 import agent from "../../Asset/agent.svg";
@@ -56,9 +56,6 @@ import CurrencyInput from "react-currency-input-field";
 const AllPayment = () => {
   const [eyeClicked, setEyeClicked] = useState("");
   const [cofoNumber, setCofONumber] = useState("");
-   const [isFilled, setIsFilled] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
   const [proposedRBuilding, setProposedRBuilding] = useState("");
   const [otherProperty, setOtherProperty] = useState("");
   const [plotSize, setPlotSize] = useState("");
@@ -697,7 +694,9 @@ const AllPayment = () => {
               <div>
                 <p className={classes.wlcm}>Payments</p>
               </div>
-             
+              <div onClick={handleNewApplication}>
+                <button className={classes.applctnbtn}>New Payment</button>
+              </div>
             </div>
             <Modal
               show={showModal}
@@ -2131,122 +2130,75 @@ const AllPayment = () => {
                 </div>
               </Modal.Body>
             </Modal>
-            <div>
-                         <div className={classes.usrwlcm}>
-                           <div className={classes.wlcmcont}>
-                             <p
-                               className={isFilled === "2" ? classes.wlcmintro : ""}
-                               classes={
-                                 isFilled === "0" || isFilled === "1"
-                                   ? {
-                                       background:
-                                         "linear-gradient(to bottom, #21B55A, #0C5C2B)",
-                                       color: "#fff",
-                                       textAlign: "center",
-                                       padding: "10px",
-                                       // borderRadius: "5px",
-                                       fontWeight: 700,
-                                       cursor: "pointer",
-                                       width: "100%",
-                                       display: "flex",
-                                       justifyContent: "center",
-                                       alignItems: "center",
-                                     }
-                                   : {}
-                               }
-                               onClick={
-                                 isFilled === "0"
-                                   ? () => navigate("/complete_your_registration")
-                                   : isFilled === "1"
-                                   ? () => navigate("/finish_onboarding_process")
-                                   : undefined
-                               }
-                             >
-                               {isFilled === "2" ? (
-                                 "Here’s a summary of the current activity on your account."
-                               ) : (
-                                 <span className={classes.classesdpText}>
-                                   Here, you can seamlessly submit budget requests, track
-                                   approvals, monitor financial performance, and manage
-                                   transactions.
-                                 </span>
-                               )}
-                             </p>
-                           </div>
-                         </div>
-           
-                         <div className={classes.allcards}>
-                         
-                            
-                               {" "}
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                     Overall Amount Requested
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                   Total Amount Approved
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                   Total Amount Utilized
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                            
-                     
-                         </div>
-                       </div>
-           
+            <div className={classes.allcards}>
+              <div className={classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  <img src={FirstIcon} className={classes.featuredicon2} />
+                  <p className={classes.walltp2}>Total Applications</p>
+                  <p className={`${classes.walltpmblk} ${classes.walltpmblka}`}>
+                    {" "}
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      totalApplications
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className={classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  <img src={SecondIcon} className={classes.featuredicon2} />
+                  <p className={classes.walltp2}>Not Paid</p>
+                  <p className={`${classes.walltpmblk} ${classes.walltpmblka}`}>
+                    {" "}
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      totalNotPaid
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className={classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  <img src={ThirdIcon} className={classes.featuredicon2} />
+                  <p className={classes.walltp2}>Applications in Review</p>
+                  <p className={classes.walltpmblk}>
+                    {" "}
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      totalPending
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className={classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  <img src={FourthIcon} className={classes.featuredicon2} />
+                  <p className={classes.walltp2}>Applications Completed</p>
+                  <p className={classes.walltpmblk}>
+                    {" "}
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      totalCompleted
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <div className={classes.applicationHistory}>
               <Tabs

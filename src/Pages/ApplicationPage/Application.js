@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardNav from '../../Components/Navigation.js/Navigation';
 import Horheader from '../../Components/horheader/horheader';
-import classes from './Dashboard.module.css';
+import classes from './Application.module.css';
 import { Spinner, Badge, Modal, Form, Tabs, Tab, Placeholder, PlaceholderButton } from 'react-bootstrap';
 import PaidIcon from '../../Asset/PaidIc.png';
 import MakePaymentIcon from '../../Asset/wallet.png';
@@ -12,10 +12,6 @@ import DownloadIcon from '../../Asset/download.png';
 import TrackIcon from '../../Asset/track.png';
 import ContactIcon from '../../Asset/support.png';
 import Card from "../../Components/Card";
-import search from "../../Asset/search.svg";
-import Calender from "../../Asset/calendar.svg";
-import Printer from '../../Asset/printer.png';
-import xport from "../../Asset/export.png";
 import Chart from "../../Components/Chart";
 import notransaction from '../../Asset/no-transaction-icon.svg';
 import { Link, useNavigate } from 'react-router-dom';
@@ -35,14 +31,13 @@ import { useTheme } from '../../ThemeContext';
 // import axios from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Dashboard = () => {
+const ApplicationPage = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [bearer, setBearer] = useState('');
   const [totalCompleted, setTotalCompleted] = useState('');
   const [totalApplications, setTotalApplications] = useState('');
-  const [totalAmountPaid, setTotalAmountPaid] = useState('');
   const [totalPending, setTotalPending] = useState('');
   const [name, setName] = useState('');
   const [isFilled, setIsFilled] = useState('');
@@ -72,7 +67,9 @@ const Dashboard = () => {
     setVisibleDropdown((prev) => (prev === id ? null : id));
   };
 
-
+  const handleNewApplication = () => {
+    navigate("/new_applications");
+  };
 
   const readData = async () => {
     try {
@@ -104,7 +101,8 @@ const Dashboard = () => {
         setIsFilled(detailss);
       }
 
- 
+      console.log("isFilled");
+
     } catch (e) {
       alert('Failed to fetch the input from storage');
     }
@@ -113,8 +111,6 @@ const Dashboard = () => {
   useEffect(() => {
     readData();
   }, []);
-
- 
 
   const headers = {
     "Content-Type": "application/json",
@@ -129,14 +125,12 @@ const Dashboard = () => {
         { headers }
       );
       const results = response.data?.data?.applications;
-      // const resultx = response.data?.data?.completed_applications;
+      const resultx = response.data?.data?.completed_applications;
       const resultxx = response.data?.data?.pending_applications;
       const resultxxx = response.data?.data?.total_applications;
-      const totalPaid = results.reduce((sum, item) => sum + Number(item.amount || 0), 0);
       console.log(response?.data?.data);
-      setTotalAmountPaid(totalPaid);
       setTableData(results);
-      // setTotalCompleted(resultx);
+      setTotalCompleted(resultx);
       setTotalPending(resultxx);
       setTotalApplications(resultxxx);
     } catch (error) {
@@ -231,13 +225,6 @@ const Dashboard = () => {
       .join(' ');
   };
 
-  const fullName = `${toSentenceCase(firstName)} ${toSentenceCase(lastName)}`;
-  const truncatedName = fullName.length > 17 
-    ? fullName.split(" ").reduce((acc, word) => {
-        return acc.length + word.length <= 17 ? acc + " " + word : acc;
-      }, "").trim() + "..."
-    : fullName;
-
 
   return (
     <>
@@ -265,10 +252,10 @@ const Dashboard = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div className={classes.wlcmcont}>
-                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {truncatedName}👋 <span style={{ fontSize: 15 }}><Badge style={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
+                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span classes={{ fontSize: 15 }}><Badge classes={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
                 <p
                   className={isFilled === "2" ? classes.wlcmintro : ""}
-                  style={(isFilled === "0" || isFilled === "1") ? {
+                  classes={(isFilled === "0" || isFilled === "1") ? {
                     background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
                     color: "#fff",
                     textAlign: "center",
@@ -285,93 +272,38 @@ const Dashboard = () => {
                 >
                   {isFilled === "2" ?
                     "Here’s a summary of the current activity on your account." :
-                    <>
-                    ⚠️ Application incomplete. 👉 Tap to complete!
-                  </>
+                    <span className={classes.classesdpText} >
+                      Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.
+                    </span>
                   }
                 </p>
               </div>
-              <button className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
-                <span> Make New Request</span>
-              </button>
+             <div onClick={handleNewApplication}>
+                             <button className={classes.applctnbtn}>New Application</button>
+                           </div>
             </div>
 
 
 
 
             <div className={classes.allcards}>
-              {/* <div className={classes.card_rd}>
+              <div className={classes.card_rd}>
                 <div className={classes.card1}>
                   {" "}
-                  <Card title="Total Amount Paid" amount={'00,000,000'} />
-                  <Card title="Total Applications" amount={'00,000,000'} />
+                  <Card title="Overall Amount Requested" amount={'00,000,000'} />
+                  <Card title="Total Amount Approved" amount={'00,000,000'} />
                 </div>
                 <div className={classes.card2}>
                   {" "}
-                  <Card title="Total Pending Applications" amount={'00,000,000'} />
-                </div>
-              </div> */}
-
-              <div className={classes.onekad}>
-                <div className={classes.onekadfrstp}>
-                  {/* <img src={featured} className={classes.featuredicon} /> */}
-                  <p className={classes.walltp}>Total Amount Paid</p>
-                  <p className={classes.walltpm}>
-
-                    {benLoading ? (
-                      <Placeholder animation="glow">
-                        <Placeholder xs={12} />
-                      </Placeholder>
-                    ) : (
-                      `₦${parseFloat(totalAmountPaid).toLocaleString('en-US', {
-                        minimumIntegerDigits: 1,
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}`
-                    )}
-
-                  </p>
-                </div>
-
-              </div>
-
-              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
-                <div className={classes.twokadfrstp}>
-                  {/* <img src={TotalIcon} className={classes.featuredicon2} /> */}
-                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Applications</p>
-                  <p className={`${isDarkMode ? classes.walltpmblkk : classes.walltpmblk} ${classes.walltpmblka}`}>
-                    {benLoading ? (
-                      <Placeholder animation="glow">
-                        <Placeholder xs={12} />
-                      </Placeholder>
-                    ) : (
-                      totalApplications
-                    )}
-                  </p>
+                  <Card title="Total Amount Utilized" amount={'00,000,000'} />
                 </div>
               </div>
-
-              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
-                <div className={classes.twokadfrstp}>
-                  {/* <img src={PendingIcon} className={classes.featuredicon2} /> */}
-                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Pending Applications</p>
-                  <p className={isDarkMode ? classes.walltpmblkk : classes.walltpmblk}>{benLoading ? (
-                    <Placeholder animation="glow">
-                      <Placeholder xs={12} />
-                    </Placeholder>
-                  ) : (
-                    totalPending
-                  )}</p>
-                </div>
+              <div className={classes.chartSection}>
+                <Chart />
               </div>
-
-
-
 
             </div>
-            <div className={classes.chartSection}>
-              <Chart />
-            </div>
+
 
             {/* Table container starts here */}
 
@@ -639,251 +571,7 @@ const Dashboard = () => {
                 <p>No Applications found</p>
                 </div> */}
             </div>
- {/* transaction details table  starts here*/}
- <div className={classes.applicationHistory}>
-            <div className={classes.hortrstns}>
-              <p className={classes.recenttrsd}> Recent History</p>
-              <div className={classes.midDiv}>
-                <div className={classes.divSearch}>
-                  <img src={search} alt="search" className={classes.searchIcon} />
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className={classes.search}
-                  />
-                </div>
-                <Form.Select
-                  id='status'
-                  style={{
-                    width: 100,
-                    height: 40,
-                    borderRadius: 8,
-                    fontSize: 12,
-                    border: '1px solid #E0E0E0',
-                    fontWeight: 400,
-                    color: '#4F4F4F',
-                    padding: '0.5rem',
-                    // backgroundColor: '#F2F2F2',
-                    // border: 0
-                  }}
-                  name="DataTables_Table_0_length"
-                  aria-controls="DataTables_Table_0"
-                  className="custom-select custom-select-sm form-control form-control-sm"
-                >
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                </Form.Select>
 
-
-
-                <button className={classes.bttens}>
-                  Pick date <img src={Calender} className={classes.imgss} alt="calender icon" />
-                </button>
-
-                <label
-                  style={{
-                    fontSize: 14,
-                    color: " #828282",
-                    fontWeight: 600,
-                    gap: 10,
-                    borderRadius: 8,
-                    // backgroundColor: '#F2F2F2',
-                    marginLeft: 10
-                  }}
-
-                >
-
-                  <div className={classes.divBtn}>
-                    <div className={classes.divOne}>
-                      <div className={classes.stIC}>
-                        <p className={classes.stN}>Export</p>
-                        <img src={xport} alt="status" className={classes.filter} />
-                      </div>
-                    </div>
-                  </div>
-
-
-                </label>
-
-              </div>
-            </div>
-
-
-
-
-            <div className={classes.mainTables}>
-              {/* {roleLoading ? ( */}
-              {/* <p>Fetching products...</p> */}
-              {/* ) : ( */}
-              <div >
-                <table style={{ width: "98%" }}>
-
-                  <thead style={{ whiteSpace: 'nowrap' }}>
-                    <tr>
-                      <th>Request ID</th>
-                      <th>Office Name</th>
-                      <th>Description</th>
-                      <th>Request Date</th>
-                      <th>Amount Requested</th>
-                      <th>Amount Approved</th>
-                      <th>Status</th>
-
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody style={{ whiteSpace: "wrap" }}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((rowId, index) => (
-                      <tr key={rowId} style={{
-                        backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
-                      }}>
-                        <td style={{ padding: 10 }}>{rowId}</td>
-                        <td style={{ padding: 10 }}>ACME MEDICARE CLINICS LTD</td>
-                        <td style={{ padding: 10 }}>January 2025 Monthly PAYE Returns</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>0003000178320</td>
-                        <td style={{ padding: 10 }}>
-                          {/* <img
-                                className={classes.statusIconsuccess}
-                                src={succesful}
-                                alt="status"
-                            /> */}
-                          <td style={{ padding: 10 }} className={classes.info1}>
-                            <p
-                              className={`${classes["status-success"]} ${classes.info}`}
-                            >
-                              Approved
-                            </p>
-                          </td>
-                        </td>
-
-                        <td style={{ padding: 10 }} className={classes.moreTxt}>
-                          <div style={{ position: "relative" }} className={classes.menuWeb}>
-                            <img
-                              className={classes.moreIcon}
-                              src={MoreIcon}
-                              alt="more"
-                              onClick={() => handleMoreClick(rowId)}
-                              style={{ cursor: "pointer" }}
-                            />
-                            {visibleDropdown === rowId && (
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  top: "100%",
-                                  right: 0,
-                                  backgroundColor: "white",
-                                  zIndex: 9999,
-                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                  borderRadius: "4px",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    padding: "5px 10px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <img
-                                    src={Printer} // Replace with your actual path
-                                    alt="contact"
-                                    style={{ width: "20px", marginRight: "10px" }}
-                                  />
-                                  Print Receipt
-                                </div>
-
-                              </div>
-                            )}
-                          </div>
-                        </td>
-
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {/* )} */}
-              <div className={classes.endded}>
-                <div className={classes.showTxt}>
-                  <div className={classes.show}>
-                    <label style={{
-                      fontSize: 14,
-                      color: '#333333',
-                      fontWeight: 600,
-                      gap: 10
-                    }} className="d-flex justify-content-start align-items-center">
-                      Showing
-                      <Form.Select style={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600, marginLeft: '20px' }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
-                      //  value={entriesPerPage}
-                      //     onChange={(e) => {
-                      //     setEntriesPerPage(parseInt(e.target.value));
-                      //     setCurrentPage(1);
-                      //     }}
-                      >
-                        <option value={10} >10 entries</option>
-                        <option value={25} >25 entries</option>
-                        <option value={50} >50 entries</option>
-                        <option value={100} >100 entries</option>
-                      </Form.Select>
-                    </label>
-                  </div>
-                </div>
-
-                <div className={classes.btmPagination}>
-                  <div style={{ display: 'flex' }}>
-                    <button
-                      style={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                      onClick={handlePrevPage}
-                      disabled={currentPage === 1}
-                    >
-                      {"<"}
-                    </button>
-                    {[...Array(totalPages)].map((_, page) => {
-                      // Show only 5 pages or less if available
-                      if (page < 3 || page === currentPage - 1 || page === totalPages - 1) {
-                        return (
-                          <button
-                            key={page + 1}
-                            style={{
-                              textAlign: "center",
-                              marginLeft: '0.4rem',
-                              marginRight: '0.4rem',
-                              fontSize: '14px',
-                              fontWeight: 700,
-                              color: page + 1 === currentPage ? '#ffffff' : '#333333',
-                              backgroundColor: page + 1 === currentPage ? '#21B55A' : '#fff',
-                              height: '32px',
-                              borderRadius: '8px',
-                              //   padding: '0.5rem',
-                              border: '1px solid #F1F1F1',
-                              width: '32px',
-                              cursor: "pointer"
-                            }}
-                            onClick={() => setCurrentPage(page + 1)}
-                          >
-                            {page + 1}
-                          </button>
-                        );
-                      }
-                      return null;
-                    })}
-                    <button
-                      style={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                      onClick={handleNextPage}
-                      disabled={currentPage === totalPages}
-                    >
-                      {">"}
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
             {/* Table container ends here */}
           </div>
         </div>
@@ -892,4 +580,4 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard;
+export default ApplicationPage;

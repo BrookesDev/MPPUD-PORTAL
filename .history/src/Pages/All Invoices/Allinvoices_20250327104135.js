@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import DashboardNav from "../../Components/Navigation.js/Navigation";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
 import Horheader from "../../Components/horheader/horheader";
-import classes from "./AllInvoices.module.css";
+import classes from "./AllApplications.module.css";
 import PdfIcon from "../../Asset/pdf.svg";
 import UploadIcon from "../../Asset/upload.png";
-import plus from "../../Asset/plus.png";
-import Card from "../../Components/Card";
 import agent from "../../Asset/agent.svg";
 import { MdOutlineDownload } from "react-icons/md";
 import {
@@ -51,7 +48,7 @@ import ImageIcon from "../../Asset/piclogo.png";
 import { Navbar, Container, Button } from "react-bootstrap";
 // import localStorage from "@react-native-async-storage/async-storage";
 import CurrencyInput from "react-currency-input-field";
-import { useTheme } from "../../ThemeContext";
+import { useTheme } from '../../ThemeContext';
 // import NewApplications from '../New Application/NewApplicationns';
 
 // import axios from 'axios';
@@ -59,7 +56,7 @@ import { useTheme } from "../../ThemeContext";
 
 const Allinvoices = () => {
   const [taxStation, setTaxStation] = useState([]);
-  const [location2, setLocation2] = useState([]);
+  const [location2,setLocation2] = useState([])
   const [selectedStationName, setSelectedStationName] = useState("");
   const [documentValue, setDocumentValue] = useState("");
   const [selectedStation, setSelectedStation] = useState("");
@@ -170,9 +167,6 @@ const Allinvoices = () => {
   const [tableData1, setTableData1] = useState([]);
   const [tableData2, setTableData2] = useState([]);
   const [tableData3, setTableData3] = useState([]);
-  const [isFilled, setIsFilled] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [foundInvoice, setFoundInvoice] = useState([]);
   const [foundInvoiceID, setFoundInvoiceID] = useState("");
   const navigate = useNavigate();
@@ -195,7 +189,7 @@ const Allinvoices = () => {
   const [benLoading, setBenLoading] = useState(false);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
   const dropdownRef = useRef(null);
-  const [LGA, setLGA] = useState([]);
+  const [LGA,setLGA] = useState([])
 
   const fetchCaveatTypes = async () => {
     try {
@@ -391,6 +385,8 @@ const Allinvoices = () => {
     };
     fetchSchemes();
   }, [bearer]);
+
+ 
 
   const fetchAllLandUse = async () => {
     // setRoleLoading(true);
@@ -724,6 +720,7 @@ const Allinvoices = () => {
     // setShowErrorMessage(false);
   };
 
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -808,37 +805,37 @@ const Allinvoices = () => {
   };
 
   const fetchLocation = async (areaId) => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/location_by_area?id=${areaId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${bearer}`,
-          },
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/location_by_area?id=${areaId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${bearer}`,
+            },
+          }
+        );
+  
+        const resultsss = response.data?.data;
+        setLocation2(resultsss);
+        console.log(resultsss);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          // Redirect to login page if unauthorized
+          // navigate("/");
+        } else {
+          const errorStatus = error.response?.data?.message;
+          console.log(errorStatus);
+          setLocation2([]); // Ensure this is set properly
         }
-      );
-
-      const resultsss = response.data?.data;
-      setLocation2(resultsss);
-      console.log(resultsss);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        // Redirect to login page if unauthorized
-        // navigate("/");
-      } else {
-        const errorStatus = error.response?.data?.message;
-        console.log(errorStatus);
-        setLocation2([]); // Ensure this is set properly
       }
-    }
-  };
-
-  useEffect(() => {
-    if (bearer) {
-      fetchLocation();
-    }
-  }, [bearer]);
+    };
+  
+    useEffect(() => {
+      if (bearer) {
+        fetchLocation();
+      }
+    }, [bearer]);
 
   useEffect(() => {
     if (roless && roless.land_scheme) {
@@ -1038,30 +1035,6 @@ const Allinvoices = () => {
 
       setEyeClicked(true);
     }
-  };
-
-  const toSentenceCase = (name) => {
-    if (!name) return "";
-
-    // Check if the name is already in sentence case
-    const isSentenceCase = name
-      .split(" ")
-      .every(
-        (word) =>
-          word.charAt(0) === word.charAt(0).toUpperCase() &&
-          word.slice(1) === word.slice(1).toLowerCase()
-      );
-
-    if (isSentenceCase) {
-      return name;
-    }
-
-    // Convert to sentence case
-    return name
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
   };
 
   return (
@@ -5881,12 +5854,14 @@ const Allinvoices = () => {
                                         value={selectedArea}
                                         required
                                       >
-                                        <option value="">Select LGA</option>
+                                        <option value="">
+                                        Select LGA
+                                        </option>
                                         {LGA.map((item, index) => (
-                                          <option key={index} value={item.id}>
-                                            {item.description}
-                                          </option>
-                                        ))}
+                            <option key={index} value={item.id}>
+                              {item.description}
+                            </option>
+                          ))}
                                       </Form.Select>
                                     </Form.Group>
                                   </Col>
@@ -5894,13 +5869,7 @@ const Allinvoices = () => {
                               </td>
                             ) : (
                               <td>
-                                {
-                                  LGA.find(
-                                    (items) =>
-                                      String(items.id) ===
-                                      String(roless.lga_of_land)
-                                  )?.description
-                                }
+                                {LGA.find((items) => String(items.id) === String(roless.lga_of_land) )?.description}
                               </td>
                             )}
                           </tr>
@@ -5918,13 +5887,13 @@ const Allinvoices = () => {
                                         required
                                       >
                                         <option value="">
-                                          Select Location
+                                        Select Location
                                         </option>
                                         {location2.map((item, index) => (
-                                          <option key={index} value={item.id}>
-                                            {item.description}
-                                          </option>
-                                        ))}
+                            <option key={index} value={item.id}>
+                              {item.description}
+                            </option>
+                          ))}
                                       </Form.Select>
                                     </Form.Group>
                                   </Col>
@@ -5932,16 +5901,11 @@ const Allinvoices = () => {
                               </td>
                             ) : (
                               <td>
-                                {
-                                  location2.find(
-                                    (items) =>
-                                      String(items.id) ===
-                                      String(roless.land_location)
-                                  )?.description
-                                }
+                                 {location2.find((items) => String(items.id) === String(roless.land_location) )?.description}
                               </td>
                             )}
                           </tr>
+                         
                         </tbody>
                       </table>
                     </Accordion.Body>
@@ -7873,190 +7837,115 @@ const Allinvoices = () => {
                 </div>
               </Modal.Body>
             </Modal>
-            <div>
-              <div className={classes.usrwlcm}>
-                <div className={classes.wlcmcont}>
-                  <p
-                    className={isFilled === "2" ? classes.wlcmintro : ""}
-                    classes={
-                      isFilled === "0" || isFilled === "1"
-                        ? {
-                            background:
-                              "linear-gradient(to bottom, #21B55A, #0C5C2B)",
-                            color: "#fff",
-                            textAlign: "center",
-                            padding: "10px",
-                            // borderRadius: "5px",
-                            fontWeight: 700,
-                            cursor: "pointer",
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }
-                        : {}
-                    }
-                    onClick={
-                      isFilled === "0"
-                        ? () => navigate("/complete_your_registration")
-                        : isFilled === "1"
-                        ? () => navigate("/finish_onboarding_process")
-                        : undefined
-                    }
-                  >
-                    {isFilled === "2" ? (
-                      "Here’s a summary of the current activity on your account."
-                    ) : (
-                      <span className={classes.classesdpText}>
-                        Here, you can seamlessly submit budget requests, track
-                        approvals, monitor financial performance, and manage
-                        transactions.
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </div>
-
-              <div className={classes.allcards}>
-              
-                 
-                    {" "}
-                    <div className={classes.card}>
-                      <div className={classes.cardContent}>
-                        <h4 className={classes.title}>
-                          Overall Amount Requested
-                        </h4>
-                        <p className={classes.amount}>
-                          ₦{"000,000,00"}
-                          <span className={classes.litnmbr}>.00</span>
-                        </p>
-                        <span className={classes.percentage}>▲ 00%</span>
-                      </div>
-
-                      {/* Mini Line Chart */}
-                      {/* <div className={classes.chartContainer}>
-                                     <ResponsiveContainer width="100%" height={50}>
-                                       <LineChart data={"data"}>
-                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                       </LineChart>
-                                     </ResponsiveContainer>
-                                   </div> */}
-                    </div>
-                    <div className={classes.card}>
-                      <div className={classes.cardContent}>
-                        <h4 className={classes.title}>
-                        Total Amount Approved
-                        </h4>
-                        <p className={classes.amount}>
-                          ₦{"000,000,00"}
-                          <span className={classes.litnmbr}>.00</span>
-                        </p>
-                        <span className={classes.percentage}>▲ 00%</span>
-                      </div>
-
-                      {/* Mini Line Chart */}
-                      {/* <div className={classes.chartContainer}>
-                                     <ResponsiveContainer width="100%" height={50}>
-                                       <LineChart data={"data"}>
-                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                       </LineChart>
-                                     </ResponsiveContainer>
-                                   </div> */}
-                    </div>
-                    <div className={classes.card}>
-                      <div className={classes.cardContent}>
-                        <h4 className={classes.title}>
-                        Total Amount Utilized
-                        </h4>
-                        <p className={classes.amount}>
-                          ₦{"000,000,00"}
-                          <span className={classes.litnmbr}>.00</span>
-                        </p>
-                        <span className={classes.percentage}>▲ 00%</span>
-                      </div>
-
-                      {/* Mini Line Chart */}
-                      {/* <div className={classes.chartContainer}>
-                                     <ResponsiveContainer width="100%" height={50}>
-                                       <LineChart data={"data"}>
-                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                       </LineChart>
-                                     </ResponsiveContainer>
-                                   </div> */}
-                    </div>
-                 
-          
-              </div>
-            </div>
-
-            <div
-              className={
-                isDarkMode
-                  ? classes.applicationHistory1
-                  : classes.applicationHistory
-              }
-            >
-              <div className={classes.mainTables}>
-                {benLoading ? (
-                  <p>Loading data, Please wait...</p>
-                ) : currentEntries.length === 0 ? (
-                  <div className={classes.notFound}>
-                    <img src={notransaction} alt="not-found" />
-                    <p>No Applications found</p>
-                  </div>
-                ) : (
-                  <div>
-                    <table style={{ width: "98%" }}>
-                      <thead style={{ whiteSpace: "nowrap" }}>
-                        <tr>
-                          <th style={{ color: isDarkMode && "white" }}>
-                            Application Numbers
-                          </th>
-                          <th style={{ color: isDarkMode && "white" }}>
-                            Application Type
-                          </th>
-                          <th style={{ color: isDarkMode && "white" }}>
-                            Payment Code
-                          </th>
-                          <th style={{ color: isDarkMode && "white" }}>
-                            Submission Date
-                          </th>
-                          <th style={{ color: isDarkMode && "white" }}>
-                            Approval required by
-                          </th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody style={{ whiteSpace: "nowrap" }}>
-                        {currentEntries.map((item, index) => (
-                          <tr key={index}>
-                            <td style={{ padding: 10, width: 100 }}>
-                              {item.application_number}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {item?.service?.name}
-                            </td>
-                            <td
-                              style={{
-                                padding: 10,
-                                color: isDarkMode ? "#21B55A" : "#0E4F27",
-                                fontWeight: 500,
-                              }}
+          <div className={classes.dashBoardCont}>
+             <div className={classes.usrwlcm}>
+                          <div className={classes.wlcmcont}>
+                            <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span classes={{ fontSize: 15 }}><Badge classes={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
+                            <p
+                              className={isFilled === "2" ? classes.wlcmintro : ""}
+                              classes={(isFilled === "0" || isFilled === "1") ? {
+                                background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
+                                color: "#fff",
+                                textAlign: "center",
+                                padding: "10px",
+                                // borderRadius: "5px",
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              } : {}}
+                              onClick={isFilled === "0" ? () => navigate("/complete_your_registration") : isFilled === "1" ? () => navigate("/finish_onboarding_process") : undefined}
                             >
-                              {item.payment[0]?.payment_code}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {formatDate(item.created_at)}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {item.payment_status === "0"
-                                ? "Awaiting your Payment"
-                                : item.payment_status === "1" &&
-                                  item.status === "0"
-                                ? item.role?.name
-                                : null}
+                              {isFilled === "2" ?
+                                "Here’s a summary of the current activity on your account." :
+                                <span className={classes.classesdpText} >
+                                  Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.
+                                </span>
+                              }
+                            </p>
+                          </div>
+                          <button className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
+                            <span> Make New Request</span>
+                          </button>
+                        </div>
+            
+            
+            
+            
+                        <div className={classes.allcards}>
+                          <div className={classes.card_rd}>
+                            <div className={classes.card1}>
+                              {" "}
+                              <Card title="Overall Amount Requested" amount={'00,000,000'} />
+                              <Card title="Total Amount Approved" amount={'00,000,000'} />
+                            </div>
+                            <div className={classes.card2}>
+                              {" "}
+                              <Card title="Total Amount Utilized" amount={'00,000,000'} />
+                            </div>
+                          </div>
+                          <div className={classes.chartSection}>
+                            <Chart />
+                          </div>
+            
+                        </div>
 
-                              {/* <img
+          </div>
+
+            <div className={isDarkMode ? classes.applicationHistory1 : classes.applicationHistory}>
+            <div className={classes.mainTables}>
+                    {benLoading ? (
+                      <p>Loading data, Please wait...</p>
+                    ) : currentEntries.length === 0 ? (
+                      <div className={classes.notFound}>
+                        <img src={notransaction} alt="not-found" />
+                        <p>No Applications found</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <table style={{ width: "98%" }}>
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th style={{color:isDarkMode && "white"}}>Application Numbers</th>
+                              <th style={{color:isDarkMode && "white"}}>Application Type</th>
+                              <th style={{color:isDarkMode && "white"}}>Payment Code</th>
+                              <th style={{color:isDarkMode && "white"}}>Submission Date</th>
+                              <th style={{color:isDarkMode && "white"}}>Approval required by</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {currentEntries.map((item, index) => (
+                              <tr key={index}>
+                                <td style={{ padding: 10, width: 100 }}>
+                                  {item.application_number}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {item?.service?.name}
+                                </td>
+                                <td
+                                  style={{
+                                    padding: 10,
+                                    color: isDarkMode ? "#21B55A" : "#0E4F27",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  {item.payment[0]?.payment_code}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {formatDate(item.created_at)}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {item.payment_status === "0"
+                                    ? "Awaiting your Payment"
+                                    : item.payment_status === "1" &&
+                                      item.status === "0"
+                                    ? item.role?.name
+                                    : null}
+
+                                  {/* <img
                                     className={classes.statusIcon}
                                     src={
                                       item.payment_status === "1" &&
@@ -8072,331 +7961,335 @@ const Allinvoices = () => {
                                     }
                                     alt="status"
                                   /> */}
-                            </td>
-                            <td
-                              style={{ padding: 10 }}
-                              className={classes.moreTxt}
-                            >
-                              <div style={{ position: "relative" }}>
-                                <img
-                                  className={classes.moreIcon}
-                                  src={MoreIcon}
-                                  alt="more"
-                                  onClick={() => handleMoreClick(item)}
-                                  style={{ cursor: "pointer" }}
-                                />
-                                {visibleDropdown === item && (
-                                  <div
-                                    onClick={() => {
-                                      handleMoreClick(null); // Close dropdown after click
-                                    }}
-                                    // ref={dropdownRef}
-                                    style={{
-                                      position: "absolute",
-                                      top: "100%",
-                                      right: 0,
-                                      backgroundColor: "white",
-                                      zIndex: 9999,
-                                      boxShadow:
-                                        "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {item.payment_status === "0" && (
-                                      <>
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <a
-                                            href={item.payment[0]?.payment_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={{
-                                              textDecoration: "none",
-                                              color: "#101828",
-                                              padding: 0,
-                                            }}
-                                          >
-                                            <img
-                                              src={PaymentIcon}
-                                              alt="make payment"
+                                </td>
+                                <td
+                                  style={{ padding: 10 }}
+                                  className={classes.moreTxt}
+                                >
+                                  <div style={{ position: "relative" }}>
+                                    <img
+                                      className={classes.moreIcon}
+                                      src={MoreIcon}
+                                      alt="more"
+                                      onClick={() => handleMoreClick(item)}
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                    {visibleDropdown === item && (
+                                      <div
+                                        onClick={() => {
+                                          handleMoreClick(null); // Close dropdown after click
+                                        }}
+                                        // ref={dropdownRef}
+                                        style={{
+                                          position: "absolute",
+                                          top: "100%",
+                                          right: 0,
+                                          backgroundColor: "white",
+                                          zIndex: 9999,
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                          borderRadius: "4px",
+                                        }}
+                                      >
+                                        {item.payment_status === "0" && (
+                                          <>
+                                            <div
                                               style={{
-                                                width: "20px",
-                                                marginRight: "10px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
                                               }}
-                                            />
-                                            Make Payment
-                                          </a>
-                                        </div>
-                                        <div
-                                          onClick={() => {
-                                            handleEyeClick(
-                                              item.id,
-                                              item?.service?.name
-                                            );
-                                            handleMoreClick(null);
-                                          }}
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <img
-                                            src={ViewIcon}
-                                            alt="view application"
-                                            style={{
-                                              width: "20px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                          View Application
-                                          <Modal
-                                            show={showModal}
-                                            onHide={handleCloseModal}
-                                            size="lg"
-                                            centered
-                                          >
-                                            <Modal.Header>
-                                              <Modal.Title
+                                            >
+                                              <a
+                                                href={
+                                                  item.payment[0]?.payment_url
+                                                }
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 style={{
-                                                  fontSize: 18,
-                                                  color: "#333333",
+                                                  textDecoration: "none",
+                                                  color: "#101828",
+                                                  padding: 0,
+                                                }}
+                                              >
+                                                <img
+                                                  src={PaymentIcon}
+                                                  alt="make payment"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Make Payment
+                                              </a>
+                                            </div>
+                                            <div
+                                              onClick={() => {
+                                                handleEyeClick(
+                                                  item.id,
+                                                  item?.service?.name
+                                                );
+                                                handleMoreClick(null);
+                                              }}
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              <img
+                                                src={ViewIcon}
+                                                alt="view application"
+                                                style={{
+                                                  width: "20px",
+                                                  marginRight: "10px",
+                                                }}
+                                              />
+                                              View Application
+                                              <Modal
+                                                show={showModal}
+                                                onHide={handleCloseModal}
+                                                size="lg"
+                                                centered
+                                              >
+                                                <Modal.Header>
+                                                  <Modal.Title
+                                                    style={{
+                                                      fontSize: 18,
+                                                      color: "#333333",
+                                                      fontWeight: 500,
+                                                    }}
+                                                  >
+                                                    View Application{" "}
+                                                  </Modal.Title>
+                                                  <Button
+                                                    variant="close"
+                                                    onClick={handleCloseModal}
+                                                  >
+                                                    {" "}
+                                                  </Button>
+                                                </Modal.Header>
+                                                <Modal.Body></Modal.Body>
+                                              </Modal>
+                                            </div>
+
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                                color: "#EB5757",
+                                                fontWeight: 500,
+                                              }}
+                                            >
+                                              <img
+                                                src={ReportIcon}
+                                                alt="report"
+                                                style={{
+                                                  width: "20px",
+                                                  marginRight: "10px",
+                                                }}
+                                              />
+                                              Report
+                                            </div>
+                                            {item.status === "1" && (
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  color: "#101828",
+                                                  fontWeight: 500,
+                                                }}
+                                                onClick={() =>
+                                                  handleAssessmentClick(item.id)
+                                                }
+                                              >
+                                                <img
+                                                  src={DownloadIcon}
+                                                  alt="download"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Download Assessment
+                                              </div>
+                                            )}
+                                          </>
+                                        )}
+
+                                        {/* Show View Application and Report if payment_status === "1" and status === "0" */}
+                                        {item.payment_status === "1" &&
+                                          (item.status === "0" ||
+                                            item.status === "1") && (
+                                            <>
+                                              <div
+                                                onClick={() => {
+                                                  handleEyeClick(
+                                                    item.id,
+                                                    item?.service?.name
+                                                  );
+                                                  handleMoreClick(null);
+                                                }}
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
                                                   fontWeight: 500,
                                                 }}
                                               >
-                                                View Application{" "}
-                                              </Modal.Title>
-                                              <Button
-                                                variant="close"
-                                                onClick={handleCloseModal}
-                                              >
-                                                {" "}
-                                              </Button>
-                                            </Modal.Header>
-                                            <Modal.Body></Modal.Body>
-                                          </Modal>
-                                        </div>
-
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                            color: "#EB5757",
-                                            fontWeight: 500,
-                                          }}
-                                        >
-                                          <img
-                                            src={ReportIcon}
-                                            alt="report"
-                                            style={{
-                                              width: "20px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                          Report
-                                        </div>
-                                        {item.status === "1" && (
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              color: "#101828",
-                                              fontWeight: 500,
-                                            }}
-                                            onClick={() =>
-                                              handleAssessmentClick(item.id)
-                                            }
-                                          >
-                                            <img
-                                              src={DownloadIcon}
-                                              alt="download"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Download Assessment
-                                          </div>
-                                        )}
-                                      </>
-                                    )}
-
-                                    {/* Show View Application and Report if payment_status === "1" and status === "0" */}
-                                    {item.payment_status === "1" &&
-                                      (item.status === "0" ||
-                                        item.status === "1") && (
-                                        <>
-                                          <div
-                                            onClick={() => {
-                                              handleEyeClick(
-                                                item.id,
-                                                item?.service?.name
-                                              );
-                                              handleMoreClick(null);
-                                            }}
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              fontWeight: 500,
-                                            }}
-                                          >
-                                            <img
-                                              src={ViewIcon}
-                                              alt="view application"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            View Application
-                                          </div>
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              fontWeight: 500,
-                                              color: "#101828",
-                                            }}
-                                          >
-                                            <img
-                                              src={agent}
-                                              alt="assign agent"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Assign Agent
-                                          </div>
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              color: "#EB5757",
-                                              fontWeight: 500,
-                                            }}
-                                          >
-                                            <img
-                                              src={ReportIcon}
-                                              alt="report"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Report
-                                          </div>
-                                          {item.status === "1" && (
-                                            <div
-                                              style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                padding: "5px 10px",
-                                                cursor: "pointer",
-                                                color: "#101828",
-                                                fontWeight: 500,
-                                              }}
-                                              onClick={() =>
-                                                handleAssessmentClick(item.id)
-                                              }
-                                            >
-                                              <img
-                                                src={DownloadIcon}
-                                                alt="download"
+                                                <img
+                                                  src={ViewIcon}
+                                                  alt="view application"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                View Application
+                                              </div>
+                                              <div
                                                 style={{
-                                                  width: "20px",
-                                                  marginRight: "10px",
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  fontWeight: 500,
+                                                  color: "#101828",
                                                 }}
-                                              />
-                                              Download Assessment
-                                            </div>
+                                              >
+                                                <img
+                                                  src={agent}
+                                                  alt="assign agent"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Assign Agent
+                                              </div>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  color: "#EB5757",
+                                                  fontWeight: 500,
+                                                }}
+                                              >
+                                                <img
+                                                  src={ReportIcon}
+                                                  alt="report"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Report
+                                              </div>
+                                              {item.status === "1" && (
+                                                <div
+                                                  style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    padding: "5px 10px",
+                                                    cursor: "pointer",
+                                                    color: "#101828",
+                                                    fontWeight: 500,
+                                                  }}
+                                                  onClick={() =>
+                                                    handleAssessmentClick(
+                                                      item.id
+                                                    )
+                                                  }
+                                                >
+                                                  <img
+                                                    src={DownloadIcon}
+                                                    alt="download"
+                                                    style={{
+                                                      width: "20px",
+                                                      marginRight: "10px",
+                                                    }}
+                                                  />
+                                                  Download Assessment
+                                                </div>
+                                              )}
+                                            </>
                                           )}
-                                        </>
-                                      )}
+                                      </div>
+                                    )}
                                   </div>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <div className={classes.mobileView}>
-                <div className={classes.mainTable}>
-                  <div
-                    className={classes.tableCon}
-                    style={{
-                      overflowX: "auto", // Horizontal scroll for table
-                      whiteSpace: "nowrap", // Prevent table from wrapping
-                      maxWidth: "100%", // Limit container width to screen size
-                    }}
-                  >
-                    <table
-                      className="table display table-hover m-0 card-table"
-                      style={{
-                        minWidth: "600px", // Minimum table width to ensure visibility
-                      }}
-                    >
-                      <thead>
-                        <tr>
-                          <th>Application Number</th>
-                          <th>Application Type</th>
-                          <th>Payment Code</th>
-                          <th>Submission Date</th>
-                          <th>Approval required by</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentEntries.map((item, index) => (
-                          <tr key={index}>
-                            <td style={{ padding: 10, width: 100 }}>
-                              {item.application_number}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {item?.service?.name}
-                            </td>
-                            <td
-                              style={{
-                                padding: 10,
-                                color: "#0E4F27",
-                                fontWeight: 500,
-                              }}
-                            >
-                              {item.payment[0]?.payment_code}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {formatDate(item.created_at)}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {item.payment_status === "0"
-                                ? "Awaiting your Payment"
-                                : item.payment_status === "1" &&
-                                  item.status === "0"
-                                ? item.role?.name
-                                : null}
-                              {/* <img
+                  <div className={classes.mobileView}>
+                    <div className={classes.mainTable}>
+                      <div
+                        className={classes.tableCon}
+                        style={{
+                          overflowX: "auto", // Horizontal scroll for table
+                          whiteSpace: "nowrap", // Prevent table from wrapping
+                          maxWidth: "100%", // Limit container width to screen size
+                        }}
+                      >
+                        <table
+                          className="table display table-hover m-0 card-table"
+                          style={{
+                            minWidth: "600px", // Minimum table width to ensure visibility
+                          }}
+                        >
+                          <thead>
+                            <tr>
+                              <th>Application Number</th>
+                              <th>Application Type</th>
+                              <th>Payment Code</th>
+                              <th>Submission Date</th>
+                              <th>Approval required by</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {currentEntries.map((item, index) => (
+                              <tr key={index}>
+                                <td style={{ padding: 10, width: 100 }}>
+                                  {item.application_number}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {item?.service?.name}
+                                </td>
+                                <td
+                                  style={{
+                                    padding: 10,
+                                    color: "#0E4F27",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  {item.payment[0]?.payment_code}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {formatDate(item.created_at)}
+                                </td>
+                                <td style={{ padding: 10 }}>
+                                  {item.payment_status === "0"
+                                    ? "Awaiting your Payment"
+                                    : item.payment_status === "1" &&
+                                      item.status === "0"
+                                    ? item.role?.name
+                                    : null}
+                                  {/* <img
                                     className={classes.statusIcon}
                                     src={
                                       item.payment_status === "1" &&
@@ -8412,369 +8305,376 @@ const Allinvoices = () => {
                                     }
                                     alt="status"
                                   /> */}
-                            </td>
-                            <td
-                              style={{ padding: 10 }}
-                              className={classes.moreTxt}
-                            >
-                              <div style={{ position: "relative" }}>
-                                <img
-                                  className={classes.moreIcon}
-                                  src={MoreIcon}
-                                  alt="more"
-                                  onClick={() => handleMoreClick(item)}
-                                  style={{ cursor: "pointer" }}
-                                />
-                                {visibleDropdown === item && (
-                                  <div
-                                    onClick={() => {
-                                      handleMoreClick(null); // Close dropdown after click
-                                    }}
-                                    // ref={dropdownRef}
-                                    style={{
-                                      position: "absolute",
-                                      top: "100%",
-                                      right: 0,
-                                      backgroundColor: "white",
-                                      zIndex: 9999,
-                                      boxShadow:
-                                        "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {/* Show Make Payment, View Application, and Report if payment_status === "0" */}
-                                    {item.payment_status === "0" && (
-                                      <>
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <a
-                                            href={item.payment[0]?.payment_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={{
-                                              textDecoration: "none",
-                                              color: "#101828",
-                                              padding: 0,
-                                            }}
-                                          >
-                                            <img
-                                              src={PaymentIcon}
-                                              alt="make payment"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Make Payment
-                                          </a>
-                                        </div>
-                                        <div
-                                          onClick={() => {
-                                            handleEyeClick(
-                                              item.id,
-                                              item?.service?.name
-                                            );
-                                            handleMoreClick(null);
-                                          }}
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <img
-                                            src={ViewIcon}
-                                            alt="view application"
-                                            style={{
-                                              width: "20px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                          View Application
-                                        </div>
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                            color: "#EB5757",
-                                            fontWeight: 500,
-                                          }}
-                                        >
-                                          <img
-                                            src={ReportIcon}
-                                            alt="report"
-                                            style={{
-                                              width: "20px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                          Report
-                                        </div>
-                                        {item.status === "1" && (
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              color: "#101828",
-                                              fontWeight: 500,
-                                            }}
-                                            onClick={() =>
-                                              handleAssessmentClick(item.id)
-                                            }
-                                          >
-                                            <img
-                                              src={DownloadIcon}
-                                              alt="download"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Download Assessment
-                                          </div>
-                                        )}
-                                      </>
-                                    )}
-
-                                    {item.payment_status === "1" &&
-                                      (item.status === "0" ||
-                                        item.status === "1") && (
-                                        <>
-                                          <div
-                                            onClick={() => {
-                                              handleEyeClick(
-                                                item.id,
-                                                item?.service?.name
-                                              );
-                                              handleMoreClick(null);
-                                            }}
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              fontWeight: 500,
-                                            }}
-                                          >
-                                            <img
-                                              src={ViewIcon}
-                                              alt="view application"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            View Application
-                                          </div>
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              fontWeight: 500,
-                                              color: "#101828",
-                                            }}
-                                          >
-                                            <img
-                                              src={agent}
-                                              alt="assign agent"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Assign Agent
-                                          </div>
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              padding: "5px 10px",
-                                              cursor: "pointer",
-                                              color: "#EB5757",
-                                              fontWeight: 500,
-                                            }}
-                                          >
-                                            <img
-                                              src={ReportIcon}
-                                              alt="report"
-                                              style={{
-                                                width: "20px",
-                                                marginRight: "10px",
-                                              }}
-                                            />
-                                            Report
-                                          </div>
-                                          {item.status === "1" && (
+                                </td>
+                                <td
+                                  style={{ padding: 10 }}
+                                  className={classes.moreTxt}
+                                >
+                                  <div style={{ position: "relative" }}>
+                                    <img
+                                      className={classes.moreIcon}
+                                      src={MoreIcon}
+                                      alt="more"
+                                      onClick={() => handleMoreClick(item)}
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                    {visibleDropdown === item && (
+                                      <div
+                                        onClick={() => {
+                                          handleMoreClick(null); // Close dropdown after click
+                                        }}
+                                        // ref={dropdownRef}
+                                        style={{
+                                          position: "absolute",
+                                          top: "100%",
+                                          right: 0,
+                                          backgroundColor: "white",
+                                          zIndex: 9999,
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                          borderRadius: "4px",
+                                        }}
+                                      >
+                                        {/* Show Make Payment, View Application, and Report if payment_status === "0" */}
+                                        {item.payment_status === "0" && (
+                                          <>
                                             <div
                                               style={{
                                                 display: "flex",
                                                 alignItems: "center",
                                                 padding: "5px 10px",
                                                 cursor: "pointer",
-                                                color: "#101828",
-                                                fontWeight: 500,
                                               }}
-                                              onClick={() =>
-                                                handleAssessmentClick(item.id)
-                                              }
+                                            >
+                                              <a
+                                                href={
+                                                  item.payment[0]?.payment_url
+                                                }
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                  textDecoration: "none",
+                                                  color: "#101828",
+                                                  padding: 0,
+                                                }}
+                                              >
+                                                <img
+                                                  src={PaymentIcon}
+                                                  alt="make payment"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Make Payment
+                                              </a>
+                                            </div>
+                                            <div
+                                              onClick={() => {
+                                                handleEyeClick(
+                                                  item.id,
+                                                  item?.service?.name
+                                                );
+                                                handleMoreClick(null);
+                                              }}
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                              }}
                                             >
                                               <img
-                                                src={DownloadIcon}
-                                                alt="download"
+                                                src={ViewIcon}
+                                                alt="view application"
                                                 style={{
                                                   width: "20px",
                                                   marginRight: "10px",
                                                 }}
                                               />
-                                              Download Assessment
+                                              View Application
                                             </div>
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                                color: "#EB5757",
+                                                fontWeight: 500,
+                                              }}
+                                            >
+                                              <img
+                                                src={ReportIcon}
+                                                alt="report"
+                                                style={{
+                                                  width: "20px",
+                                                  marginRight: "10px",
+                                                }}
+                                              />
+                                              Report
+                                            </div>
+                                            {item.status === "1" && (
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  color: "#101828",
+                                                  fontWeight: 500,
+                                                }}
+                                                onClick={() =>
+                                                  handleAssessmentClick(item.id)
+                                                }
+                                              >
+                                                <img
+                                                  src={DownloadIcon}
+                                                  alt="download"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Download Assessment
+                                              </div>
+                                            )}
+                                          </>
+                                        )}
+
+                                        {item.payment_status === "1" &&
+                                          (item.status === "0" ||
+                                            item.status === "1") && (
+                                            <>
+                                              <div
+                                                onClick={() => {
+                                                  handleEyeClick(
+                                                    item.id,
+                                                    item?.service?.name
+                                                  );
+                                                  handleMoreClick(null);
+                                                }}
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  fontWeight: 500,
+                                                }}
+                                              >
+                                                <img
+                                                  src={ViewIcon}
+                                                  alt="view application"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                View Application
+                                              </div>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  fontWeight: 500,
+                                                  color: "#101828",
+                                                }}
+                                              >
+                                                <img
+                                                  src={agent}
+                                                  alt="assign agent"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Assign Agent
+                                              </div>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  padding: "5px 10px",
+                                                  cursor: "pointer",
+                                                  color: "#EB5757",
+                                                  fontWeight: 500,
+                                                }}
+                                              >
+                                                <img
+                                                  src={ReportIcon}
+                                                  alt="report"
+                                                  style={{
+                                                    width: "20px",
+                                                    marginRight: "10px",
+                                                  }}
+                                                />
+                                                Report
+                                              </div>
+                                              {item.status === "1" && (
+                                                <div
+                                                  style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    padding: "5px 10px",
+                                                    cursor: "pointer",
+                                                    color: "#101828",
+                                                    fontWeight: 500,
+                                                  }}
+                                                  onClick={() =>
+                                                    handleAssessmentClick(
+                                                      item.id
+                                                    )
+                                                  }
+                                                >
+                                                  <img
+                                                    src={DownloadIcon}
+                                                    alt="download"
+                                                    style={{
+                                                      width: "20px",
+                                                      marginRight: "10px",
+                                                    }}
+                                                  />
+                                                  Download Assessment
+                                                </div>
+                                              )}
+                                            </>
                                           )}
-                                        </>
-                                      )}
+                                      </div>
+                                    )}
                                   </div>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              {!benLoading && (
-                <div className={classes.endded}>
-                  <div className={classes.showTxt}>
-                    <div className={classes.show}>
-                      <label
-                        style={{
-                          fontSize: 14,
-                          color: isDarkMode ? "#ffffff" : "#333333",
-                          fontWeight: 600,
-                          gap: 10,
-                        }}
-                        className="d-flex justify-content-start align-items-center"
-                      >
-                        Showing
-                        <Form.Select
-                          style={{
-                            width: 114,
-                            height: 44,
-                            borderRadius: 8,
-                            fontSize: 14,
-                            fontWeight: 600,
-                          }}
-                          name="DataTables_Table_0_length"
-                          aria-controls="DataTables_Table_0"
-                          className="custom-select custom-select-sm form-control form-control-sm"
-                          value={entriesPerPage}
-                          onChange={(e) => {
-                            setEntriesPerPage(parseInt(e.target.value));
-                            setCurrentPage(1);
-                          }}
-                        >
-                          <option value={10}>10 entries</option>
-                          <option value={25}>25 entries</option>
-                          <option value={50}>50 entries</option>
-                          <option value={100}>100 entries</option>
-                        </Form.Select>
-                      </label>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
 
-                  <div className={classes.btmPagination}>
-                    <div style={{ display: "flex" }}>
-                      <button
-                        style={{
-                          textAlign: "center",
-                          border: "1px solid #F1F1F1",
-                          backgroundColor: "#fff",
-                          borderRadius: 8,
-                          height: "32px",
-                          width: "32px",
-                          fontWeight: 700,
-                          fontSize: 14,
-                          color: "#000000",
-                          cursor: "pointer",
-                        }}
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                      >
-                        {"<"}
-                      </button>
-                      {[...Array(totalPages)].map((_, page) => {
-                        // Show only 5 pages or less if available
-                        if (
-                          page < 3 ||
-                          page === currentPage - 1 ||
-                          page === totalPages - 1
-                        ) {
-                          return (
-                            <button
-                              key={page + 1}
+                  {!benLoading && (
+                    <div className={classes.endded}>
+                      <div className={classes.showTxt}>
+                        <div className={classes.show}>
+                          <label
+                            style={{
+                              fontSize: 14,
+                              color: isDarkMode ? "#ffffff" : "#333333",
+                              fontWeight: 600,
+                              gap: 10,
+                            }}
+                            className="d-flex justify-content-start align-items-center"
+                          >
+                            Showing
+                            <Form.Select
                               style={{
-                                textAlign: "center",
-                                marginLeft: "0.4rem",
-                                marginRight: "0.4rem",
-                                fontSize: "14px",
-                                fontWeight: 700,
-                                color:
-                                  page + 1 === currentPage
-                                    ? "#ffffff"
-                                    : "#333333",
-                                backgroundColor:
-                                  page + 1 === currentPage ? "#21B55A" : "#fff",
-                                height: "32px",
-                                borderRadius: "8px",
-                                //   padding: '0.5rem',
-                                border: "1px solid #F1F1F1",
-                                width: "32px",
-                                cursor: "pointer",
+                                width: 114,
+                                height: 44,
+                                borderRadius: 8,
+                                fontSize: 14,
+                                fontWeight: 600,
+                               
                               }}
-                              onClick={() => setCurrentPage(page + 1)}
+                              name="DataTables_Table_0_length"
+                              aria-controls="DataTables_Table_0"
+                              className="custom-select custom-select-sm form-control form-control-sm"
+                              value={entriesPerPage}
+                              onChange={(e) => {
+                                setEntriesPerPage(parseInt(e.target.value));
+                                setCurrentPage(1);
+                              }}
                             >
-                              {page + 1}
-                            </button>
-                          );
-                        }
-                        return null;
-                      })}
-                      <button
-                        style={{
-                          textAlign: "center",
-                          border: "1px solid #F1F1F1",
-                          backgroundColor: "#fff",
-                          borderRadius: 8,
-                          height: "32px",
-                          width: "32px",
-                          fontWeight: 700,
-                          fontSize: 14,
-                          color: "#000000",
-                          cursor: "pointer",
-                        }}
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        {">"}
-                      </button>
+                              <option value={10}>10 entries</option>
+                              <option value={25}>25 entries</option>
+                              <option value={50}>50 entries</option>
+                              <option value={100}>100 entries</option>
+                            </Form.Select>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className={classes.btmPagination}>
+                        <div style={{ display: "flex" }}>
+                          <button
+                            style={{
+                              textAlign: "center",
+                              border: "1px solid #F1F1F1",
+                              backgroundColor: "#fff",
+                              borderRadius: 8,
+                              height: "32px",
+                              width: "32px",
+                              fontWeight: 700,
+                              fontSize: 14,
+                              color: "#000000",
+                              cursor: "pointer",
+                            }}
+                            onClick={handlePrevPage}
+                            disabled={currentPage === 1}
+                          >
+                            {"<"}
+                          </button>
+                          {[...Array(totalPages)].map((_, page) => {
+                            // Show only 5 pages or less if available
+                            if (
+                              page < 3 ||
+                              page === currentPage - 1 ||
+                              page === totalPages - 1
+                            ) {
+                              return (
+                                <button
+                                  key={page + 1}
+                                  style={{
+                                    textAlign: "center",
+                                    marginLeft: "0.4rem",
+                                    marginRight: "0.4rem",
+                                    fontSize: "14px",
+                                    fontWeight: 700,
+                                    color:
+                                      page + 1 === currentPage
+                                        ? "#ffffff"
+                                        : "#333333",
+                                    backgroundColor:
+                                      page + 1 === currentPage
+                                        ? "#21B55A"
+                                        : "#fff",
+                                    height: "32px",
+                                    borderRadius: "8px",
+                                    //   padding: '0.5rem',
+                                    border: "1px solid #F1F1F1",
+                                    width: "32px",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => setCurrentPage(page + 1)}
+                                >
+                                  {page + 1}
+                                </button>
+                              );
+                            }
+                            return null;
+                          })}
+                          <button
+                            style={{
+                              textAlign: "center",
+                              border: "1px solid #F1F1F1",
+                              backgroundColor: "#fff",
+                              borderRadius: 8,
+                              height: "32px",
+                              width: "32px",
+                              fontWeight: 700,
+                              fontSize: 14,
+                              color: "#000000",
+                              cursor: "pointer",
+                            }}
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                          >
+                            {">"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  )}
             </div>
           </div>
         </div>
