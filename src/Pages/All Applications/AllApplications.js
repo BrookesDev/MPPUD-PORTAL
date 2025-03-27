@@ -353,7 +353,7 @@ const AllApplications = () => {
 
             <div className={isDarkMode ? classes.applicationHistory1 : classes.applicationHistory}>
               <div className={classes.hortrstns}>
-              <h1 className={classes.recenttrsd}>Recent Transactions</h1>
+              <h1 className={classes.recenttrsd}>My Applications</h1>
               <div className={classes.midDiv}>
                 <div className={classes.divSearch}>
                   <img src={search} alt="search" className={classes.searchIcon} />
@@ -440,42 +440,30 @@ const AllApplications = () => {
                       <thead classes={{ whiteSpace: 'nowrap' }}>
                         <tr>
                           <th classes={{ color: isDarkMode && "white" }}>S/N</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Description</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Date</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Submission Date</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Payment Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
                           <th classes={{ color: isDarkMode && "white" }}>Amount</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Amount Approved</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Code</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Status</th>
                           <th></th>
                         </tr>
                       </thead>
 
                       <tbody style={{ whiteSpace: "wrap" }}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((rowId, index) => (
+                    {[1, 2, 3, 4, 5].map((rowId, index) => (
                       <tr key={rowId} style={{
                         backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
                       }}>
-                        <td style={{ padding: 10 }}>{rowId}</td>
-                        <td style={{ padding: 10 }}>ACME MEDICARE CLINICS LTD</td>
-                        <td style={{ padding: 10 }}>January 2025 Monthly PAYE Returns</td>
+                        <td style={{ padding: 10 }}>{index + 1}</td>
+                        <td style={{ padding: 10 }}>APP-011-1231</td>
+                        <td style={{ padding: 10 }}>Building Permit</td>
+                        <td style={{ padding: 10 }}>27-03-2025</td>
+                        <td style={{ padding: 10 }}>ONGOING</td>
+                        <td style={{ padding: 10 }}>PAID</td>
+                        <td style={{ padding: 10 }}>DLM</td>
                         <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>0003000178320</td>
-                        <td style={{ padding: 10 }}>
-                          {/* <img
-                                className={classes.statusIconsuccess}
-                                src={succesful}
-                                alt="status"
-                            /> */}
-                          <td style={{ padding: 10 }} className={classes.info1}>
-                            <p
-                              className={`${classes["status-success"]} ${classes.info}`}
-                            >
-                              Approved
-                            </p>
-                          </td>
-                        </td>
-
                         <td style={{ padding: 10 }} className={classes.moreTxt}>
                           <div style={{ position: "relative" }} className={classes.menuWeb}>
                             <img
@@ -498,26 +486,32 @@ const AllApplications = () => {
                                 }}
                               >
                                 <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    padding: "5px 10px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <img
-                                    src={Printer} // Replace with your actual path
-                                    alt="contact"
-                                    style={{ width: "20px", marginRight: "10px" }}
-                                  />
-                                  Print Receipt
-                                </div>
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                                textAlign: "left",
+                                                whiteSpace: "nowrap"
+                                              }}
+                                              
+                                            >
+                                              <img
+                                                src={Printer}
+                                                alt="invoice"
+                                                style={{
+                                                  width: "20px",
+                                                  marginRight: "10px",
+                                                }}
+                                              />
+                                              Print Receipt
+                                            </div>
 
                               </div>
                             )}
                           </div>
                         </td>
-
+                      
                       </tr>
                     ))}
                   </tbody>
@@ -548,12 +542,14 @@ const AllApplications = () => {
                       >
                         <thead>
                           <tr>
-                            <th >Application Type</th>
-                            <th >Payment Code</th>
-                            <th >Date</th>
-                            <th >Amount</th>
-                            <th >Status</th>
-                            <th></th>
+                          <th classes={{ color: isDarkMode && "white" }}>S/N</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Submission Date</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Amount</th>
+                          <th></th>
                           </tr>
                         </thead>
                         <tbody style={{ whiteSpace: "wrap" }}>
