@@ -349,6 +349,8 @@ const NewApplications = () => {
   const totalPages = 10; // Total number of pages
   const [currentPage, setCurrentPage] = useState(1);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
+  const [selectedApp, setSelectedApp] = useState({ id: null, name: null });
+  const [detailsLoading, setDetailsLoading] = useState({});
 
   const readData = async () => {
     try {
@@ -2499,10 +2501,10 @@ const NewApplications = () => {
   const fetchAllApplications = async () => {
     setRoleLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/fetch_all`, { headers });
-      const results = response.data?.data;
-      setAllApplications(results);
-      console.log(results);
+      const response = await axios.get(`${BASE_URL}/applications/available`, { headers });
+      const data = response.json();
+      setAllApplications(data || []);
+      console.log(data);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         // Redirect to login page if unauthorized
@@ -2678,6 +2680,15 @@ const NewApplications = () => {
     }
   };
 
+  const fetchServiceDetails = async (landStatus, type) => {
+    console.log(`Fetching service details for ${landStatus} and ${type}`);
+    // Add your API call logic here if needed
+  };
+
+  const setShowConfirmationModal = (value) => {
+    console.log(`Setting confirmation modal to: ${value}`);
+    // Add your modal state logic here if needed
+  };
 
   const handleContinueFromModal = () => {
     if (!selectedLandStatus) {
@@ -2688,6 +2699,9 @@ const NewApplications = () => {
       });
       return;
     }
+
+    fetchServiceDetails(selectedLandStatus, "Certificate Of Occupancy")
+    setShowConfirmationModal(true);
 
     // Fire the invoice generation with selected ID and Land Status
     handleGenerateNewInvoice(selectedAppId, "Certificate of Occupancy");
@@ -2743,6 +2757,130 @@ const NewApplications = () => {
                           organized and sustainable growth and more with MPPUD.
                           </p>
                           </div>
+                                        <div className={classes.layoutcard}>
+                {roleLoading
+                  ? // Display placeholders when loading
+                  Array.from({ length: 10 }).map((_, index) => (
+                    <div key={index}>
+                      <Card>
+                        <Card.Img variant="top" src="holder.js/100px180" />
+                        <Card.Body>
+                          <Placeholder as={Card.Title} animation="wavy">
+                            <Placeholder xs={6} />
+                          </Placeholder>
+                          <Placeholder as={Card.Text} animation="wavy">
+                            <Placeholder xs={7} /> <Placeholder xs={4} />{" "}
+                            <Placeholder xs={4} /> <Placeholder xs={6} />{" "}
+                            <Placeholder xs={8} />
+                          </Placeholder>
+                          <Placeholder.Button variant="primary" xs={6} />
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  ))
+                  : // Display actual data when loading is false
+                  allApplications.map((application, index) => (
+                    <div
+                      key={index}
+                      className={isDarkMode ? classes.card1 : classes.card}
+                    // onClick={() =>
+                    //   handleClicks(application.id, application.name)
+                    // }
+                    >
+                      <div className={classes.imageContt}>
+                        {/* <img
+                          src={images[index % images.length]}
+                          alt="icon"
+                          className={classes.icon}
+                        /> */}
+                        <div>
+                          <h3
+                            className={isDarkMode ? classes.cardTitle1 : classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
+                          >
+                            {application.name} Application
+                          </h3>
+                        </div>
+                      </div>
+                      <p
+                        className={isDarkMode ? classes.textPrg1 : classes.textPrg}
+                        style={{ wordWrap: "break-word" }}
+                      >
+                        To apply for{" "}
+                        <span style={{ fontWeight: 700 }}>
+                          {application.name}
+                        </span>
+                        ; <br />
+                        1. Click the Apply Button. <br />
+                        2. Read the requirements for this application.
+                        <br />
+                        3. Click on Continue to pay your application fee.  <br />
+
+                        4. Go to the Application menu, click on more option, select Continue Application.
+                        {/* {application.description} */}
+                      </p>
+                      <div className={classes.bottomBtn}>
+                        <Button
+                          onClick={() => {
+                            const selectedAppData = { id: application.id, name: application.name };
+    setSelectedApp(selectedAppData);
+   
+    if (application.name === "View Tokenised Properties") {
+      window.open("https://www.marketplace.iledoola.inits.xyz/marketsquare", "_blank");
+      setDetailsLoading(false);
+    } else if (application.name === "Manage my tokenised properties") {
+      window.open("https://www.marketplace.iledoola.inits.xyz/collections", "_blank");
+      setDetailsLoading(false);
+    } else if (application.name === "⁠Sell My Tokenised Properties") {
+      window.open("https://www.marketplace.iledoola.inits.xyz/collections", "_blank");
+      setDetailsLoading(false);
+    } else if (application.name === "⁠⁠Transfer My Tokenised Property") {
+      window.open("", "_blank");
+      setDetailsLoading(false);
+    } else if (application.name === "⁠Split My Tokenised Property") {
+      window.open("", "_blank");
+      setDetailsLoading(false);
+    } else if (application.name === "⁠Apply For Loan With My Tokenised Property") {
+      window.open("", "_blank");
+      setDetailsLoading(false);
+    }
+    else if(application.name === "Certificate of Occupancy") {
+      setShowSelection(true)
+    }
+    else {
+      fetchServiceDetails(application.id, application.name);
+    }
+                            // handleGenerateNewInvoice(application.id, application.name)
+                          }
+                          }
+                          variant="success"
+                          className={classes.appBtn}
+                        // className={classes.invBtn}
+                        >
+                          {detailsLoading[application.id] ? (
+                            <>
+                              <Spinner size="sm" />
+                              <span style={{ marginLeft: "5px" }}>
+                                Processing...
+                              </span>
+                            </>
+                          ) : (
+                            "Apply"
+                          )}
+                        </Button>
+                        {/* <Button
+                          onClick={() =>
+                            handleNewClicks(application.id, application.name)
+                          }
+                          variant="success"
+                          className={classes.appBtn}
+                        >
+                          Apply
+                        </Button> */}
+                      </div>
+                    </div>
+                  ))}
+              </div>
             <div className={classes.layoutcard}>
               {/* roleLoading */}
                 {/* // ?  */}
