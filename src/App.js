@@ -88,8 +88,8 @@ function App() {
             <Route path="/my_account" element={<MyAccount />} />
             <Route path="/invoices" element={<Allinvoices />} />
             <Route path="/payments" element={<AllPayment />} />
-            <Route path='/new_applications' element={<NewApplications />} />
-            <Route path='/land_ratification_application' element={<LandRatificationApp />} />
+            <Route path='/applications_new' element={<NewApplications />} />
+            <Route path='/applications_building_permit' element={<LandRatificationApp />} />
 
             <Route path="/Welly" element={<Welly/>} />
         <Route path="/Fill" element={<Fill />} />

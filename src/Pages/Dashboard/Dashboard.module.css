@@ -434,7 +434,9 @@ img:hover {
     white-space: "nowrap";
     overflow: "hidden";
     text-overflow: "ellipsis";
+    
 }
+
 
 .usrwlcm {
   display: flex;
