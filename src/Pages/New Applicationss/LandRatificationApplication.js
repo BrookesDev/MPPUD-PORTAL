@@ -1012,7 +1012,7 @@ const LandRatificationApp = () => {
   const fetchAllLandUse = async () => {
     // setRoleLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/all_land_use`, { headers });
+      const response = await axios.get(`${BASE_URL}applications/get-land-use-type`, { headers });
       const results = response.data?.data;
       // console.log(results);
       setAllLands(results);
@@ -2878,7 +2878,7 @@ const LandRatificationApp = () => {
                       className={classes.optioncss}
                       onChange={handleProposedBuild}
                     >
-                      <option value="">Select Land Use Type</option>
+                      {/* <option value="">Select Land Use Type</option>
                       <option value="1">Single-Family Home</option>
                       <option value="2">Multi-Family Home</option>
                       <option value="3">Townhouse</option>
@@ -2887,7 +2887,7 @@ const LandRatificationApp = () => {
                       <option value="6">Villa</option>
                       <option value="7">Duplex</option>
                       <option value="8">Penthouse</option>
-                      <option value="9">Studio Apartment</option>
+                      <option value="9">Studio Apartment</option> */}
                     </Form.Select>
                   </Form.Group>
                 </Col>
