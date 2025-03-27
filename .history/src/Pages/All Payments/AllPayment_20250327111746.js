@@ -697,7 +697,9 @@ const AllPayment = () => {
               <div>
                 <p className={classes.wlcm}>Payments</p>
               </div>
-             
+              <div onClick={handleNewApplication}>
+                <button className={classes.applctnbtn}>New Payment</button>
+              </div>
             </div>
             <Modal
               show={showModal}

@@ -7966,7 +7966,7 @@ const Allinvoices = () => {
                     <div className={classes.card}>
                       <div className={classes.cardContent}>
                         <h4 className={classes.title}>
-                        Total Amount Utilized
+                          Overall Amount Requested
                         </h4>
                         <p className={classes.amount}>
                           ₦{"000,000,00"}

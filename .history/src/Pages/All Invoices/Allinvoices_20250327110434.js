@@ -7918,8 +7918,8 @@ const Allinvoices = () => {
               </div>
 
               <div className={classes.allcards}>
-              
-                 
+                <div className={classes.card_rd}>
+                  <div className={classes.card1}>
                     {" "}
                     <div className={classes.card}>
                       <div className={classes.cardContent}>
@@ -7945,7 +7945,7 @@ const Allinvoices = () => {
                     <div className={classes.card}>
                       <div className={classes.cardContent}>
                         <h4 className={classes.title}>
-                        Total Amount Approved
+                          Overall Amount Requested
                         </h4>
                         <p className={classes.amount}>
                           ₦{"000,000,00"}
@@ -7963,29 +7963,8 @@ const Allinvoices = () => {
                                      </ResponsiveContainer>
                                    </div> */}
                     </div>
-                    <div className={classes.card}>
-                      <div className={classes.cardContent}>
-                        <h4 className={classes.title}>
-                        Total Amount Utilized
-                        </h4>
-                        <p className={classes.amount}>
-                          ₦{"000,000,00"}
-                          <span className={classes.litnmbr}>.00</span>
-                        </p>
-                        <span className={classes.percentage}>▲ 00%</span>
-                      </div>
-
-                      {/* Mini Line Chart */}
-                      {/* <div className={classes.chartContainer}>
-                                     <ResponsiveContainer width="100%" height={50}>
-                                       <LineChart data={"data"}>
-                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                       </LineChart>
-                                     </ResponsiveContainer>
-                                   </div> */}
-                    </div>
-                 
-          
+                  </div>
+                </div>
               </div>
             </div>
 
