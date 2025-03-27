@@ -8,11 +8,16 @@ import MakePaymentIcon from '../../Asset/wallet.png';
 import PendingPaymentIcon from '../../Asset/Pending.png';
 import NotPaidPaymentIcon from '../../Asset/Notpaid.png';
 import MoreIcon from '../../Asset/more.png';
+import search from "../../Asset/search.svg";
+import Calender from "../../Asset/calendar.svg";
+import Printer from '../../Asset/printer.png';
+import xport from "../../Asset/export.png";
+import Chart from "../../Components/Chart";
 import DownloadIcon from '../../Asset/download.png';
 import TrackIcon from '../../Asset/track.png';
 import ContactIcon from '../../Asset/support.png';
 import Card from "../../Components/Card";
-import Chart from "../../Components/Chart";
+
 import notransaction from '../../Asset/no-transaction-icon.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import featured from '../../Asset/Featured icon.png';
@@ -347,119 +352,178 @@ const AllApplications = () => {
             {/* Table container starts here */}
 
             <div className={isDarkMode ? classes.applicationHistory1 : classes.applicationHistory}>
-              <h1>Recent Applications</h1>
+              <div className={classes.hortrstns}>
+              <h1 className={classes.recenttrsd}>Recent Transactions</h1>
+              <div className={classes.midDiv}>
+                <div className={classes.divSearch}>
+                  <img src={search} alt="search" className={classes.searchIcon} />
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className={classes.search}
+                  />
+                </div>
+                <Form.Select
+                  id='status'
+                  style={{
+                    width: 100,
+                    height: 40,
+                    borderRadius: 8,
+                    fontSize: 12,
+                    border: '1px solid #E0E0E0',
+                    fontWeight: 400,
+                    color: '#4F4F4F',
+                    padding: '0.5rem',
+                    // backgroundColor: '#F2F2F2',
+                    // border: 0
+                  }}
+                  name="DataTables_Table_0_length"
+                  aria-controls="DataTables_Table_0"
+                  className="custom-select custom-select-sm form-control form-control-sm"
+                >
+                  <option value="All">Status</option>
+                  <option value="All">Status</option>
+                  <option value="All">Status</option>
+                  <option value="All">Status</option>
+                </Form.Select>
+
+
+
+                <button className={classes.bttens}>
+                  Pick date <img src={Calender} className={classes.imgss} alt="calender icon" />
+                </button>
+
+                <label
+                  style={{
+                    fontSize: 14,
+                    color: " #828282",
+                    fontWeight: 600,
+                    gap: 10,
+                    borderRadius: 8,
+                    // backgroundColor: '#F2F2F2',
+                    marginLeft: 10
+                  }}
+
+                >
+
+                  <div className={classes.divBtn}>
+                    <div className={classes.divOne}>
+                      <div className={classes.stIC}>
+                        <p className={classes.stN}>Export</p>
+                        <img src={xport} alt="status" className={classes.filter} />
+                      </div>
+                    </div>
+                  </div>
+
+
+                </label>
+
+              </div>
+            </div>
+
               <div className={classes.mainTables}>
-                {benLoading ? (
+                {/* {benLoading ? (
                   <>
                     <Placeholder xs={6} />
                     <Placeholder className="w-75" /> <Placeholder classes={{ width: '25%' }} />
                   </>
-                  // <p>Loading data, Please wait...</p>
-                ) : currentEntries.length === 0 ? (
-                  <div className={classes.notFound}>
+                  
+                ) : currentEntries.length === 0 ? ( */}
+                  {/* <div className={classes.notFound}>
                     <img src={notransaction} alt="not-found" />
                     <p>No Applications found</p>
-                  </div>
-                ) : (
+                  </div> */}
+                {/* ) : ( */}
                   <div >
                     <table classes={{ width: "98%" }}>
 
                       <thead classes={{ whiteSpace: 'nowrap' }}>
                         <tr>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Payment Code</th>
+                          <th classes={{ color: isDarkMode && "white" }}>S/N</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Description</th>
                           <th classes={{ color: isDarkMode && "white" }}>Date</th>
                           <th classes={{ color: isDarkMode && "white" }}>Amount</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Amount Approved</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Code</th>
                           <th classes={{ color: isDarkMode && "white" }}>Status</th>
                           <th></th>
                         </tr>
                       </thead>
 
-                      <tbody classes={{ whiteSpace: "nowrap" }}>
-                        {currentEntries.map((rowId) => (
-                          <tr key={rowId}>
-                            <td classes={{ padding: 10, width: 100 }}>{rowId?.service?.name}</td>
-                            <td classes={{ padding: 10, fontWeight: 500, color: isDarkMode ? "#21B55A" : "#0E4F27", }}>{rowId.payment[0]?.payment_code}</td>
-                            <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                            <td classes={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
-                              minimumIntegerDigits: 1,
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}</td>
-                            <td classes={{ padding: 10 }}>
-                              <img
-                                className={classes.statusIcon}
-                                src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
+                      <tbody style={{ whiteSpace: "wrap" }}>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((rowId, index) => (
+                      <tr key={rowId} style={{
+                        backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
+                      }}>
+                        <td style={{ padding: 10 }}>{rowId}</td>
+                        <td style={{ padding: 10 }}>ACME MEDICARE CLINICS LTD</td>
+                        <td style={{ padding: 10 }}>January 2025 Monthly PAYE Returns</td>
+                        <td style={{ padding: 10 }}>₦528,861.00</td>
+                        <td style={{ padding: 10 }}>₦528,861.00</td>
+                        <td style={{ padding: 10 }}>0003000178320</td>
+                        <td style={{ padding: 10 }}>
+                          {/* <img
+                                className={classes.statusIconsuccess}
+                                src={succesful}
                                 alt="status"
-                              />
-                            </td>
-                            <td classes={{ padding: 10 }} className={classes.moreTxt}>
-                              <div classes={{ position: "relative" }}>
-                                <img
-                                  className={classes.moreIcon}
-                                  src={MoreIcon}
-                                  alt="more"
-                                  onClick={() => handleMoreClick(rowId)}
-                                  classes={{ cursor: "pointer" }}
-                                />
-                                {visibleDropdown === rowId && (
-                                  <div
-                                    ref={dropdownRef} // Attach ref to the dropdown
-                                    classes={{
-                                      position: "absolute",
-                                      top: "100%",
-                                      right: 0,
-                                      backgroundColor: "white",
-                                      zIndex: 9999,
-                                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                      borderRadius: "4px",
-                                    }}
-                                  >
-                                    {rowId.payment_status === "0" ? (
-                                      <div
-                                        classes={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          padding: "5px 10px",
-                                          cursor: "pointer",
-                                        }}
-                                      >
-                                        <a
-                                          href={rowId.payment[0]?.payment_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          classes={{
-                                            textDecoration: "none",
-                                            color: "#101828",
-                                            padding: 0,
-                                          }}
-                                        >
+                            /> */}
+                          <td style={{ padding: 10 }} className={classes.info1}>
+                            <p
+                              className={`${classes["status-success"]} ${classes.info}`}
+                            >
+                              Approved
+                            </p>
+                          </td>
+                        </td>
 
-                                          Make Payment
-                                        </a>
-                                      </div>
-                                    ) : (
-                                      <div
-                                        classes={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          padding: "5px 10px",
-                                          cursor: "pointer",
-                                        }}
-                                      >
-                                        Track Application
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
+                        <td style={{ padding: 10 }} className={classes.moreTxt}>
+                          <div style={{ position: "relative" }} className={classes.menuWeb}>
+                            <img
+                              className={classes.moreIcon}
+                              src={MoreIcon}
+                              alt="more"
+                              onClick={() => handleMoreClick(rowId)}
+                              style={{ cursor: "pointer" }}
+                            />
+                            {visibleDropdown === rowId && (
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: "100%",
+                                  right: 0,
+                                  backgroundColor: "white",
+                                  zIndex: 9999,
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "5px 10px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <img
+                                    src={Printer} // Replace with your actual path
+                                    alt="contact"
+                                    style={{ width: "20px", marginRight: "10px" }}
+                                  />
+                                  Print Receipt
+                                </div>
+
                               </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
+                            )}
+                          </div>
+                        </td>
+
+                      </tr>
+                    ))}
+                  </tbody>
                     </table>
                   </div>
-                )}
+                {/* )} */}
               </div>
 
               <div className={classes.mobileView}>
@@ -492,37 +556,77 @@ const AllApplications = () => {
                             <th></th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {currentEntries.map((rowId) => (
-                            <tr key={rowId}>
-                              <td classes={{ padding: 10, width: 100 }}>{rowId.service.name}</td>
-                              <td classes={{ padding: 10, color: "#0E4F27", fontWeight: 500 }}>{rowId.payment[0]?.payment_code}</td>
-                              <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                              <td classes={{ padding: 10, color: "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
-                                minimumIntegerDigits: 1,
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}</td>
-                              <td classes={{ padding: 10 }}>
-                                <img
-                                  className={classes.statusIcon}
-                                  src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
-                                  alt="status"
-                                />
-                              </td>
-                              {/* <td classes={{ padding: 10 }}>Tue 28th June - 9:30 AM</td> */}
-                              <td classes={{ padding: 10 }} className={classes.moreTxt}>
-                                <div classes={{ display: 'flex', flexDirection: "row", gap: 10 }}>
+                        <tbody style={{ whiteSpace: "wrap" }}>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((rowId, index) => (
+                      <tr key={rowId} style={{
+                        backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
+                      }}>
+                        <td style={{ padding: 10 }}>{rowId}</td>
+                        <td style={{ padding: 10 }}>ACME MEDICARE CLINICS LTD</td>
+                        <td style={{ padding: 10 }}>January 2025 Monthly PAYE Returns</td>
+                        <td style={{ padding: 10 }}>₦528,861.00</td>
+                        <td style={{ padding: 10 }}>₦528,861.00</td>
+                        <td style={{ padding: 10 }}>0003000178320</td>
+                        <td style={{ padding: 10 }}>
+                          {/* <img
+                                className={classes.statusIconsuccess}
+                                src={succesful}
+                                alt="status"
+                            /> */}
+                          <td style={{ padding: 10 }} className={classes.info1}>
+                            <p
+                              className={`${classes["status-success"]} ${classes.info}`}
+                            >
+                              Approved
+                            </p>
+                          </td>
+                        </td>
+
+                        <td style={{ padding: 10 }} className={classes.moreTxt}>
+                          <div style={{ position: "relative" }} className={classes.menuWeb}>
+                            <img
+                              className={classes.moreIcon}
+                              src={MoreIcon}
+                              alt="more"
+                              onClick={() => handleMoreClick(rowId)}
+                              style={{ cursor: "pointer" }}
+                            />
+                            {visibleDropdown === rowId && (
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: "100%",
+                                  right: 0,
+                                  backgroundColor: "white",
+                                  zIndex: 9999,
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "5px 10px",
+                                    cursor: "pointer",
+                                  }}
+                                >
                                   <img
-                                    src={rowId?.payment_status === "0" ? MakePaymentIcon : TrackIcon} // Replace with your actual path
-                                    alt="download"
-                                    classes={{ width: "20px", marginRight: "10px" }}
+                                    src={Printer} // Replace with your actual path
+                                    alt="contact"
+                                    style={{ width: "20px", marginRight: "10px" }}
                                   />
+                                  Print Receipt
                                 </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
+
+                              </div>
+                            )}
+                          </div>
+                        </td>
+
+                      </tr>
+                    ))}
+                  </tbody>
                       </table>
                     </div>
                   )}
@@ -610,6 +714,8 @@ const AllApplications = () => {
                 <p>No Applications found</p>
                 </div> */}
             </div>
+ {/* transaction details table  starts here*/}
+
 
             {/* Table container ends here */}
           </div>
