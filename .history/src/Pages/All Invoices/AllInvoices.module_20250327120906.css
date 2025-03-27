@@ -499,18 +499,7 @@ justify-content: space-between;
   padding: 20px;
 }
 
-.applicationHistory{
-  height: auto;
-  width: 100%;
-  background-color: var(--White);
-  border-radius: 8px;
-  margin-top: 2rem;
-  padding-top: 30px;
-  padding-left: 30px;
-  padding-bottom: 2rem;
-  margin-bottom: 8rem;
- 
-}
+
 .applicationHistory1{
   height: auto;
   width: 100%;

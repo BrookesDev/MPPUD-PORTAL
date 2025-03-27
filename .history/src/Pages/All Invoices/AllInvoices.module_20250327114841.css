@@ -529,30 +529,9 @@ justify-content: space-between;
   color: white;
 }
 
-.info1{
-  display: flex;
-  text-align: left;
-  align-items: flex-start;
-}
-
-.info{
-  display: flex;
-  text-align: center;
-}
-
-.moreTxt{
-  text-align: right;
-  
-}
-.moreIcon {
-  width: 24px;
-  height: 24px;
-}
-
-
 .mainTables{
   width: 100%;
-  /* margin-top: 32px; */
+  margin-top: 32px;
   padding: 10px;
   /* overflow-y: hidden !important; */
 }
@@ -1266,10 +1245,6 @@ margin-bottom: 5rem;
   color: #0AB34B;
 }
 
-.filter {
-  width: 17.96px;
-  height: 17.96px;
-}
  
 
 

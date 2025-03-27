@@ -529,27 +529,6 @@ justify-content: space-between;
   color: white;
 }
 
-.info1{
-  display: flex;
-  text-align: left;
-  align-items: flex-start;
-}
-
-.info{
-  display: flex;
-  text-align: center;
-}
-
-.moreTxt{
-  text-align: right;
-  
-}
-.moreIcon {
-  width: 24px;
-  height: 24px;
-}
-
-
 .mainTables{
   width: 100%;
   /* margin-top: 32px; */
