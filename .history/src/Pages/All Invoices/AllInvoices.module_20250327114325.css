@@ -529,30 +529,9 @@ justify-content: space-between;
   color: white;
 }
 
-.info1{
-  display: flex;
-  text-align: left;
-  align-items: flex-start;
-}
-
-.info{
-  display: flex;
-  text-align: center;
-}
-
-.moreTxt{
-  text-align: right;
-  
-}
-.moreIcon {
-  width: 24px;
-  height: 24px;
-}
-
-
 .mainTables{
   width: 100%;
-  /* margin-top: 32px; */
+  margin-top: 32px;
   padding: 10px;
   /* overflow-y: hidden !important; */
 }
@@ -1159,128 +1138,6 @@ margin-bottom: 5rem;
   font-weight: 700;
   padding-left: 10px;
   padding-top: 20px;
-}
-
-.hortrstns {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 30px;
- 
-}
-
-
-.divSearch {
-  position: relative;
-  /* width: 100%; */
-}
-
-.searchIcon {
-  position: absolute;
-  top: 14px;
-  left: 10px;
-}
-
-.search {
-  border: 1px solid #F2F2F2;
-  border-radius: 8px;
-  height: 38px;
-  width: 215px;
-  padding-left: 34px;
-  background-color: #F2F2F2;
-}
-
-.search::placeholder {
-  font-size: 12px;
-  font-weight: 300;
-  color: #b4b4b4;
-}
-
-.bttens {
-  margin: 0 5px;
-  width: 140px;
-  height: 40px;
-  display: flex;
-  padding-left: 12px;
-  font-size: 12px;
-  align-items: center;
-  border: 1px solid #E0E0E0;
-  gap: 2%;
-  border-radius: 10px;
-  outline: none;
-  color: #828282;
-  background-color: transparent;
-}
-
-.imgss {
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-}
-
-.divBtn {
-  /* font-size: 14px;
-   color: #828282;
-   font-weight: 600;
-   gap: 10px;
-   border-radius: 8px;
-   background-color: #F2F2F2;
-   margin-left: 10px;*/
- 
-   margin-right: 30px;
- } 
-
- .divOne > span{
-  color: rgba(224, 224, 224, 1);
-  width: 2px;
-  height: 20px;
-  /* background-color:#e0e0e0; */
-}
-
-.divOne {
-  display: flex;
-  align-items: center;
-  background-color: #2B975F;
-  padding: 4px 9px;
-  border-radius: 4px;
-  gap: 8px;
-  border: 1px solid #2B975F;
-}
-
-.stIC{
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5.5px;
-  /* background-color: #0AB34B; */
-}
-
-.stIC > p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
-}
-
-.stN {
-  font-size: 12.57px;
-  font-weight: 600;
-  color: #0AB34B;
-}
-
-.filter {
-  width: 17.96px;
-  height: 17.96px;
-}
- 
-
-
-
-.midDiv {
-  margin-top: 5px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3%;
 }
 
 .tabSet{

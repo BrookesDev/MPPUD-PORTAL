@@ -1102,7 +1102,9 @@ const Allinvoices = () => {
               <div>
                 <p className={classes.wlcm}>Invoices</p>
               </div>
-            
+              <div onClick={handleNewApplication}>
+                <button className={classes.applctnbtn}>New Invoice</button>
+              </div>
             </div>
             <Modal
               show={showModal}

@@ -7,7 +7,7 @@ import UploadIcon from "../../Asset/upload.png";
 import Printer from '../../Asset/printer.png';
 import xport from "../../Asset/export.png";
 import search from "../../Asset/search.svg";
-import Calender from "../../Asset/calendar.svg";
+v
 import agent from "../../Asset/agent.svg";
 import { MdOutlineDownload } from "react-icons/md";
 import {
@@ -2136,7 +2136,48 @@ const AllPayment = () => {
               </Modal.Body>
             </Modal>
             <div>
-        
+                         <div className={classes.usrwlcm}>
+                           <div className={classes.wlcmcont}>
+                             <p
+                               className={isFilled === "2" ? classes.wlcmintro : ""}
+                               classes={
+                                 isFilled === "0" || isFilled === "1"
+                                   ? {
+                                       background:
+                                         "linear-gradient(to bottom, #21B55A, #0C5C2B)",
+                                       color: "#fff",
+                                       textAlign: "center",
+                                       padding: "10px",
+                                       // borderRadius: "5px",
+                                       fontWeight: 700,
+                                       cursor: "pointer",
+                                       width: "100%",
+                                       display: "flex",
+                                       justifyContent: "center",
+                                       alignItems: "center",
+                                     }
+                                   : {}
+                               }
+                               onClick={
+                                 isFilled === "0"
+                                   ? () => navigate("/complete_your_registration")
+                                   : isFilled === "1"
+                                   ? () => navigate("/finish_onboarding_process")
+                                   : undefined
+                               }
+                             >
+                               {isFilled === "2" ? (
+                                 "Here’s a summary of the current activity on your account."
+                               ) : (
+                                 <span className={classes.classesdpText}>
+                                   Here, you can seamlessly submit budget requests, track
+                                   approvals, monitor financial performance, and manage
+                                   transactions.
+                                 </span>
+                               )}
+                             </p>
+                           </div>
+                         </div>
            
                          <div className={classes.allcards}>
                          
