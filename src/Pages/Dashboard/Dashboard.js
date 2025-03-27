@@ -104,8 +104,7 @@ const Dashboard = () => {
         setIsFilled(detailss);
       }
 
-      console.log("isFilled");
-
+ 
     } catch (e) {
       alert('Failed to fetch the input from storage');
     }
@@ -114,6 +113,8 @@ const Dashboard = () => {
   useEffect(() => {
     readData();
   }, []);
+
+ 
 
   const headers = {
     "Content-Type": "application/json",
@@ -230,6 +231,13 @@ const Dashboard = () => {
       .join(' ');
   };
 
+  const fullName = `${toSentenceCase(firstName)} ${toSentenceCase(lastName)}`;
+  const truncatedName = fullName.length > 17 
+    ? fullName.split(" ").reduce((acc, word) => {
+        return acc.length + word.length <= 17 ? acc + " " + word : acc;
+      }, "").trim() + "..."
+    : fullName;
+
 
   return (
     <>
@@ -257,10 +265,10 @@ const Dashboard = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div className={classes.wlcmcont}>
-                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span classes={{ fontSize: 15 }}><Badge classes={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
+                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {truncatedName}👋 <span style={{ fontSize: 15 }}><Badge style={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
                 <p
                   className={isFilled === "2" ? classes.wlcmintro : ""}
-                  classes={(isFilled === "0" || isFilled === "1") ? {
+                  style={(isFilled === "0" || isFilled === "1") ? {
                     background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
                     color: "#fff",
                     textAlign: "center",
@@ -277,9 +285,9 @@ const Dashboard = () => {
                 >
                   {isFilled === "2" ?
                     "Here’s a summary of the current activity on your account." :
-                    <span className={classes.classesdpText} >
-                      Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.
-                    </span>
+                    <>
+                    ⚠️ Application incomplete. 👉 Tap to complete!
+                  </>
                   }
                 </p>
               </div>

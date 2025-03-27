@@ -97,7 +97,7 @@ export default function DashboardNav({ show, handleClose }) {
         const pathToItem = {
             '/dashboard': 'Dashboard',
             // ...(userData === "corporate" ? {"/user_management": "User Management"} : {}),
-            '/application_page': 'Applications',
+            '/applications': 'Applications',
             '/invoices': 'Invoices',
             '/payments': 'Payments',
             '/support_tickets': 'Support Tickets',
@@ -151,7 +151,7 @@ export default function DashboardNav({ show, handleClose }) {
     // ];
     const navItems = [
         { to: '/dashboard', name: 'Dashboard', icon: [dshbrd, dshbrdActive] },
-        { to: '/application_page', name: 'Applications', icon: [app, appActive] },
+        { to: '/applications', name: 'Applications', icon: [app, appActive] },
         // { to: '/settings', name: 'Settings', icon: [setting, settingActive] },
         { to: '/invoices', name: 'Invoices', icon: [Invoices, InvoicesActive] },
         { to: '/payments', name: 'Payments', icon: [app, appActive] },
