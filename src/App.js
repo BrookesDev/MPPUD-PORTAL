@@ -40,6 +40,7 @@ import NewNinVerification from "./Pages/NewSignup/NewNinVerification.js";
 import OnboardingStin from "./Pages/NewSignup/OnboardingStin.js";
 import CompletedSuccess from "./Pages/NewSignup/CompletedSuccess.js";
 import NewCacCompleteReg from "./Pages/CAC Complete Reg/NewCacCompleteReg.js";
+import ApplicationPage from "./Pages/ApplicationPage/Application.js";
 
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
             <Route path="/payments" element={<AllPayment />} />
             <Route path='/new_applications' element={<NewApplications />} />
             <Route path='/land_ratification_application' element={<LandRatificationApp />} />
+            <Route path='/application_page' element={<ApplicationPage />} />
 
             <Route path="/Welly" element={<Welly/>} />
         <Route path="/Fill" element={<Fill />} />
