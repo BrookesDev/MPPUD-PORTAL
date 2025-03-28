@@ -56,13 +56,12 @@
   /* margin-top: 2rem; */
   padding: 3rem 1.3rem 2rem 1.3rem;
   padding-left: 0px;
-  /* padding-top: 0; */
+  padding-top: 0;
   padding-bottom: 0;
   /* margin-bottom: 8rem; */
 }
 
 .applicationHistoryy {
-  
   height: auto;
   width: 100%;
   background-color: black;
@@ -71,7 +70,6 @@
 }
 
 .prgText1 {
-
   /* display: inline-block; */
   width: 100%;
   font-style: italic;
@@ -204,40 +202,6 @@
   height: 48px;
   border-radius: 1000px;
   border: none !important;
-}
-
-.btnBom{
-  display: flex;
-  align-items: center;
-  gap:10px;
-  justify-content: center;
-}
-.invBtn{
-  background-color: white;
-  color: black;
-  /* height: 20px; */
-  padding: 10px;
-  width: 200px;
-  border-radius: 8px;
-  white-space: nowrap;
-  border: 1px solid #21B55A;
-  font-weight: 700;
-}
-.invBtn:hover{
-  background-color: rgb(240, 236, 236);
-  color: black;
-  border: none;
-  
-}
-.appBtn{
-  background-color: #21B55A;
-  color: white;
-  /* height: 20px; */
-  padding: 10px;
-  width: 200px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 700;
 }
 
 .maincontent {
@@ -800,7 +764,6 @@ img:hover {
 }
 .profileContainer {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* padding-right: 10px; */

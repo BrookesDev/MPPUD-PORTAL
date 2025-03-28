@@ -3138,7 +3138,7 @@ const LandRatificationApp = () => {
                                {userData === "individual" && (
                          <>
                            <div style={{ }} />
-                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory} style={{paddingTop:0}}>
+                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
                              <div className={classes.firstDiv}>
                               
                              </div>
