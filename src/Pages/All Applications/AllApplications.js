@@ -17,7 +17,7 @@ import DownloadIcon from '../../Asset/download.png';
 import TrackIcon from '../../Asset/track.png';
 import ContactIcon from '../../Asset/support.png';
 import Card from "../../Components/Card";
-
+import ViewIcon from "../../Asset/eye.png";
 import notransaction from '../../Asset/no-transaction-icon.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import featured from '../../Asset/Featured icon.png';
@@ -38,11 +38,13 @@ import { useTheme } from '../../ThemeContext';
 
 const AllApplications = () => {
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShow(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShow = () => setShow(true);
   const [bearer, setBearer] = useState('');
+  const [roless, setRoless] = useState([]);
   const [totalCompleted, setTotalCompleted] = useState('');
   const [totalApplications, setTotalApplications] = useState('');
   const [totalPending, setTotalPending] = useState('');
@@ -56,6 +58,8 @@ const AllApplications = () => {
   const handleClockTime = () => {
     setClockTime(!clockTime);
   }
+  const [foundInvoice, setFoundInvoice] = useState([]);
+  const [foundInvoiceID, setFoundInvoiceID] = useState("");
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
   const [benLoading, setBenLoading] = useState(false);
@@ -127,10 +131,10 @@ const AllApplications = () => {
     setBenLoading(true);
     try {
       const response = await axios.get(
-        `${BASE_URL}/customer/dashboard`,
+        `${BASE_URL}/applicant/applications`,
         { headers }
       );
-      const results = response.data?.data?.applications;
+      const results = response.data?.data;
       const resultx = response.data?.data?.completed_applications;
       const resultxx = response.data?.data?.pending_applications;
       const resultxxx = response.data?.data?.total_applications;
@@ -231,12 +235,71 @@ const AllApplications = () => {
       .join(' ');
   };
 
+  const fetchData1 = async (id) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/application_details`, {
+        headers,
+        params: { id },
+      });
+      const roleList = response.data?.data[0];
+      const customer = response.data?.data[0]?.customer;
+      const customerTyp = response.data?.data[0]?.customer?.user_type;
+      const applicationdocs = response.data?.data[0]?.application_document;
+      const payment = response.data?.data[0]?.payment;
+      console.log(roleList, ".LLSKKS");
+    
+   
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setRoless([]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const fullName = `${toSentenceCase(firstName)} ${toSentenceCase(lastName)}`;
   const truncatedName = fullName.length > 17 
     ? fullName.split(" ").reduce((acc, word) => {
         return acc.length + word.length <= 17 ? acc + " " + word : acc;
       }, "").trim() + "..."
     : fullName;
+
+    const handleEyeClick = async (id, appType) => {
+      console.log(appType);
+      const foundInvoice = tableData.find((item) => item.id === id);
+      setFoundInvoiceID(id);
+      setFoundInvoice(foundInvoice);
+  
+      await fetchData1(id);
+  
+      // setShow20(true);
+      if (appType === "Land Allocation") {
+        // console.log(roless);
+        // setShowAllocation(true);
+      // } else if (appType === "Confirmation") {
+      //   console.log(roless);
+      //   setShowConfirmation(true);
+      // } else if (appType === "Land Ratification") {
+      //   setShowRatification(true);
+      // } else if (appType === "Certificate of Occupancy") {
+      //   setShowCFO(true);
+      // } else if (appType === "Land Search") {
+      //   setShowLand(true);
+      // } else if (appType === "Land Information") {
+      //   setShowInfo(true);
+      // } else if (appType === "Governor's Consent") {
+      //   setShowGovernor(true);
+      // } else if (appType === "Scheme Allocation") {
+      //   setShowScheme(true);
+      } else {
+        // setShow20(true);
+      }
+    };
 
 
   return (
@@ -422,18 +485,18 @@ const AllApplications = () => {
             </div>
 
               <div className={classes.mainTables}>
-                {/* {benLoading ? (
+                {benLoading ? (
                   <>
                     <Placeholder xs={6} />
                     <Placeholder className="w-75" /> <Placeholder classes={{ width: '25%' }} />
                   </>
                   
-                ) : currentEntries.length === 0 ? ( */}
-                  {/* <div className={classes.notFound}>
+                ) : currentEntries.length === 0 ? (
+                  <div className={classes.notFound}>
                     <img src={notransaction} alt="not-found" />
                     <p>No Applications found</p>
-                  </div> */}
-                {/* ) : ( */}
+                  </div> 
+                 ) : ( 
                   <div >
                     <table classes={{ width: "98%" }}>
 
@@ -452,16 +515,16 @@ const AllApplications = () => {
                       </thead>
 
                       <tbody style={{ whiteSpace: "wrap" }}>
-                    {[1, 2, 3, 4, 5].map((rowId, index) => (
+                    {currentEntries.map((rowId, index) => (
                       <tr key={rowId} style={{
                         backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
                       }}>
                         <td style={{ padding: 10 }}>{index + 1}</td>
-                        <td style={{ padding: 10 }}>APP-011-1231</td>
-                        <td style={{ padding: 10 }}>Building Permit</td>
-                        <td style={{ padding: 10 }}>27-03-2025</td>
-                        <td style={{ padding: 10 }}>ONGOING</td>
-                        <td style={{ padding: 10 }}>PAID</td>
+                        <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                        <td style={{ padding: 10 }}>{rowId.apptype?.description}</td>
+                        <td style={{ padding: 10 }}>{formatDate(rowId.updated_at)}</td>
+                        <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
                         <td style={{ padding: 10 }}>DLM</td>
                         <td style={{ padding: 10 }}>₦528,861.00</td>
                         <td style={{ padding: 10 }} className={classes.moreTxt}>
@@ -506,6 +569,30 @@ const AllApplications = () => {
                                               />
                                               Print Receipt
                                             </div>
+                                            <div
+      onClick={() => {
+        handleEyeClick(rowId.id, rowId?.apptype?.description);
+        handleMoreClick(null);
+      }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        padding: "5px 10px",
+        cursor: "pointer",
+         textAlign: "left",
+         whiteSpace: "nowrap"
+      }}
+    >
+      <img
+        src={ViewIcon}
+        alt="view application"
+        style={{
+          width: "20px",
+          marginRight: "10px",
+        }}
+      />
+      View Application
+    </div>
 
                               </div>
                             )}
@@ -517,7 +604,7 @@ const AllApplications = () => {
                   </tbody>
                     </table>
                   </div>
-                {/* )} */}
+                 )} 
               </div>
 
               <div className={classes.mobileView}>
