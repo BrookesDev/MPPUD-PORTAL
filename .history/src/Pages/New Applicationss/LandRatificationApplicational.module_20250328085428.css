@@ -13,7 +13,7 @@
   width: 100%;
   background-color: #fff;
   border-radius: 8px;
-  /* margin-top: 2rem; */
+  margin-top: 2rem;
   /* padding-top: 5px; */
   padding-left: 30px;
   padding-right: 30px;
@@ -55,9 +55,7 @@
   border-radius: 8px;
   /* margin-top: 2rem; */
   padding: 3rem 1.3rem 2rem 1.3rem;
-  padding-left: 0px;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-left: 0;
   /* margin-bottom: 8rem; */
 }
 
@@ -735,7 +733,7 @@ img:hover {
   line-height: 28px;
   text-align: left;
   text-decoration-skip-ink: none;
-  /* margin-left: 10px; */
+  margin-left: 10px;
 }
 .firstInfos h1 {
   color: #ffffff;

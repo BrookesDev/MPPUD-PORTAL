@@ -2368,7 +2368,10 @@ const LandRatificationApp = () => {
                     </Container>
                   )}
                 </div>
-                <Form
+              </div>
+            </div>
+            {/* <div className={classes.formContainer}> */}
+            <Form
               className={
                 isDarkMode ? classes.formContainer1 : classes.formContainer
               }
@@ -2990,11 +2993,6 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
             </Form>
-              </div>
-              
-            </div>
-            {/* <div className={classes.formContainer}> */}
-            
             <Modal
               show={showModalSuccess}
               onHide={() => setShowModalSuccess(false)}

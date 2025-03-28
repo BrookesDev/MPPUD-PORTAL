@@ -2368,7 +2368,8 @@ const LandRatificationApp = () => {
                     </Container>
                   )}
                 </div>
-                <Form
+              </div>
+              <Form
               className={
                 isDarkMode ? classes.formContainer1 : classes.formContainer
               }
@@ -2990,8 +2991,6 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
             </Form>
-              </div>
-              
             </div>
             {/* <div className={classes.formContainer}> */}
             

@@ -1339,19 +1339,9 @@ const LandRatificationApp = () => {
                     All fields marked with an asterisk (*) are required
                   </p>
                   {/* {userData === "individual" && ( */}
-                  <div
-                                className={
-                                  isDarkMode
-                                    ? classes.firstInfos
-                                    : classes.firstInfo
-                                }
-                                style={{ marginTop: 30 }}
-                              >
-                                <h1 style={{paddingLeft:30}}>PERSONAL INFORMATION</h1>
-                              </div>
-
+                  
                     <Container>
-                      <Form style={{padding:20}}>
+                      <Form>
                         <Row className="mb-3">
                           <Col md={6}>
                             <Form.Group controlId="formInput1">
@@ -1749,12 +1739,12 @@ const LandRatificationApp = () => {
                                     ? classes.firstInfos
                                     : classes.firstInfo
                                 }
-                                style={{paddingLeft:20 }}
+                                style={{ marginTop: 30 }}
                               >
-                                <h1>OCCUPATION INFORMATION</h1>
+                                <h1>Occupation Information</h1>
                               </div>
 
-                              <Form style={{padding:20}}>
+                              <Form>
                                 <Row className="mb-3">
                                   <Col md={6}>
                                     <Form.Group controlId="formInput1">
@@ -1978,10 +1968,10 @@ const LandRatificationApp = () => {
                                     : classes.firstInfo
                                 }
                               >
-                                <h1 style={{paddingLeft:20}}>NEXT OF KIN INFORMATION</h1>
+                                <h1>Next of Kin Information</h1>
                               </div>
 
-                              <Form style={{padding:20}}>
+                              <Form>
                                 <Row className="mb-3">
                                   <Col md={6}>
                                     <Form.Group controlId="formInput1">
@@ -2368,7 +2358,10 @@ const LandRatificationApp = () => {
                     </Container>
                   )}
                 </div>
-                <Form
+              </div>
+            </div>
+            {/* <div className={classes.formContainer}> */}
+            <Form
               className={
                 isDarkMode ? classes.formContainer1 : classes.formContainer
               }
@@ -2990,11 +2983,6 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
             </Form>
-              </div>
-              
-            </div>
-            {/* <div className={classes.formContainer}> */}
-            
             <Modal
               show={showModalSuccess}
               onHide={() => setShowModalSuccess(false)}

@@ -86,7 +86,7 @@ function Login() {
       const createdBy = response.data?.data?.user?.created_by;
      
       console.log(response.data?.data?.user?.customer?.photo);
-      console.log(response.data?.data?.user)
+      console.log()
 
       localStorage.setItem('userName', result);
       localStorage.setItem('createdBy', createdBy);
