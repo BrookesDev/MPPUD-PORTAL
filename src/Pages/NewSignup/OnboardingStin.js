@@ -189,7 +189,7 @@ const [activeIndex, setActiveIndex] = useState(0);
         `${BASE_URL}/customer_registration`,
         {
           tin: sTin,
-          ogun_resident: isTaxpayer,
+          // ogun_resident: isTaxpayer,
           registration_type: selectedRegType,
         },
         {

@@ -35,6 +35,8 @@ import { Row, Col } from "react-bootstrap";
 // import localforage from 'localforage';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { saveAs } from "file-saver";
+import Papa from "papaparse";
 import { BASE_URL } from '../../API/Api';
 import Notification from '../../Components/Notification/Notification';
 import { useTheme } from '../../ThemeContext';
@@ -79,6 +81,7 @@ const AllApplications = () => {
   const [foundInvoiceID, setFoundInvoiceID] = useState("");
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState("");
   const [benLoading, setBenLoading] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
   const [surveyPlan,setSurveyPlan] = useState("")
@@ -88,11 +91,26 @@ const AllApplications = () => {
   const [electricalPlan,setElectricalPlan] = useState("")
   const [structuralPlan,setStructuralPlan] = useState("")
 
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const formatDateForComparison = (dateString) => {
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+  const filteredData = tableData.filter((item) => {
+    const matchesDate = selectedDate
+      ? formatDateForComparison(item.created_at) === selectedDate
+      : true;
+  
+      const matchesSearch = searchTerm.trim()
+      ? item?.apptype?.description.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
+      : true;
+  
+    return matchesDate && matchesSearch; // Both conditions must be met
+  });
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
   const totalPages = Math.ceil(tableData.length / entriesPerPage);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
   const [showUploadTCC, setShowUploadTCC] = useState(false);
@@ -357,6 +375,37 @@ const AllApplications = () => {
       // navigate('/accounting/customers_receiptssss', { state: { selectedInvoice } });
     };
   
+    const handleDateChange = (e) => {
+      setSelectedDate(e.target.value)
+    }
+
+    const exportToCSV = () => {
+      if (tableData.length === 0) {
+        alert("No data available for export.");
+        return;
+      }
+    
+      // Define CSV Headers
+      const headers = ["S/N", "Application Number", "Application Type", "Submission Date", "Application Status", "Payment Status"];
+    
+      // Map the data to match CSV format
+      const csvData = tableData.map((item, index) => ({
+        "S/N": index +  1 || "N/A",
+        "Application Number": item.uuid || "N/A",
+        "Application Type": item.apptype?.description || "N/A",
+        "Submission Date": formatDate(item.created_at) || "N/A",
+        "Application Status": item.approval_status === 0 ? "Ongoing" : "Completed" || "N/A",
+        "Payment Status": item.payment_status === "0" ? "Unpaid" : "Paid" || "N/A",
+      }));
+    
+      // Convert to CSV format
+      const csv = Papa.unparse({ fields: headers, data: csvData });
+    
+      // Create a Blob for download
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      saveAs(blob, "Applications.csv");
+    };
+
 
   return (
     <>
@@ -755,8 +804,8 @@ const AllApplications = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div className={classes.wlcmcont}>
-                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Applications</p>
-               
+                <p classes={{ color: isDarkMode ? "white" : "#101828", fontWeight: 600, fontSize: 30 }} className={classes.wlcm}>Applications</p>
+               <p>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
               <button onClick={() => setShowModal(true)} className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
                 <span> Make New Application</span>
@@ -848,15 +897,37 @@ const AllApplications = () => {
                 <div className={classes.divSearch}>
                   <img src={search} alt="search" className={classes.searchIcon} />
                   <input
+                  value={searchTerm}
                     type="text"
                     placeholder="Search"
                     className={classes.search}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                    
                   />
+                  {searchTerm && (
+      <button 
+        onClick={() => setSearchTerm('')}
+        style={{
+          position: 'absolute',
+          right: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: '#000'
+        }}
+      >
+        ×
+      </button>
+      )}
                 </div>
-                <Form.Select
+                {/* <Form.Select
                   id='status'
                   style={{
-                    width: 100,
+                   
                     height: 40,
                     borderRadius: 8,
                     fontSize: 12,
@@ -864,24 +935,24 @@ const AllApplications = () => {
                     fontWeight: 400,
                     color: '#4F4F4F',
                     padding: '0.5rem',
-                    // backgroundColor: '#F2F2F2',
-                    // border: 0
+                   
                   }}
                   name="DataTables_Table_0_length"
                   aria-controls="DataTables_Table_0"
                   className="custom-select custom-select-sm form-control form-control-sm"
                 >
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                  <option value="All">Status</option>
-                </Form.Select>
+                  <option value="">Select Status</option>
+                  <option value="0">Ongoing</option>
+                  <option value="1">Completed</option>
+                </Form.Select> */}
 
 
 
-                <button className={classes.bttens}>
-                  Pick date <img src={Calender} className={classes.imgss} alt="calender icon" />
-                </button>
+                <input 
+  type="date" 
+  className={classes.bttens} 
+  onChange={handleDateChange} name="date" value={selectedDate}
+/>
 
                 <label
                   style={{
@@ -898,7 +969,7 @@ const AllApplications = () => {
 
                   <div className={classes.divBtn}>
                     <div className={classes.divOne}>
-                      <div className={classes.stIC}>
+                      <div onClick={exportToCSV} className={classes.stIC}>
                         <p className={classes.stN}>Export</p>
                         <img src={xport} alt="status" className={classes.filter} />
                       </div>
@@ -949,7 +1020,7 @@ const AllApplications = () => {
                         <td style={{ padding: 10 }}>{index + 1}</td>
                         <td style={{ padding: 10 }}>{rowId.uuid}</td>
                         <td style={{ padding: 10 }}>{rowId.apptype?.description}</td>
-                        <td style={{ padding: 10 }}>{formatDate(rowId.updated_at)}</td>
+                        <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
                         <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
                         <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
                         <td style={{ padding: 10 }}>{rowId.payment_status === "0"
@@ -1068,38 +1139,34 @@ const AllApplications = () => {
                           <th classes={{ color: isDarkMode && "white" }}>Application Number</th>
                           <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
                           <th classes={{ color: isDarkMode && "white" }}>Submission Date</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th classes={{ color: isDarkMode && "white" }}>Payment Status</th>
                           <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Amount</th>
+                          {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
                           <th></th>
                           </tr>
                         </thead>
                         <tbody style={{ whiteSpace: "wrap" }}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((rowId, index) => (
+                        {currentEntries.map((rowId, index) => (
                       <tr key={rowId} style={{
                         backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
                       }}>
-                        <td style={{ padding: 10 }}>{rowId}</td>
-                        <td style={{ padding: 10 }}>ACME MEDICARE CLINICS LTD</td>
-                        <td style={{ padding: 10 }}>January 2025 Monthly PAYE Returns</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
-                        <td style={{ padding: 10 }}>0003000178320</td>
-                        <td style={{ padding: 10 }}>
-                          {/* <img
-                                className={classes.statusIconsuccess}
-                                src={succesful}
-                                alt="status"
-                            /> */}
-                          <td style={{ padding: 10 }} className={classes.info1}>
-                            <p
-                              className={`${classes["status-success"]} ${classes.info}`}
-                            >
-                              Approved
-                            </p>
-                          </td>
-                        </td>
-
+                        <td style={{ padding: 10 }}>{index + 1}</td>
+                        <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                        <td style={{ padding: 10 }}>{rowId.apptype?.description}</td>
+                        <td style={{ padding: 10 }}>{formatDate(rowId.updated_at)}</td>
+                        <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status === "0"
+                                    ? "Awaiting your Payment"
+                                    : rowId.payment_status === "1" &&
+                                      rowId.approval_status === "0"
+                                    ? rowId.role?.name
+                                    : rowId.payment_status === "1" &&
+                                    rowId.approval_status === "1"
+                                  ? "Approved"
+                                    : null}</td>
+                        {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
                         <td style={{ padding: 10 }} className={classes.moreTxt}>
                           <div style={{ position: "relative" }} className={classes.menuWeb}>
                             <img
@@ -1122,26 +1189,56 @@ const AllApplications = () => {
                                 }}
                               >
                                 <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    padding: "5px 10px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <img
-                                    src={Printer} // Replace with your actual path
-                                    alt="contact"
-                                    style={{ width: "20px", marginRight: "10px" }}
-                                  />
-                                  Print Receipt
-                                </div>
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "5px 10px",
+                                                cursor: "pointer",
+                                                textAlign: "left",
+                                                whiteSpace: "nowrap"
+                                              }}
+                                              
+                                            >
+                                              <img
+                                                src={Printer}
+                                                alt="invoice"
+                                                style={{
+                                                  width: "20px",
+                                                  marginRight: "10px",
+                                                }}
+                                              />
+                                              Print Receipt
+                                            </div>
+                                            <div
+      onClick={() => {
+        handleEyeClick(rowId.id, rowId?.apptype?.description);
+        handleMoreClick(null);
+      }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        padding: "5px 10px",
+        cursor: "pointer",
+         textAlign: "left",
+         whiteSpace: "nowrap"
+      }}
+    >
+      <img
+        src={ViewIcon}
+        alt="view application"
+        style={{
+          width: "20px",
+          marginRight: "10px",
+        }}
+      />
+      View Application
+    </div>
 
                               </div>
                             )}
                           </div>
                         </td>
-
+                      
                       </tr>
                     ))}
                   </tbody>
@@ -1178,52 +1275,84 @@ const AllApplications = () => {
                   </div>
 
                   <div className={classes.btmPagination}>
-                    <div classes={{ display: 'flex' }}>
-                      <button
-                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                      >
-                        {"<"}
-                      </button>
-                      {[...Array(totalPages)].map((_, page) => {
-                        // Show only 5 pages or less if available
-                        if (page < 3 || page === currentPage - 1 || page === totalPages - 1) {
-                          return (
-                            <button
-                              key={page + 1}
-                              classes={{
-                                textAlign: "center",
-                                marginLeft: '0.4rem',
-                                marginRight: '0.4rem',
-                                fontSize: '14px',
-                                fontWeight: 700,
-                                color: page + 1 === currentPage ? '#ffffff' : '#333333',
-                                backgroundColor: page + 1 === currentPage ? '#21B55A' : '#fff',
-                                height: '32px',
-                                borderRadius: '8px',
-                                //   padding: '0.5rem',
-                                border: '1px solid #F1F1F1',
-                                width: '32px',
-                                cursor: "pointer"
-                              }}
-                              onClick={() => setCurrentPage(page + 1)}
-                            >
-                              {page + 1}
-                            </button>
-                          );
-                        }
-                        return null;
-                      })}
-                      <button
-                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        {">"}
-                      </button>
-                    </div>
-                  </div>
+                        <div style={{ display: "flex" }}>
+                          <button
+                            style={{
+                              textAlign: "center",
+                              border: "1px solid #F1F1F1",
+                              backgroundColor: "#fff",
+                              borderRadius: 8,
+                              height: "32px",
+                              width: "32px",
+                              fontWeight: 700,
+                              fontSize: 14,
+                              color: "#000000",
+                              cursor: "pointer",
+                            }}
+                            onClick={handlePrevPage}
+                            disabled={currentPage === 1}
+                          >
+                            {"<"}
+                          </button>
+                          {[...Array(totalPages)].map((_, page) => {
+                            // Show only 5 pages or less if available
+                            if (
+                              page < 3 ||
+                              page === currentPage - 1 ||
+                              page === totalPages - 1
+                            ) {
+                              return (
+                                <button
+                                  key={page + 1}
+                                  style={{
+                                    textAlign: "center",
+                                    marginLeft: "0.4rem",
+                                    marginRight: "0.4rem",
+                                    fontSize: "14px",
+                                    fontWeight: 700,
+                                    color:
+                                      page + 1 === currentPage
+                                        ? "#ffffff"
+                                        : "#333333",
+                                    backgroundColor:
+                                      page + 1 === currentPage
+                                        ? "#21B55A"
+                                        : "#fff",
+                                    height: "32px",
+                                    borderRadius: "8px",
+                                    //   padding: '0.5rem',
+                                    border: "1px solid #F1F1F1",
+                                    width: "32px",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => setCurrentPage(page + 1)}
+                                >
+                                  {page + 1}
+                                </button>
+                              );
+                            }
+                            return null;
+                          })}
+                          <button
+                            style={{
+                              textAlign: "center",
+                              border: "1px solid #F1F1F1",
+                              backgroundColor: "#fff",
+                              borderRadius: 8,
+                              height: "32px",
+                              width: "32px",
+                              fontWeight: 700,
+                              fontSize: 14,
+                              color: "#000000",
+                              cursor: "pointer",
+                            }}
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                          >
+                            {">"}
+                          </button>
+                        </div>
+                      </div>
 
                 </div>
               )}

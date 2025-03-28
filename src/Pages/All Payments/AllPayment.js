@@ -700,6 +700,7 @@ const AllPayment = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Payments</p>
+                <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
              
             </div>
@@ -2214,7 +2215,7 @@ const AllPayment = () => {
           
                      <div className={classes.applicationHistory}>
                                 <div className={classes.hortrstns}>
-                                  <p className={classes.recenttrsd}> Recent History</p>
+                                  <p className={classes.recenttrsd}> All Payments</p>
                                   <div className={classes.midDiv}>
                                     <div className={classes.divSearch}>
                                       <img src={search} alt="search" className={classes.searchIcon} />

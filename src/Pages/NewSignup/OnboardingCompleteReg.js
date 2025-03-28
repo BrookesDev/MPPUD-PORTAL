@@ -267,8 +267,10 @@ function OnboardingCompleteReg() {
           </Row>
         </div>
         <div className={classes.rgtcontainer}>
-          <div className={classes.maintext}>
-            <h1> Complete Registration </h1>
+          <div className={classes.maintext}> 
+          <h1 style={{paddingBottom: '50px'}}> Complete Registration </h1>
+          <h6 style={{fontWeight: '700', marginBottom: '-3px'}}> Hi👋, <span style={{color: '#21B55A'}}>{name || "User"}! </span> </h6>
+           
             <h6> To continue, please Select Registration type</h6>
 
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">

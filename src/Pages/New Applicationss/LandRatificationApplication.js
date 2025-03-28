@@ -23,7 +23,7 @@ import {
   Accordion,
   Card,
 } from "react-bootstrap";
-
+import { FiCopy } from 'react-icons/fi';
 import { Link, redirect, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../API/Api";
@@ -61,6 +61,7 @@ const LandRatificationApp = () => {
   const [show10, setShow10] = useState(false);
 
   const handleClose = () => setShow(false);
+  const handleClose10 = () => setShow10(false);
   const handleShow = () => setShow(true);
   const handleShow10 = () => setShow10(true);
 
@@ -186,10 +187,13 @@ const LandRatificationApp = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [allLands, setAllLands] = useState([]);
-
+  const [paymentUrl, setPaymentUrl] = useState("");
   const [nationality, setNationality] = useState("");
   const [status, setStatus] = useState("");
-
+  const [responseData, setResponseData] = useState([]);
+  const [responseData1, setResponseData1] = useState([]);
+  const [responseData2, setResponseData2] = useState([]);
+  const [responseData3, setResponseData3] = useState([]);
   const [userData, setUserData] = useState("");
   const [cac, setCac] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -214,6 +218,7 @@ const LandRatificationApp = () => {
   const [dateBirth, setDateBirth] = useState("");
   const [nin, setNin] = useState("");
   const [lastName, setLastName] = useState("");
+  const [selectedBuilding, setSelectedBuiliding] = useState("");
   const [compName, setCompName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [businessIndustry, setBusinessIndustry] = useState("");
@@ -399,7 +404,7 @@ const LandRatificationApp = () => {
 
   const fetchCaveatTypes = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/all_caveat_type`, {
+      const response = await axios.get(`${BASE_URL}/applications/get-zone`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${bearer}`,
@@ -498,6 +503,10 @@ const LandRatificationApp = () => {
   };
   const handleType = e => {
     setSelectedType(e.target.value);
+    // setShowErrorMessage(false);
+  };
+  const handleBuildingChange = e => {
+    setSelectedBuiliding(e.target.value);
     // setShowErrorMessage(false);
   };
 
@@ -758,6 +767,9 @@ const LandRatificationApp = () => {
       selectedFile22 &&
       selectedBuildingType &&
       selectedType &&
+      selectedBuilding &&
+      sizePlot &&
+      sizeSqm &&
       attestation;
 
     setIsFormValid(isValid);
@@ -769,7 +781,10 @@ const LandRatificationApp = () => {
     selectedFile21 ,
     selectedFile22 ,
     selectedBuildingType ,
+    selectedBuilding ,
     selectedType ,
+      sizePlot ,
+      sizeSqm ,
     attestation
   ]);
 
@@ -877,6 +892,7 @@ const LandRatificationApp = () => {
 
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
+      formData.append("zone_id", selectedBuilding);
      
 
       // console.log(selectedFile);
@@ -899,25 +915,19 @@ const LandRatificationApp = () => {
       //   title: 'Success',
       //   text: response.data.message,
       // });
+      const resultssss = response.data.data[0];
+      const result = response.data.data[1];
+      const resultss = response.data.data[2];
+      const resultssxx = response.data.data[1].payment_url;
+      const resultss12 = response.data.data[3];
 
-      Swal.fire({
-        imageUrl: verified,
-        title: "Success!",
-        text: response.data.message,
-        confirmButtonText: "Okay",
-        imageWidth: 48,
-        imageHeight: 48,
-        customClass: {
-          title: classes.myTitle,
-          popup: classes.myText,
-          confirmButton: classes.myButton,
-        },
-        allowOutsideClick: false,
-        preConfirm: () => {
-          Swal.close(); // Explicitly close the modal
-        },
-      });
-      navigate("/applications");
+      setResponseData(result);
+      setResponseData1(resultss);
+      setResponseData2(resultssss);
+      setResponseData3(resultss12);
+      setPaymentUrl(resultssxx);
+      handleShow10();
+      handleClosePreview();
       setAllocationDate("");
       setSelectedDevelopment("");
       setSelectedStation("");
@@ -1241,6 +1251,13 @@ const LandRatificationApp = () => {
     "Yewa South",
   ];
 
+  const handleGenerateInvoice = () => {
+    navigate("/generated_invoice", {
+      state: { responseData, responseData1, responseData2, responseData3 },
+    });
+  
+  };
+
   // console.log(allApplications)
   const { isDarkMode } = useTheme();
   return (
@@ -1326,6 +1343,141 @@ const LandRatificationApp = () => {
                       alt="camera"
                     />
                   </div> */}
+                   <Modal show={show10} onHide={handleClose10} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Application Invoice</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div className={classes.content}>
+                  <div className={classes.priceList}>
+                    <div className={classes.row}>
+                      <span>
+                        Your application is in progress. It will be completed
+                        upon the payment of relevant fees at this stage. Kindly
+                        find the invoice details as shown below.
+                      </span>
+                    </div>
+                    {/* <Modal.Footer /> */}
+                    <div
+                      style={{ marginTop: 10 }}
+                      className={`${classes.row} ${classes.total}`}
+                    >
+                      <span
+                        style={{
+                          fontSize: 25,
+                          color: "#21B55A",
+                          marginTop: -10,
+                        }}
+                      >
+                        Payment Code
+                      </span>
+                    </div>
+                    <div className={classes.row}>
+                    <span
+  style={{
+    fontSize: 18,
+    fontWeight: 700,
+    marginTop: -15,
+  }}
+>
+  {responseData.payment_code}{" "}
+  <span
+    onClick={() => {
+      navigator.clipboard.writeText(responseData.payment_code);
+      alert('Copied to clipboard!');
+    }}
+    style={{
+      fontSize: 10,
+      cursor: "pointer",
+      color: "green", // optional for visual cue
+      marginLeft: 5
+    }}
+  >
+    click to copy <FiCopy size={16} />
+  </span>
+</span>
+                    </div>
+                    <Modal.Footer />
+                  
+                    {responseData1.map((item, index) => (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span>{item.name}</span>
+                        <span>
+                          {new Intl.NumberFormat("en-NG", {
+                            style: "currency",
+                            currency: "NGN",
+                          }).format(item.amount)}
+                        </span>
+                      </div>
+                    ))}
+                    <div
+                      style={{
+                        background: "#F0F2F5",
+                        padding: 9,
+                        borderRadius: 5,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                      className={`${classes.row} ${classes.total}`}
+                    >
+                      <span>Total Amount</span>
+                      <span style={{ fontWeight: 700 }}>
+                        {new Intl.NumberFormat("en-NG", {
+                          style: "currency",
+                          currency: "NGN",
+                        }).format(responseData.amount)}
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </Modal.Body>
+              <Modal.Footer />
+              <div className={classes.btmBtn22}>
+                <Button
+                  variant="success"
+                  className={classes.finBtn}
+                  onClick={() => {
+                    window.open(paymentUrl, "_blank");
+                    navigate("/applications");
+                  }}
+                  style={{ marginLeft: "10px", fontWeight: 700 }}
+                >
+                  Make Payment (BPMS)
+                </Button>
+                {/* <Button
+                  variant="success"
+                  className={classes.finBtn}
+                  disabled={parseFloat(0.0) < parseFloat(responseData.amount)}
+                 
+                  style={{
+                    marginLeft: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    fontWeight: 700,
+                  }}
+                >
+                  Make Payment (Wallet)
+                  <span style={{ fontSize: "0.875rem" }}>
+                    (Wallet Balance: 0.00)
+                  </span>
+                </Button> */}
+                <Button
+                  variant="success"
+                  className={classes.finBtn1}
+                  onClick={handleGenerateInvoice}
+                >
+                  Generate Invoice
+                </Button>
+              </div>
+            </Modal>
 
                 <div className={classes.formCont}>
                   <p className={classes.formPrg} style={{}}>
@@ -2417,7 +2569,7 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <div className={classes.fileUpload} onClick={handleClick1}>
                       <img
@@ -2456,7 +2608,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick}>
                     <img
@@ -2496,7 +2648,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick30}>
                     <img
@@ -2532,7 +2684,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick40}>
                     <img
@@ -2572,7 +2724,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick31}>
                     <img
@@ -2608,7 +2760,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick32}>
                     <img
@@ -2649,13 +2801,14 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Select Land Use Type
+                      Select Land Use Type <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Select
                       className={classes.optioncss}
                       onChange={handleProposedBuild}
+                      value={selectedBuildingType}
                     >
-                      <option value="">Select Land Use Type</option>
+                      <option value="">Select Land Use Type </option>
                {tableData32?.map((item, index) => (
                  <option
                    key={index}
@@ -2668,14 +2821,44 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
+
                 <Col md={6}>
+                  <Form.Group controlId="option3">
+                  <Form.Label
+  className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
+>
+  Building Area/Location {selectedBuildingType === "1" && <span style={{color: "red"}}>*</span>}
+</Form.Label>
+                    <Form.Select
+                    disabled={selectedBuildingType !== "1"}
+                      className={classes.optioncss}
+                      onChange={handleBuildingChange}
+                      value={selectedBuilding}
+                    >
+                      <option value="">Select building area/location </option>
+               {caveatTypes?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                
+              </Row>
+              <Row className="mb-3">
+              <Col md={6}>
                   <Form.Group controlId="proposedTimeline">
                     <Form.Label
                       className={
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Select Type
+                      Select Type <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Select
                       className={classes.optioncss}
@@ -2694,6 +2877,46 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                
+              </Row>
+              <Row className="mb-3">
+              <Col md={12}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      onChange={(e) => setSizeSqm(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              
               </Row>
 
               <Row className="mb-3">
@@ -3925,7 +4148,75 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
 
-             
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={12}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Building Area/Location 
+                    </Form.Label>
+                    <Form.Select
+                   
+                      className={classes.optioncss}
+                      disabled
+                      value={selectedBuilding}
+                    >
+                      <option value="">Select building area/location </option>
+               {caveatTypes?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              
+              </Row> 
 
        <Row className="mb-3">
          <Col md={12}>
