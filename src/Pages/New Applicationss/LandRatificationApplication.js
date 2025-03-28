@@ -758,6 +758,9 @@ const LandRatificationApp = () => {
       selectedFile22 &&
       selectedBuildingType &&
       selectedType &&
+      selectedArea &&
+      sizePlot &&
+      sizeSqm &&
       attestation;
 
     setIsFormValid(isValid);
@@ -770,6 +773,9 @@ const LandRatificationApp = () => {
     selectedFile22 ,
     selectedBuildingType ,
     selectedType ,
+    selectedArea ,
+      sizePlot ,
+      sizeSqm ,
     attestation
   ]);
 
@@ -2417,7 +2423,7 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <div className={classes.fileUpload} onClick={handleClick1}>
                       <img
@@ -2456,7 +2462,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick}>
                     <img
@@ -2496,7 +2502,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick30}>
                     <img
@@ -2532,7 +2538,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick40}>
                     <img
@@ -2572,7 +2578,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick31}>
                     <img
@@ -2608,7 +2614,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
+                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick32}>
                     <img
@@ -2649,13 +2655,13 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Select Land Use Type
+                      Select Land Use Type <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Select
                       className={classes.optioncss}
                       onChange={handleProposedBuild}
                     >
-                      <option value="">Select Land Use Type</option>
+                      <option value="">Select Land Use Type </option>
                {tableData32?.map((item, index) => (
                  <option
                    key={index}
@@ -2675,7 +2681,7 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Select Type
+                      Select Type <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Select
                       className={classes.optioncss}
@@ -2694,6 +2700,73 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      onChange={(e) => setSizeSqm(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={12}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Building Area/Location <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      onChange={handleAreaChange}
+                    >
+                      <option value="">Select building area/location </option>
+               {tableData32?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              
               </Row>
 
               <Row className="mb-3">
@@ -3925,7 +3998,74 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
 
-             
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={12}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Building Area/Location <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      value={selectedArea}
+                      disabled
+                    >
+                      <option value="">Select building area/location </option>
+               {tableData32?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              
+              </Row> 
 
        <Row className="mb-3">
          <Col md={12}>

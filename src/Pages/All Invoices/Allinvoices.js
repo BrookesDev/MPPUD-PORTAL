@@ -1101,6 +1101,7 @@ const Allinvoices = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Invoices</p>
+                <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
             
             </div>
@@ -7952,17 +7953,18 @@ const Allinvoices = () => {
 
            <div className={classes.applicationHistory}>
                       <div className={classes.hortrstns}>
-                        <p className={classes.recenttrsd}> Recent History</p>
+                        <p className={classes.recenttrsd}> My Invoices</p>
                         <div className={classes.midDiv}>
-                          <div className={classes.divSearch}>
+                          {/* <div className={classes.divSearch}>
                             <img src={search} alt="search" className={classes.searchIcon} />
                             <input
                               type="text"
                               placeholder="Search"
                               className={classes.search}
                             />
-                          </div>
-                          <Form.Select
+                            
+                          </div> */}
+                          {/* <Form.Select
                             id='status'
                             style={{
                               width: 100,
@@ -7984,15 +7986,15 @@ const Allinvoices = () => {
                             <option value="All">Status</option>
                             <option value="All">Status</option>
                             <option value="All">Status</option>
-                          </Form.Select>
+                          </Form.Select> */}
           
           
           
-                          <button className={classes.bttens}>
+                          {/* <button className={classes.bttens}>
                             Pick date <img src={Calender} className={classes.imgss} alt="calender icon" />
-                          </button>
+                          </button> */}
           
-                          <label
+                          {/* <label
                             style={{
                               fontSize: 14,
                               color: " #828282",
@@ -8015,7 +8017,7 @@ const Allinvoices = () => {
                             </div>
           
           
-                          </label>
+                          </label> */}
           
                         </div>
                       </div>

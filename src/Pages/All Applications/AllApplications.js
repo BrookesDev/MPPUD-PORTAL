@@ -29,6 +29,8 @@ import { Navbar, Container, Button } from 'react-bootstrap';
 // import localforage from 'localforage';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { saveAs } from "file-saver";
+import Papa from "papaparse";
 import { BASE_URL } from '../../API/Api';
 import Notification from '../../Components/Notification/Notification';
 import { useTheme } from '../../ThemeContext';
@@ -62,14 +64,29 @@ const AllApplications = () => {
   const [foundInvoiceID, setFoundInvoiceID] = useState("");
   const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState("");
   const [benLoading, setBenLoading] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
-
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const formatDateForComparison = (dateString) => {
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+  const filteredData = tableData.filter((item) => {
+    const matchesDate = selectedDate
+      ? formatDateForComparison(item.created_at) === selectedDate
+      : true;
+  
+      const matchesSearch = searchTerm.trim()
+      ? item?.apptype?.description.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
+      : true;
+  
+    return matchesDate && matchesSearch; // Both conditions must be met
+  });
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
   const totalPages = Math.ceil(tableData.length / entriesPerPage);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
   const dropdownRef = useRef(null);
@@ -301,6 +318,37 @@ const AllApplications = () => {
       }
     };
 
+    const handleDateChange = (e) => {
+      setSelectedDate(e.target.value)
+    }
+
+    const exportToCSV = () => {
+      if (tableData.length === 0) {
+        alert("No data available for export.");
+        return;
+      }
+    
+      // Define CSV Headers
+      const headers = ["S/N", "Application Number", "Application Type", "Submission Date", "Application Status", "Payment Status"];
+    
+      // Map the data to match CSV format
+      const csvData = tableData.map((item, index) => ({
+        "S/N": index +  1 || "N/A",
+        "Application Number": item.uuid || "N/A",
+        "Application Type": item.apptype?.description || "N/A",
+        "Submission Date": formatDate(item.created_at) || "N/A",
+        "Application Status": item.approval_status === 0 ? "Ongoing" : "Completed" || "N/A",
+        "Payment Status": item.payment_status === "0" ? "Unpaid" : "Paid" || "N/A",
+      }));
+    
+      // Convert to CSV format
+      const csv = Papa.unparse({ fields: headers, data: csvData });
+    
+      // Create a Blob for download
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      saveAs(blob, "Applications.csv");
+    };
+
 
   return (
     <>
@@ -421,10 +469,32 @@ const AllApplications = () => {
                 <div className={classes.divSearch}>
                   <img src={search} alt="search" className={classes.searchIcon} />
                   <input
+                  value={searchTerm}
                     type="text"
                     placeholder="Search"
                     className={classes.search}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                    
                   />
+                  {searchTerm && (
+      <button 
+        onClick={() => setSearchTerm('')}
+        style={{
+          position: 'absolute',
+          right: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: '#000'
+        }}
+      >
+        ×
+      </button>
+      )}
                 </div>
                 {/* <Form.Select
                   id='status'
@@ -453,6 +523,7 @@ const AllApplications = () => {
                 <input 
   type="date" 
   className={classes.bttens} 
+  onChange={handleDateChange} name="date" value={selectedDate}
 />
 
                 <label
@@ -470,7 +541,7 @@ const AllApplications = () => {
 
                   <div className={classes.divBtn}>
                     <div className={classes.divOne}>
-                      <div className={classes.stIC}>
+                      <div onClick={exportToCSV} className={classes.stIC}>
                         <p className={classes.stN}>Export</p>
                         <img src={xport} alt="status" className={classes.filter} />
                       </div>
@@ -521,7 +592,7 @@ const AllApplications = () => {
                         <td style={{ padding: 10 }}>{index + 1}</td>
                         <td style={{ padding: 10 }}>{rowId.uuid}</td>
                         <td style={{ padding: 10 }}>{rowId.apptype?.description}</td>
-                        <td style={{ padding: 10 }}>{formatDate(rowId.updated_at)}</td>
+                        <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
                         <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
                         <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
                         <td style={{ padding: 10 }}>{rowId.payment_status === "0"

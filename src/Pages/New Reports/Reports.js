@@ -139,9 +139,9 @@ const Reports = () => {
 
   const readData = async () => {
     try {
-      const detail = await localforage.getItem('userName');
-      const details = await localforage.getItem('userToken');
-      const detailss = await localforage.getItem('isFilledState');
+      const detail = await localStorage.getItem('userName');
+      const details = await localStorage.getItem('userToken');
+      const detailss = await localStorage.getItem('isFilledState');
 
       if (details !== null) {
         setBearer(details);
@@ -361,7 +361,7 @@ const Reports = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Support Tickets</p>
-
+                <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
               <div>
                 <button onClick={handleOpenModal} className={classes.applctnbtn}>New Ticket</button>

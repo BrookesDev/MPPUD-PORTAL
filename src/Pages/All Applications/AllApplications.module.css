@@ -426,7 +426,7 @@ img:hover {
 }
 
 .wlcm {
-  font-weight: 600;
+font-weight: 600;
   font-size: 30px;
   font-family: 'inter';
   color: #101828;
@@ -1112,11 +1112,17 @@ margin-bottom: 5rem;
 .divOne {
   display: flex;
   align-items: center;
-  background-color: #2B975F;
+  background-color: #21B55A;
   height: 40px;
   padding: 10px;
   border-radius: 8px;
   border:none;
+  cursor: pointer;
+}
+.divOne:hover {
+
+  background-color: #0f5028;
+
 }
 
 .stIC{
@@ -1124,6 +1130,7 @@ margin-bottom: 5rem;
   align-items: center;
   gap: 4px;
   padding: 5.5px;
+  
   /* background-color: #0AB34B; */
 }
 

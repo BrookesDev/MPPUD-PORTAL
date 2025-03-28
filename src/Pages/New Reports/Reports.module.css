@@ -474,10 +474,10 @@ img:hover {
 }
 
 .wlcm {
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 30px;
   font-family: 'inter';
-  color: #21B55A;
+  color: #101828;
 }
 
 .usrwlcm {
@@ -496,6 +496,7 @@ justify-content: space-between;
   padding: 10px 32px !important;
   border-radius: 8px;
   border: none;
+  white-space: nowrap;
   box-shadow:  0px 7px 13.5px 0px rgba(33, 181, 90, 0.12);
 
 }
