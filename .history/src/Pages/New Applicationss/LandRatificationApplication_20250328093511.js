@@ -2996,7 +2996,7 @@ const LandRatificationApp = () => {
                         </span>
                       </>
                     ) : (
-                      "Continue"
+                      "Preview"
                     )}
                   </Button>
                 </Col>

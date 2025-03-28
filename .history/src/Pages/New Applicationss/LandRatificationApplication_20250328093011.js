@@ -1739,7 +1739,6 @@ const LandRatificationApp = () => {
                                 ? classes.applicationHistoryy
                                 : classes.applicationHistory
                             }
-                            style={{paddingTop:0}}
                           >
                             <div className={classes.firstDiv}></div>
 
@@ -1968,7 +1967,6 @@ const LandRatificationApp = () => {
                                 ? classes.applicationHistoryy
                                 : classes.applicationHistory
                             }
-                            style={{paddingTop:0}}
                           >
                             <div className={classes.firstDiv}></div>
 
@@ -2375,16 +2373,6 @@ const LandRatificationApp = () => {
                 isDarkMode ? classes.formContainer1 : classes.formContainer
               }
             >
-               <div
-                                className={
-                                  isDarkMode
-                                    ? classes.firstInfos
-                                    : classes.firstInfo
-                                }
-                                style={{paddingLeft:0 }}
-                              >
-                                <h1>BUILDING PERMIT FORM</h1>
-                              </div>
               {/* <Row className="mb-3">
                                     <Col md={12}>
                                       <Form.Group controlId="lga">
@@ -2996,7 +2984,7 @@ const LandRatificationApp = () => {
                         </span>
                       </>
                     ) : (
-                      "Continue"
+                      "Preview"
                     )}
                   </Button>
                 </Col>

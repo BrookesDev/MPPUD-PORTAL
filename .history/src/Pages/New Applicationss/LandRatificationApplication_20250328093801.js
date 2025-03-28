@@ -1968,7 +1968,7 @@ const LandRatificationApp = () => {
                                 ? classes.applicationHistoryy
                                 : classes.applicationHistory
                             }
-                            style={{paddingTop:0}}
+                             style={{paddingTop:0}}
                           >
                             <div className={classes.firstDiv}></div>
 
@@ -2996,7 +2996,7 @@ const LandRatificationApp = () => {
                         </span>
                       </>
                     ) : (
-                      "Continue"
+                      "Preview"
                     )}
                   </Button>
                 </Col>

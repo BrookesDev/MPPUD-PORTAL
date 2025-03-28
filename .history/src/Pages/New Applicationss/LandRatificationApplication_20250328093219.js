@@ -1739,7 +1739,6 @@ const LandRatificationApp = () => {
                                 ? classes.applicationHistoryy
                                 : classes.applicationHistory
                             }
-                            style={{paddingTop:0}}
                           >
                             <div className={classes.firstDiv}></div>
 
@@ -1968,7 +1967,6 @@ const LandRatificationApp = () => {
                                 ? classes.applicationHistoryy
                                 : classes.applicationHistory
                             }
-                            style={{paddingTop:0}}
                           >
                             <div className={classes.firstDiv}></div>
 
@@ -2381,9 +2379,9 @@ const LandRatificationApp = () => {
                                     ? classes.firstInfos
                                     : classes.firstInfo
                                 }
-                                style={{paddingLeft:0 }}
+                                style={{paddingLeft:20 }}
                               >
-                                <h1>BUILDING PERMIT FORM</h1>
+                                <h1>BUILDING INFORMATION</h1>
                               </div>
               {/* <Row className="mb-3">
                                     <Col md={12}>
@@ -2996,7 +2994,7 @@ const LandRatificationApp = () => {
                         </span>
                       </>
                     ) : (
-                      "Continue"
+                      "Preview"
                     )}
                   </Button>
                 </Col>
