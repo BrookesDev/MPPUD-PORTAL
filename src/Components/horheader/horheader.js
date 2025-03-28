@@ -105,7 +105,7 @@ export default function Horheader() {
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/customer/support-notifications`,
+        `${BASE_URL}/fetch_app_notifications`,
         {
           headers: {
             "Content-Type": "application/json",

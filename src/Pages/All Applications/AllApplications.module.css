@@ -426,10 +426,10 @@ img:hover {
 }
 
 .wlcm {
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 30px;
   font-family: 'inter';
-  color: #21B55A;
+  color: #101828;
 }
 
 
@@ -1068,13 +1068,16 @@ margin-bottom: 5rem;
 
 
 .bttens {
-  margin: 0 5px;
-  width: 140px;
+  padding: 10px;
+  /* margin: 0 5px; */
+  /* width: 140px; */
   height: 40px;
   display: flex;
-  padding-left: 12px;
+  /* padding-left: 12px; */
   font-size: 12px;
+  cursor: pointer;
   align-items: center;
+  justify-content: center;
   border: 1px solid #E0E0E0;
   gap: 2%;
   border-radius: 10px;
@@ -1110,10 +1113,10 @@ margin-bottom: 5rem;
   display: flex;
   align-items: center;
   background-color: #2B975F;
-  padding: 4px 9px;
-  border-radius: 4px;
-  gap: 8px;
-  border: 1px solid #2B975F;
+  height: 40px;
+  padding: 10px;
+  border-radius: 8px;
+  border:none;
 }
 
 .stIC{

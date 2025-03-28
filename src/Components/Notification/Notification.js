@@ -7,9 +7,7 @@ import goto from "../../Asset/goto.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { BiSolidMessageRoundedError } from "react-icons/bi";
 import { BASE_URL } from "../../API/Api";
-import axios from "axios";
-import localforage from 'localforage';
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios"
 import notify from "../../Asset/notify.svg";
 import SkeletonLoader from "./SkeletonLoader";
 import { Placeholder } from "react-bootstrap";
@@ -31,10 +29,10 @@ const Notification = ({setOpenNotification,openNotification}) => {
 
   const readData = async () => {
     try {
-      const detail = await localforage.getItem("userName");
-      const details = await localforage.getItem("userToken");
-      const detailss = await localforage.getItem("userData");
-      const customerImageData = await localforage.getItem("customerImage");
+      const detail = await localStorage.getItem("userName");
+      const details = await localStorage.getItem("userToken");
+      const detailss = await localStorage.getItem("userData");
+      const customerImageData = await localStorage.getItem("customerImage");
       console.log(customerImageData);
 
       if (detail !== null) {
@@ -68,7 +66,7 @@ const Notification = ({setOpenNotification,openNotification}) => {
     try {
         setIsLoading(true);
       const response = await axios.get(
-        `${BASE_URL}/customer/support-notifications`,
+        `${BASE_URL}/fetch_app_notifications`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -105,7 +103,7 @@ const Notification = ({setOpenNotification,openNotification}) => {
 
   const markAsRead = async (id) => {
     try {
-      await axios.get(`${BASE_URL}/customer/update-read-status?id=${id}`, {
+      await axios.get(`${BASE_URL}/update_read_status?id=${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${bearer}`,
@@ -177,10 +175,10 @@ const Notification = ({setOpenNotification,openNotification}) => {
                         <div className={classes.text}>
                           <p
                             style={{
-                              fontWeight: item.read ? "normal" : "bold",
+                              fontWeight: item.read_status === "0" ? "normal" : "bold",
                             }}
                           >
-                            {item.admin_message}
+                            {item.message}
                           </p>
                           <span className={classes.time}>
                             <img src={clock} alt="clock" />{" "}
