@@ -509,7 +509,7 @@ const AllApplications = () => {
                           <th classes={{ color: isDarkMode && "white" }}>Application Status</th>
                           <th classes={{ color: isDarkMode && "white" }}>Payment Status</th>
                           <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Amount</th>
+                          {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
                           <th></th>
                         </tr>
                       </thead>
@@ -525,8 +525,16 @@ const AllApplications = () => {
                         <td style={{ padding: 10 }}>{formatDate(rowId.updated_at)}</td>
                         <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
                         <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
-                        <td style={{ padding: 10 }}>DLM</td>
-                        <td style={{ padding: 10 }}>₦528,861.00</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status === "0"
+                                    ? "Awaiting your Payment"
+                                    : rowId.payment_status === "1" &&
+                                      rowId.approval_status === "0"
+                                    ? rowId.role?.name
+                                    : rowId.payment_status === "1" &&
+                                    rowId.approval_status === "1"
+                                  ? "Approved"
+                                    : null}</td>
+                        {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
                         <td style={{ padding: 10 }} className={classes.moreTxt}>
                           <div style={{ position: "relative" }} className={classes.menuWeb}>
                             <img
