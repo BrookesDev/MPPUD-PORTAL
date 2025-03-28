@@ -2927,7 +2927,7 @@ const LandRatificationApp = () => {
                                  <Row className="mb-3">
                                    <Col md={6}>
                                      <Form.Group controlId="dob">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>Date of Birth</Form.Label>
+                                       <Form.Label>Date of Birth</Form.Label>
                                        <Form.Control
                                          disabled
                                          value={dateBirth}
@@ -3138,13 +3138,13 @@ const LandRatificationApp = () => {
                                {userData === "individual" && (
                          <>
                            <div style={{ }} />
-                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory} style={{paddingTop:0}}>
+                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
                              <div className={classes.firstDiv}>
                               
                              </div>
        
                              <div className={classes.formCont}>
-                             <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{}}>
+                             <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{marginTop:30}}>
                                  <h1 style={{textTransform:'uppercase',marginLeft:0}}>Occupation Information</h1>
                                </div>
                               
@@ -3634,7 +3634,7 @@ const LandRatificationApp = () => {
      <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{marginTop:30,paddingLeft:10}}>
                                  <h1 style={{textTransform:'uppercase',}}>Building Permit Form</h1>
                                </div>
-     <Form className={isDarkMode ? classes.formContainer1 : classes.formContainerr} style={{paddingLeft:10}}>
+     <Form className={isDarkMode ? classes.formContainer1 : classes.formContainerr} style={{paddingLeft:L20}}>
       
      <Row className="mb-3">
                 <Col md={6}>
