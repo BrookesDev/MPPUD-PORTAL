@@ -320,8 +320,8 @@ export default function Horheader() {
             <Dropdown style={{ display: "flex", justifyContent: "flex-end" }}>
               <Dropdown.Toggle className={isDarkMode ? classes.usrinfos : classes.usrinfo}>
                 <img
-                  src={customerPicture || customerPicture || ProfileIcon}
-                  // src={customerPicture || ProfileIcon}
+                  // src={customerImages || customerPicture || ProfileIcon}
+                  src={customerPicture || ProfileIcon}
                   alt="profile-picture"
                   className={classes.bel}
                   onError={(e) => (e.target.src = ProfileIcon)}

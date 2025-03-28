@@ -5,7 +5,7 @@ import ProfileIcon from "../../Asset/Profile Icon.png";
 import classes from "./LandRatificationApplicational.module.css";
 import PdfIcon from "../../Asset/pdf.svg";
 import UploadIcon from "../../Asset/upload.png";
-import { FaInfoCircle } from "react-icons/fa"; // Import info icon
+
 import crop from "../../Asset/repoort.png";
 
 import HOC from "../../Asset/hoc.png";
@@ -44,8 +44,6 @@ import { useTheme } from "../../ThemeContext";
 const LandRatificationApp = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [preview, setPreview] = useState(false);
-  const handleClosePreview = () => setPreview(false);
   const [loading, setLoading] = useState(false);
   const { serviceID, paymentCode, appNumber } = location.state || {};
   const [schemes, setSchemes] = useState([]);
@@ -93,13 +91,7 @@ const LandRatificationApp = () => {
 
   const [propertySize, setPropertySize] = useState("");
   const [cofoNumber, setCofONumber] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
-  const handleConfirm = () => {
-    setShowModal(false);
-    setCreateLoading(true);
-    createApplication1(); // Call your function
-  };
   const [fileName, setFileName] = useState("Building Architectural Plan");
   const [fileName30, setFileName30] = useState("Electrical Architectural Plan");
   const [fileName31, setFileName31] = useState("Structural Engineering");
@@ -172,7 +164,6 @@ const LandRatificationApp = () => {
   const [sizePlot, setSizePlot] = useState("");
 
   const [sizeSqm, setSizeSqm] = useState("");
-  const [selectedType, setSelectedType] = useState("");
   const [selectedSource, setSelectedSource] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
@@ -199,7 +190,7 @@ const LandRatificationApp = () => {
   const [selectedBusinessIndustry, setSelectedBusinessIndustry] = useState("");
   const [selectedEmploymentStatus, setSelectedEmploymentStatus] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
-  const handlePreview = () => setPreview(true);
+
   const [customerState, setCustomerState] = useState("");
   const [customerLga, setCustomerLga] = useState("");
   const [stin, setStin] = useState("");
@@ -248,7 +239,7 @@ const LandRatificationApp = () => {
       const gender = await localStorage.getItem("gender");
       const firstName = await localStorage.getItem("firstName");
       const secondName = await localStorage.getItem("secondName");
-      const customerImageData = await localStorage.getItem("customerImage");
+      const customerImage = await localStorage.getItem("customerImage");
       const customerPicture = await localStorage.getItem("customerPicture");
       const customerPhone = await localStorage.getItem("userPhone");
       const customerAddress = await localStorage.getItem("userAddress");
@@ -339,10 +330,8 @@ const LandRatificationApp = () => {
       if (dateOfBirth !== null) {
         setDateBirth(dateOfBirth);
       }
-      if (customerImageData !== null) {
-        // console.log('This code runs')
-        setCustomerImage(customerImageData || null);
-        console.log(customerImageData);
+      if (customerImage !== null) {
+        setCustomerImage(customerImage);
       }
       if (customerPicture !== null) {
         setCustomerPicture(customerPicture);
@@ -391,12 +380,6 @@ const LandRatificationApp = () => {
     }
   };
 
-  useEffect(() => {
-    readData();
-  }, []);
-
-
-
   const fetchCaveatTypes = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/all_caveat_type`, {
@@ -442,7 +425,9 @@ const LandRatificationApp = () => {
     }
   }, [bearer]);
 
-
+  useEffect(() => {
+    readData();
+  }, []);
 
   // const ogirsbearer = '160899|RABQPvT1BkXLzgNRJGczilhF3ulicc16GbhGSiIG';
   // setBearer1(ogirsbearer);
@@ -494,10 +479,6 @@ const LandRatificationApp = () => {
 
   const handleProposedBuild = e => {
     setSelectedBuildingType(e.target.value);
-    // setShowErrorMessage(false);
-  };
-  const handleType = e => {
-    setSelectedType(e.target.value);
     // setShowErrorMessage(false);
   };
 
@@ -750,27 +731,33 @@ const LandRatificationApp = () => {
   useEffect(() => {
     // Check if all required fields are filled
     const isValid =
+      // selectedLGA &&
+      landLocation &&
+      allocationDate &&
+      selectedDevelopment &&
+      selectedLandUse &&
+      selectedBuildingType &&
+      timeLine &&
+      selectedSource &&
+      totalAmount &&
       selectedFile &&
       selectedFile2 &&
-      selectedFile15 &&
-      selectedFile40 &&
-      selectedFile21 &&
-      selectedFile22 &&
-      selectedBuildingType &&
-      selectedType &&
       attestation;
 
     setIsFormValid(isValid);
   }, [
-    selectedFile ,
-    selectedFile2 ,
-    selectedFile15 ,
-    selectedFile40 ,
-    selectedFile21 ,
-    selectedFile22 ,
-    selectedBuildingType ,
-    selectedType ,
-    attestation
+    // selectedLGA,
+    landLocation,
+    allocationDate,
+    selectedDevelopment,
+    selectedLandUse,
+    selectedBuildingType,
+    timeLine,
+    selectedSource,
+    totalAmount,
+    selectedFile,
+    attestation,
+    selectedFile2,
   ]);
 
   // setSelectedAppId(id);
@@ -860,24 +847,36 @@ const LandRatificationApp = () => {
         formData.append("survey_plan", selectedFile[0]);
       }
       if (selectedFile15 && selectedFile15.length > 0) {
-        formData.append("building_plan", selectedFile2[0]);
+        formData.append("purchase_agreement", selectedFile15[0]);
       }
       if (selectedFile40 && selectedFile40.length > 0) {
-        formData.append("electrical_plan", selectedFile15[0]);
+        formData.append("purchase_receipt", selectedFile40[0]);
       }
       if (selectedFile2 && selectedFile2.length > 0) {
-        formData.append("mechanical_plan", selectedFile40[0]);
+        formData.append("land_receipt", selectedFile2[0]);
       }
       if (selectedFile21 && selectedFile21.length > 0) {
-        formData.append("structural_engineering", selectedFile21[0]);
+        formData.append("land_receipt", selectedFile21[0]);
       }
       if (selectedFile22 && selectedFile22.length > 0) {
-        formData.append("title_document", selectedFile22[0]);
+        formData.append("land_receipt", selectedFile22[0]);
       }
 
-      formData.append("ptype", selectedBuildingType);
-      formData.append("utype", selectedType);
-     
+      formData.append("lga_of_land", selectedArea);
+      formData.append("estimated_development_amount", totalAmount);
+      formData.append("land_development_status", selectedDevelopment);
+      formData.append("land_location", selectedLocation);
+      formData.append("landuse_id", selectedLandUse);
+      formData.append("proposed_residential_building", selectedBuildingType);
+      formData.append("proposed_source_of_fund", selectedSource);
+      formData.append("size_in_plot", sizePlot);
+      formData.append("size_in_sqm", sizeSqm);
+      // formData.append("type", serviceID);
+      formData.append("price_bought_per_plot", documentAmount);
+      formData.append("code", paymentCode);
+      formData.append("location_name", selectedLocationName);
+      formData.append("app_number", appNumber);
+      formData.append("area_name", selectedAreaName);
 
       // console.log(selectedFile);
 
@@ -887,7 +886,7 @@ const LandRatificationApp = () => {
       };
 
       const response = await axios.post(
-        `${BASE_URL}/applications/save`,
+        `${BASE_URL}/application/make-new`,
         formData,
         { headers }
       );
@@ -1131,7 +1130,7 @@ const LandRatificationApp = () => {
   const fetchStatus = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/applications/get-land-use-type`, {
+      const response = await axios.get(`${BASE_URL}/all_land_status`, {
         headers,
       });
       const results = response.data?.data;
@@ -1145,23 +1144,6 @@ const LandRatificationApp = () => {
       setIsLoading(false);
     }
   };
-  const fetchLocation = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${BASE_URL}/applications/get-type`, {
-        headers,
-      });
-      const results = response.data?.data;
-      setTableData2(results);
-      console.log(results);
-    } catch (error) {
-      const errorStatus = error.response?.data?.message;
-      console.log(errorStatus);
-      setTableData2([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (bearer) {
@@ -1169,7 +1151,32 @@ const LandRatificationApp = () => {
     }
   }, [bearer]);
 
+  const fetchLocation = async areaId => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/location_by_area?id=${areaId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
 
+      const resultsss = response.data?.data;
+      setTableData2(resultsss);
+      console.log(resultsss);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Redirect to login page if unauthorized
+        // navigate("/");
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setTableData2([]); // Ensure this is set properly
+      }
+    }
+  };
 
   useEffect(() => {
     if (bearer) {
@@ -2361,1614 +2368,11 @@ const LandRatificationApp = () => {
                     </Container>
                   )}
                 </div>
-                <Form
-              className={
-                isDarkMode ? classes.formContainer1 : classes.formContainer
-              }
-            >
-              
-
-             
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="surveyPlan">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                    </Form.Label>
-                    <div className={classes.fileUpload} onClick={handleClick1}>
-                      <img
-                        src={ImageIcon}
-                        alt="icon"
-                        className={classes.leftIcon}
-                      />
-                      <span className={classes.uploadText}>
-                        {fileName1.length > 30
-                          ? fileName1.slice(0, 30) + "..."
-                          : fileName1}
-                      </span>
-                      <div className={classes.uploadButton}>
-                        <img
-                          src={UploadIcon}
-                          alt="upload"
-                          className={classes.uploadIcon}
-                        />
-                      </div>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        ref={fileInputRef1}
-                        onChange={handleFileChange}
-                        className={classes.hiddenFile}
-                      />
-                    </div>
-                    <p style={{ fontSize: 12, color: "red" }}>{imgError}</p>
-                    {/* <Form.Control className={classes.optioncss} type="file" accept=".pdf" onChange={handleFileChange} /> */}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                <Form.Group controlId="BuildingArchitectural">
-                <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName.length > 30
-                        ? fileName.slice(0, 30) + "..."
-                        : fileName}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef}
-                      onChange={handleFileChange2}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError4}</p>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick30}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName30.length > 30
-                        ? fileName30.slice(0, 30) + "..."
-                        : fileName30}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef30}
-                      onChange={handleFileChange30}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick40}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName40
-                        ? fileName40.length > 30
-                          ? fileName40.slice(0, 30) + "..."
-                          : fileName40
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef40}
-                      onChange={handleFileChange40}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick31}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName31.length > 30
-                        ? fileName31.slice(0, 30) + "..."
-                        : fileName31}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef31}
-                      onChange={handleFileChange31}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick32}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName32
-                        ? fileName32.length > 30
-                          ? fileName32.slice(0, 30) + "..."
-                          : fileName32
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef32}
-                      onChange={handleFileChange32}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Land Use Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                      onChange={handleProposedBuild}
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData32?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                      onChange={handleType}
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData2?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={12}>
-                  <Form.Group controlId="attestation">
-                    <Form.Label>Attestation</Form.Label>
-                    <Form.Check
-                      type="checkbox"
-                      checked={attestation}
-                      onChange={handleCheckboxChange}
-                      label={
-                        <div
-                          style={{
-                            fontSize: "15px",
-                            color: isDarkMode ? "#ffffff" : "#333",
-                            textAlign: "justify",
-                          }}
-                        >
-                          <p>
-                            Information supplied in this form is treated as
-                            strictly confidential. <br />
-                            I/We realise that it is an offense to make a false
-                            statement/claim in this form and that any allocation
-                            granted me on the basis of such false claim is
-                            revocable and may be revoked, and if a certificate
-                            of occupancy has been granted, such certificate must
-                            be revoked.
-                            <br />
-                            The Bureau of Lands and Survey accepts no
-                            responsibility for an application form not completed
-                            properly and for which reason such an application
-                            may be rejected. <br />
-                            I/We undertake to pay all necessary fees due to the
-                            preparation of a certificate of occupancy which may
-                            be issued consequent upon this application. <br />
-                            Should I withdraw the above application after making
-                            such deposit, I agree to forfeit the whole or such
-                            portion thereof as the Governor may decide.
-                          </p>
-                        </div>
-                      }
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3 mx">
-                <Col md={{ span: 6, offset: 3 }} className="text-center">
-                  <Button
-                    className={classes.modBtnn}
-                    variant="success"
-                    onClick={handlePreview}
-                    // disabled={!isFormValid}
-                    disabled={!isFormValid}
-                  >
-                    {/* {createLoading ? (
-                      <>
-                        <Spinner size="sm" />
-                        <span style={{ marginLeft: "5px" }}>
-                          Processing, please wait...
-                        </span>
-                      </>
-                    ) : ( */}
-                     Preview
-                    {/* )} */}
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
               </div>
               
             </div>
             {/* <div className={classes.formContainer}> */}
             
-            <Modal
-                show={preview}
-                onHide={handleClosePreview}
-                size="lg"
-                centered
-              >
-                <Modal.Header>
-                  <Modal.Title
-                    style={{
-                      fontSize: 18,
-                      color: "#333333",
-                      fontWeight: 500,
-                    }}
-                  >
-                   Preview Building Permit Form
-                  </Modal.Title>
-                  <Button
-                    variant="close"
-                    onClick={handleClosePreview}
-                  ></Button>
-                </Modal.Header>
-                <Modal.Body>
-                <div>
-          
-          <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
-           <div></div>
-          
-        
-        
-                         <div className={classes.firstDiv}>
-                     
-                           <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
-                        
-                             
-                             
-                            
-                           </div>
-                         </div>
-                         <div className={classes.profileContainer}>
-                         <h4 className={isDarkMode ? classes.wlcm1 : classes.wlcmModal}>APPLICATION FORM FOR BUILDING PERMIT</h4>
-                           <img
-                             src={customerImage || customerPicture || ProfileIcon}
-                             className={classes.imgPass}
-                             alt="profileImage"
-                             onError={(e) => (e.target.src = ProfileIcon)}
-                           />
-       
-                 
-                         </div>
-                        
-                         <div className={classes.formCont}>
-                         <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{marginTop:30}}>
-                                 <h1 style={{textTransform:'uppercase',marginTop:10}}>Personal Information</h1>
-                               </div>
-                         {/* <p  className={classes.formPrg} style={{}}>All fields marked with an asterisk (*) are required</p> */}
-                           {userData === "individual" && (
-                             <Container style={{}}>
-                               <Form>
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput1">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         First Name
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={firstName}
-                                         type="text"
-                                         placeholder="Toluwani"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput2">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Last Name
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={lastName}
-                                         type="text"
-                                         placeholder="Adekoya"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         S-TIN
-                                       </Form.Label>
-                                       <Form.Control
-                                         disabled
-                                         value={stin}
-                                         className={classes.formInpt}
-                                         type="text"
-                                         placeholder="12345678-1234"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput5">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         NIN Number
-                                       </Form.Label>
-                                       <Form.Control
-                                         disabled
-                                         value={nin}
-                                         className={classes.formInpt}
-                                         type="text"
-                                         placeholder="123456789098764"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput3">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Email Address
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={customerEmail}
-                                         onChange={(e) =>
-                                           setCustomerEmail(e.target.value)
-                                         }
-                                         type="email"
-                                         placeholder="adekoyatoluwani5@gmail.com"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput4">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Phone Number
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={customerPhone}
-                                         type="tel"
-                                         placeholder="070 1798 1231"
-                                         onChange={(e) =>
-                                           setCustomerPhone(e.target.value)
-                                         }
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="dob">
-                                       <Form.Label>Date of Birth</Form.Label>
-                                       <Form.Control
-                                         disabled
-                                         value={dateBirth}
-                                         className={classes.formInpt}
-                                         type="date"
-                                         onChange={(e) => setDateBirth(e.target.value)}
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         Gender
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={gender}
-                                         onChange={(e) => setGender(e.target.value)}
-                                       >
-                                         <option>Select Gender</option>
-                                         <option value="male">Male</option>
-                                         <option value="female">Female</option>
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput5">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Address
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={customerAddress}
-                                         type="text"
-                                         placeholder="Enter address"
-                                         onChange={(e) =>
-                                           setCustomerAddress(e.target.value)
-                                         }
-                                       />
-                                     </Form.Group>
-                                   </Col>
-       
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         Marital Status
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={status}
-                                         onChange={(e) => setStatus(e.target.value)}
-                                       >
-                                         <option>Select Status</option>
-                                         <option value="SINGLE">Single</option>
-                                         <option value="MARRIED">Married</option>
-                                         <option value="DIVORCE">Divorce</option>
-                                         <option value="SEPERATED">Seperated</option>
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         Nationality
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={nationality}
-                                         onChange={(e) =>
-                                           setNationality(e.target.value)
-                                         }
-                                       >
-                                         <option>Select Nationality</option>
-                                         <option value="s">Nigerian</option>
-                                         <option value="m">Non-Nigerian</option>
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-       
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         State
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={
-                                           statesInNigeria.find(
-                                             (state) =>
-                                               state.toUpperCase() ===
-                                               customerState.toUpperCase()
-                                           ) || ""
-                                         }
-                                         onChange={(e) =>
-                                           setCustomerState(e.target.value)
-                                         }
-                                       >
-                                         <option>Select State</option>
-                                         {statesInNigeria.map((state) => (
-                                           <option key={state} value={state}>
-                                             {state}
-                                           </option>
-                                         ))}
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput5">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Local Government Area
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={
-                                           ogunStateLGAs.find(
-                                             (lga) =>
-                                               lga
-                                                 .replace(/\s+/g, "_")
-                                                 .toUpperCase() ===
-                                               customerLga.toUpperCase()
-                                           ) || ""
-                                         }
-                                         onChange={(e) =>
-                                           setCustomerLga(e.target.value)
-                                         }
-                                       >
-                                         <option>Select LGA</option>
-                                         {ogunStateLGAs.map((lga) => (
-                                           <option key={lga} value={lga}>
-                                             {lga}
-                                           </option>
-                                         ))}
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-{/*               
-                                   <Col md={6}>
-                                     <Form.Label className={classes.labelTxt}>
-                                       Upload Recent Passport Photograph
-                                     </Form.Label>
-                                     <div
-                                       className={classes.fileUpload}
-                                       onClick={handleClick}
-                                     >
-                                       <img
-                                         src={ImageIcon}
-                                         alt="icon"
-                                         className={classes.leftIcon}
-                                       />
-                                       <span className={classes.uploadText}>
-                                         {fileName.length > 30
-                                           ? fileName.slice(0, 30) + "..."
-                                           : fileName}
-                                       </span>
-                                       <div className={classes.uploadButton}>
-                                         <img
-                                           src={UploadIcon}
-                                           alt="upload"
-                                           className={classes.uploadIcon}
-                                         />
-                                       </div>
-                                       <input
-                                         type="file"
-                                         accept=".jpeg,.jpeg,.png"
-                                         ref={fileInputRef}
-                                         onChange={handleFileChange2}
-                                         className={classes.hiddenFile}
-                                       />
-                                     </div>
-                                     <p style={{ fontSize: 12, color: "red" }}>
-                                       {imgError1}
-                                     </p>
-                                   </Col> */}
-                                 </Row>
-       
-                                 <Row className="mb-3"></Row>
-       
-                                 {/* <Button
-                                   className={classes.editDetailsBtn1}
-                                   variant="success"
-                                   onClick={() => customerInfo()}
-                                 >
-                                   {customerLoading ? (
-                                     <>
-                                       <Spinner size="sm" />
-                                    
-                                     </>
-                                   ) : userData === "corporate" ? (
-                                     "Upload Corporate Information"
-                                   ) : (
-                                     "Upload Personal Information"
-                                   )}
-                                 </Button> */}
-                               </Form>
-                               {userData === "individual" && (
-                         <>
-                           <div style={{ }} />
-                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
-                             <div className={classes.firstDiv}>
-                              
-                             </div>
-       
-                             <div className={classes.formCont}>
-                             <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{marginTop:30}}>
-                                 <h1 style={{textTransform:'uppercase',marginLeft:0}}>Occupation Information</h1>
-                               </div>
-                              
-                                 <Form>
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput1">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Company's Name
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={businessName}
-                                           disabled
-                                           onChange={(e) =>
-                                             setBusinessName(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="ABC Company"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput2">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Job Title/Position
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={jobTitle}
-                                           disabled
-                                           onChange={(e) =>
-                                             setJobTitle(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="Managing Director"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-       
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput3">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Business Industry
-                                         </Form.Label>
-                                         <Form.Select
-                                         disabled
-                                           value={selectedBusinessIndustry}
-                                           onChange={(e) =>
-                                             setSelectedBusinessIndustry(
-                                               e.target.value
-                                             )
-                                           }
-                                           className={classes.formInpt}
-                                         >
-                                           <option>Select Business Industry</option>
-                                           {[
-                                             "Agriculture",
-                                             "Technology",
-                                             "Healthcare",
-                                             "Finance",
-                                             "Education",
-                                             "Manufacturing",
-                                             "Retail",
-                                             "Construction",
-                                             "Transportation",
-                                             "Hospitality",
-                                           ].map((industry) => (
-                                             <option key={industry} value={industry}>
-                                               {industry}
-                                             </option>
-                                           ))}
-                                         </Form.Select>
-                                       </Form.Group>
-                                     </Col>
-                                     {/* <Col md={6}>
-                                       <Form.Group controlId="formInput4">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Employment Status
-                                         </Form.Label>
-                                         <Form.Select value={selectedEmploymentStatus} onChange={(e) => setSelectedEmploymentStatus(e.target.value)} className={classes.formInpt}>
-                                           <option>Select Employment Status</option>
-                                           {[
-                                             "Employed",
-                                             "Self-Employed",
-                                             "Unemployed",
-                                             "Student",
-                                             "Retired",
-                                             "Freelancer",
-                                             "Contractor",
-                                           ].map((status) => (
-                                             <option key={status} value={status}>
-                                               {status}
-                                             </option>
-                                           ))}
-                                         </Form.Select>
-                                       </Form.Group>
-                                     </Col> */}
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput1">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Company's Address
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={compAddress}
-                                           disabled
-                                           onChange={(e) => setAddress(e.target.value)}
-                                           type="text"
-                                           placeholder="Enter Address"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-       
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput2">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Company's Phone Number
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={compPhone}
-                                           disabled
-                                           onChange={(e) =>
-                                             setcompPhone(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="Enter Phone Number"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput2">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Company's Email Address
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={CompEmail}
-                                           disabled
-                                           onChange={(e) =>
-                                             setCompEmail(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="Enter Email Address"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-                                 </Form>
-                              
-                               {/* <div className={classes.editDetailsBtn}>
-                                 <button onClick={() => occupationInformation()}>
-                                   {loading ? "Updating" : "Update Details"}
-                                 </button>
-                               </div> */}
-                             </div>
-                           </div>
-                         </>
-                       )}
-                       {userData === "individual" && (
-                         <>
-                           <div style={{  }} />
-                           <div className={isDarkMode ? classes.applicationHistoryy : classes.applicationHistory}>
-                             <div className={classes.firstDiv}>
-                              
-                             </div>
-       
-                             <div className={classes.formCont}>
-                             <div className={isDarkMode ? classes.firstInfos : classes.firstInfo}>
-                                 <h1 style={{textTransform:'uppercase',marginLeft:0}}>Next of Kin Information</h1>
-                               </div>
-                               
-                                 <Form>
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput1">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           First Name
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={nokFirstName}
-                                           disabled
-                                           onChange={(e) =>
-                                             setNokFirstName(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="Toluwani"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput2">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Last Name
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={nokLastName}
-                                           disabled
-                                           onChange={(e) =>
-                                             setNokLastName(e.target.value)
-                                           }
-                                           type="text"
-                                           placeholder="Adekoya"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-       
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput3">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Email
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={nokEmail}
-                                           disabled
-                                           onChange={(e) =>
-                                             setNokEmail(e.target.value)
-                                           }
-                                           type="email"
-                                           placeholder="adekoyatoluwani5@gmail.com"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput4">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Telephone Number
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={nokPhone}
-                                           disabled
-                                           onChange={(e) =>
-                                             setNokPhone(e.target.value)
-                                           }
-                                           type="tel"
-                                           placeholder="070 1798 1231"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-                                   <Row className="mb-3">
-                                     <Col md={6}>
-                                       <Form.Group controlId="formInput3">
-                                         <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                           Address
-                                         </Form.Label>
-                                         <Form.Control
-                                           className={classes.formInpt}
-                                           value={nokAddress}
-                                           disabled
-                                           onChange={(e) =>
-                                             setNokAddress(e.target.value)
-                                           }
-                                           type="address"
-                                           placeholder="adekoyatoluwani5@gmail.com"
-                                         />
-                                       </Form.Group>
-                                     </Col>
-                                   </Row>
-                                 </Form>
-                               
-                               {/* <div className={classes.editDetailsBtn}>
-                                 <button onClick={() => occupationInformation()}>
-                                   {loading ? "Updating" : "Update Details"}
-                                 </button>
-                               </div> */}
-                             </div>
-                           </div>
-                         </>
-                       )}
-       
-                             </Container>
-                           )}
-                           {userData === "corporate" && (
-                             <Container>
-                               <Form>
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput1">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Business Name
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={businessName}
-                                         type="text"
-                                         placeholder="Toluwani"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput2">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         BN/RC Number
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={cac}
-                                         type="text"
-                                         placeholder="Adekoya"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput3">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Business Email Address
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={customerEmail}
-                                         type="email"
-                                         placeholder="adekoyatoluwani5@gmail.com"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput4">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Business Phone Number
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         type="tel"
-                                         disabled
-                                         value={customerPhone}
-                                         placeholder="070 1798 1231"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput5">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Business Address
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         type="text"
-                                         disabled
-                                         value={customerAddress}
-                                         placeholder="Enter address"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="dob">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>Date of Incorporation</Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={dateInc}
-                                         type="date"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-                                 {/* <Row className="mb-3">
-                                 <Col md={6}>
-                                   <Form.Group controlId="formInput6">
-                                     <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>Gender</Form.Label>
-                                     <Form.Select className={classes.formInpt}>
-                                       <option>Select Gender</option>
-                                       <option value="male">Male</option>
-                                       <option value="female">Female</option>
-                                     </Form.Select>
-                                   </Form.Group>
-                                 </Col>
-                                 <Col md={6}>
-                                   <Form.Group controlId="formInput5">
-                                     <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>Religion</Form.Label>
-                                     <Form.Select className={classes.formInpt}>
-                                       <option>Select Religon</option>
-                                       <option value="christianity">Christianity</option>
-                                       <option value="islam">Islam</option>
-                                       <option value="hinduism">Hinduism</option>
-                                       <option value="buddhism">Buddhism</option>
-                                       <option value="judaism">Judaism</option>
-                                       <option value="other">Other</option>
-                                     </Form.Select>
-                                   </Form.Group>
-                                 </Col>
-       
-                               </Row> */}
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         State
-                                       </Form.Label>
-                                       <Form.Select
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={
-                                           statesInNigeria.find(
-                                             (state) =>
-                                               state.toUpperCase() ===
-                                               customerState.toUpperCase()
-                                           ) || ""
-                                         }
-                                       >
-                                         <option>Select State</option>
-                                         {statesInNigeria.map((state) => (
-                                           <option key={state} value={state}>
-                                             {state}
-                                           </option>
-                                         ))}
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput5">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                         Local Government Area
-                                       </Form.Label>
-                                       <Form.Select
-                                         disabled
-                                         value={customerLga}
-                                         className={classes.formInpt}
-                                         onChange={(e) =>
-                                           setCustomerLga(e.target.value)
-                                         }
-                                       >
-                                         <option>Select LGA</option>
-                                         {ogunStateLGAs.map((lga) => (
-                                           <option key={lga} value={lga.toLowerCase()}>
-                                             {lga}
-                                           </option>
-                                         ))}
-                                       </Form.Select>
-                                     </Form.Group>
-                                   </Col>
-                                 </Row>
-       
-                                 <Row className="mb-3">
-                                   <Col md={6}>
-                                     <Form.Group controlId="formInput6">
-                                       <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                         S-TIN
-                                       </Form.Label>
-                                       <Form.Control
-                                         className={classes.formInpt}
-                                         disabled
-                                         value={stin}
-                                         type="text"
-                                         placeholder="12345678-1234"
-                                       />
-                                     </Form.Group>
-                                   </Col>
-                                   {/* <Col md={6}>
-                                   <Form.Group controlId="formInput5">
-                                     <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>NIN Number</Form.Label>
-                                     <Form.Control className={classes.formInpt} type="text" placeholder="123456789098764" />
-                                   </Form.Group>
-                                 </Col> */}
-                                 </Row>
-                               </Form>
-                             </Container>
-                           )}
-                         </div>
-                       </div>
-       
-                      
-                       <div style={{ marginTop: -70 }} />
-                      
-     </div>
-    
-     <div className={isDarkMode ? classes.firstInfos : classes.firstInfo} style={{marginTop:30}}>
-                                 <h1 style={{textTransform:'uppercase',}}>Building Permit Form</h1>
-                               </div>
-     <Form className={isDarkMode ? classes.formContainer1 : classes.formContainerr}>
-      
-     <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="surveyPlan">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Survey Plan 
-                    </Form.Label>
-                    <div className={classes.fileUpload} onClick={handleClick1}>
-                      <img
-                        src={ImageIcon}
-                        alt="icon"
-                        className={classes.leftIcon}
-                      />
-                      <span className={classes.uploadText}>
-                        {fileName1.length > 30
-                          ? fileName1.slice(0, 30) + "..."
-                          : fileName1}
-                      </span>
-                      <div className={classes.uploadButton}>
-                        <img
-                          src={UploadIcon}
-                          alt="upload"
-                          className={classes.uploadIcon}
-                        />
-                      </div>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        ref={fileInputRef1}
-                        disabled
-                        className={classes.hiddenFile}
-                      />
-                    </div>
-                    <p style={{ fontSize: 12, color: "red" }}>{imgError}</p>
-                    {/* <Form.Control className={classes.optioncss} type="file" accept=".pdf" onChange={handleFileChange} /> */}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                <Form.Group controlId="BuildingArchitectural">
-                <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Building Architectural Plan
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName.length > 30
-                        ? fileName.slice(0, 30) + "..."
-                        : fileName}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef}
-                      disabled
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError4}</p>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Electrical Architectural Plan
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick30}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName30.length > 30
-                        ? fileName30.slice(0, 30) + "..."
-                        : fileName30}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef30}
-                      disabled
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Mechanical Architectural Plan
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick40}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName40
-                        ? fileName40.length > 30
-                          ? fileName40.slice(0, 30) + "..."
-                          : fileName40
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef40}
-                      disabled
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Structural Engineering
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick31}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName31.length > 30
-                        ? fileName31.slice(0, 30) + "..."
-                        : fileName31}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef31}
-                      disabled
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Title Document
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick32}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName32
-                        ? fileName32.length > 30
-                          ? fileName32.slice(0, 30) + "..."
-                          : fileName32
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef32}
-                     disabled
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Land Use Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                     value={selectedBuildingType}
-                     disabled
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData32?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                     value={selectedType}
-                     disabled
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData2?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-             
-
-       <Row className="mb-3">
-         <Col md={12}>
-           <Form.Group controlId="attestation">
-             <Form.Label>Attestation</Form.Label>
-             <Form.Check
-               type="checkbox"
-               checked={attestation}
-               disabled
-            
-               label={
-                 <div
-                   style={{
-                     fontSize: "15px",
-                     color: isDarkMode ? "#ffffff" : "#333",
-                     textAlign: "justify",
-                   }}
-                 >
-                   <p>
-                     Information supplied in this form is treated as
-                     strictly confidential. <br />
-                     I/We realise that it is an offense to make a false
-                     statement/claim in this form and that any allocation
-                     granted me on the basis of such false claim is
-                     revocable and may be revoked, and if a certificate
-                     of occupancy has been granted, such certificate must
-                     be revoked.
-                     <br />
-                     The Bureau of Lands and Survey accepts no
-                     responsibility for an application form not completed
-                     properly and for which reason such an application
-                     may be rejected. <br />
-                     I/We undertake to pay all necessary fees due to the
-                     preparation of a certificate of occupancy which may
-                     be issued consequent upon this application. <br />
-                     Should I withdraw the above application after making
-                     such deposit, I agree to forfeit the whole or such
-                     portion thereof as the Governor may decide.
-                   </p>
-                 </div>
-               }
-             />
-           </Form.Group>
-         </Col>
-       </Row>
-
-       
-     </Form>
-     <div className={classes.btnBom}>
-     <Button variant="secondary" onClick={handleClosePreview} className={classes.invBtn}>
-            Cancel
-          </Button>
-          <Button variant="success"     onClick={() => setShowModal(true)} className={classes.appBtn}>
-          {createLoading ? (
-               <>
-                 <Spinner size="sm" />
-               </>
-             ) : (
-               "Submit"
-             )}
-          </Button>
-     </div>
-                 
-                </Modal.Body>
-              
-              </Modal>
-              <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Body className="text-center">
-        <FaInfoCircle size={50} className="text-warning mb-3" />
-
-          <h5 className="fw-bold">Submit Building Permit Application</h5>
-          <p className="text-muted">Are you sure you want to proceed?</p>
-        </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-center">
-          <Button variant="secondary" onClick={() => setShowModal(false)} className={classes.invBtn}>
-            No
-          </Button>
-          <Button variant="primary" onClick={handleConfirm} className={classes.appBtn}>
-            Yes, Proceed
-          </Button>
-        </Modal.Footer>
-      </Modal>
             <Modal
               show={showModalSuccess}
               onHide={() => setShowModalSuccess(false)}
