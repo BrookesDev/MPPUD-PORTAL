@@ -140,11 +140,11 @@ const AllPayment = () => {
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  // const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries1 = tableData1.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries2 = tableData2.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries3 = tableData3.slice(indexOfFirstEntry, indexOfLastEntry);
-  // const totalPages = Math.ceil(tableData?.length / entriesPerPage);
+  const totalPages = Math.ceil(tableData.length / entriesPerPage);
   const totalPages1 = Math.ceil(tableData1.length / entriesPerPage);
   const totalPages2 = Math.ceil(tableData2.length / entriesPerPage);
   const totalPages3 = Math.ceil(tableData3.length / entriesPerPage);
@@ -299,111 +299,62 @@ const AllPayment = () => {
   //     };
   //   }, []);
 
-  // const fetchallApplications = async () => {
-  //   setBenLoading(true);
-  //   try {
-  //     const response = await axios.get(`${BASE_URL}/customer/receipt`, {
-  //       headers,
-  //     });
-  //     console.log(response)
-  //     const results = response.data?.data?.applications;
+  const fetchallApplications = async () => {
+    setBenLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/customer/receipt`, {
+        headers,
+      });
+      console.log(response?.data?.data)
+      const results = response.data?.data?.applications;
 
 
-  //     setTableData(results);
-  //     console.log(results);
+      setTableData(results);
+      console.log(results);
  
-  //   } catch (error) {
-  //     if (error.response && error.response.status === 401) {
-       
-  //     } else {
-  //       let errorMessage = "An error occurred. Please try again.";
-  //       if (
-  //         error.response &&
-  //         error.response.data &&
-  //         error.response.data.message
-  //       ) {
-  //         if (typeof error.response.data.message === "string") {
-  //           errorMessage = error.response.data.message;
-  //         } else if (Array.isArray(error.response.data.message)) {
-  //           errorMessage = error.response.data.message.join("; ");
-  //         } else if (typeof error.response.data.message === "object") {
-           
-  //           console.log(errorMessage);
-  //         }
-  //       }
-  //       setTableData([]);
-  //     }
-  //   } finally {
-  //     setBenLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (bearer) {
-  //     fetchallApplications();
-  //   }
-  // }, [bearer]);
-
-   const fetchDashboardData = async () => {
-      setBenLoading(true);
-      try {
-        const response = await axios.get(`${BASE_URL}/customer/receipt`, {
-          headers,
-        });
-        console.log(response);
-        const results = response?.data?.data;
-        const resultx = response.data?.data?.completed_applications;
-        const resultxx = response.data?.data?.pending_applications;
-        const resultxxx = response.data?.data?.total_applications;
-        console.log(response?.data?.data);
-        setTableData(results);
-        console.log(results?.customer_invoice,"print all customer invoice")
-        setTotalCompleted(resultx);
-        setTotalPending(resultxx);
-        setTotalApplications(resultxxx);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // navigate('/applications');
-        } else {
-          let errorMessage = "An error occurred. Please try again.";
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) {
-            if (typeof error.response.data.message === "string") {
-              errorMessage = error.response.data.message;
-            } else if (Array.isArray(error.response.data.message)) {
-              errorMessage = error.response.data.message.join("; ");
-            } else if (typeof error.response.data.message === "object") {
-              // toast.error(errorMessage)
-              console.log(errorMessage);
-            }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // navigate('/applications');
+      } else {
+        let errorMessage = "An error occurred. Please try again.";
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          if (typeof error.response.data.message === "string") {
+            errorMessage = error.response.data.message;
+          } else if (Array.isArray(error.response.data.message)) {
+            errorMessage = error.response.data.message.join("; ");
+          } else if (typeof error.response.data.message === "object") {
+            // toast.error(errorMessage)
+            console.log(errorMessage);
           }
-          setTableData([]);
         }
-      } finally {
-        setBenLoading(false);
+        setTableData([]);
       }
-    };
-  
-    useEffect(() => {
-      if (bearer) {
-        fetchDashboardData();
-      }
-    }, [bearer]);
+    } finally {
+      setBenLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (bearer) {
+      fetchallApplications();
+    }
+  }, [bearer]);
 
   const handleOptionClick = (index) => {
     setSelectedOption(index);
   };
 
-  // const handlePrevPage = () => {
-  //   setCurrentPage(Math.max(currentPage - 1, 1));
-  // };
+  const handlePrevPage = () => {
+    setCurrentPage(Math.max(currentPage - 1, 1));
+  };
 
-  // const handleNextPage = () => {
-  //   setCurrentPage(Math.min(currentPage + 1, totalPages));
-  // };
+  const handleNextPage = () => {
+    setCurrentPage(Math.min(currentPage + 1, totalPages));
+  };
 
   const handleNewApplication = () => {
     navigate("/new_applications");
@@ -668,7 +619,7 @@ const AllPayment = () => {
 
       handleCloseTCC();
       handleClose20();
-      // fetchallApplications();
+      fetchallApplications();
     } catch (error) {
       let errorMessage = "An error occurred. Please try again.";
 
@@ -2444,7 +2395,7 @@ const AllPayment = () => {
                                                       onClick={() => handleMoreClick(rowId)}
                                                       style={{ cursor: "pointer" }}
                                                     />
-                                                    {/* {visibleDropdown === rowId && (
+                                                    {visibleDropdown === rowId && (
                                                       <div
                                                         style={{
                                                           position: "absolute",
@@ -2506,7 +2457,7 @@ const AllPayment = () => {
                                                           View Application
                                                         </div>
                                                       </div>
-                                                    )} */}
+                                                    )}
                                                   </div>
                                                 </td>
                                               </tr>
@@ -2617,7 +2568,7 @@ const AllPayment = () => {
                                                           onClick={() => handleMoreClick(rowId)}
                                                           style={{ cursor: "pointer" }}
                                                         />
-                                                        {/* {visibleDropdown === rowId && (
+                                                        {visibleDropdown === rowId && (
                                                           <div
                                                             style={{
                                                               position: "absolute",
@@ -2649,7 +2600,7 @@ const AllPayment = () => {
                                                               View Invoice
                                                             </div>
                                                           </div>
-                                                        )} */}
+                                                        )}
                                                       </div>
                                                     </td>
                                                   </tr>
@@ -2716,13 +2667,13 @@ const AllPayment = () => {
                                               color: "#000000",
                                               cursor: "pointer",
                                             }}
-                                            // onClick={handlePrevPage}
+                                            onClick={handlePrevPage}
                                             disabled={currentPage === 1}
                                           >
                                             {"<"}
                                           </button>
-                                          {/* {[...Array(totalPages)].map((_, page) => {
-                                          
+                                          {[...Array(totalPages)].map((_, page) => {
+                                            // Show only 5 pages or less if available
                                             if (
                                               page < 3 ||
                                               page === currentPage - 1 ||
@@ -2757,7 +2708,7 @@ const AllPayment = () => {
                                               );
                                             }
                                             return null;
-                                          })} */}
+                                          })}
                                           <button
                                             classes={{
                                               textAlign: "center",
@@ -2771,8 +2722,8 @@ const AllPayment = () => {
                                               color: "#000000",
                                               cursor: "pointer",
                                             }}
-                                            // onClick={handleNextPage}
-                                            // disabled={currentPage === totalPages}
+                                            onClick={handleNextPage}
+                                            disabled={currentPage === totalPages}
                                           >
                                             {">"}
                                           </button>

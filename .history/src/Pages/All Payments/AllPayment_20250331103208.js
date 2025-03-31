@@ -2617,7 +2617,7 @@ const AllPayment = () => {
                                                           onClick={() => handleMoreClick(rowId)}
                                                           style={{ cursor: "pointer" }}
                                                         />
-                                                        {/* {visibleDropdown === rowId && (
+                                                        {visibleDropdown === rowId && (
                                                           <div
                                                             style={{
                                                               position: "absolute",
@@ -2649,7 +2649,7 @@ const AllPayment = () => {
                                                               View Invoice
                                                             </div>
                                                           </div>
-                                                        )} */}
+                                                        )}
                                                       </div>
                                                     </td>
                                                   </tr>

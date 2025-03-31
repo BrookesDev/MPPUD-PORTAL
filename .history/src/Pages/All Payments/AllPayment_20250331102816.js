@@ -144,7 +144,7 @@ const AllPayment = () => {
   const currentEntries1 = tableData1.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries2 = tableData2.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries3 = tableData3.slice(indexOfFirstEntry, indexOfLastEntry);
-  // const totalPages = Math.ceil(tableData?.length / entriesPerPage);
+  const totalPages = Math.ceil(tableData?.length / entriesPerPage);
   const totalPages1 = Math.ceil(tableData1.length / entriesPerPage);
   const totalPages2 = Math.ceil(tableData2.length / entriesPerPage);
   const totalPages3 = Math.ceil(tableData3.length / entriesPerPage);
@@ -351,7 +351,7 @@ const AllPayment = () => {
           headers,
         });
         console.log(response);
-        const results = response?.data?.data;
+        const results = response.data?.data?.customer_invoice;
         const resultx = response.data?.data?.completed_applications;
         const resultxx = response.data?.data?.pending_applications;
         const resultxxx = response.data?.data?.total_applications;
@@ -397,13 +397,13 @@ const AllPayment = () => {
     setSelectedOption(index);
   };
 
-  // const handlePrevPage = () => {
-  //   setCurrentPage(Math.max(currentPage - 1, 1));
-  // };
+  const handlePrevPage = () => {
+    setCurrentPage(Math.max(currentPage - 1, 1));
+  };
 
-  // const handleNextPage = () => {
-  //   setCurrentPage(Math.min(currentPage + 1, totalPages));
-  // };
+  const handleNextPage = () => {
+    setCurrentPage(Math.min(currentPage + 1, totalPages));
+  };
 
   const handleNewApplication = () => {
     navigate("/new_applications");
@@ -2444,7 +2444,7 @@ const AllPayment = () => {
                                                       onClick={() => handleMoreClick(rowId)}
                                                       style={{ cursor: "pointer" }}
                                                     />
-                                                    {/* {visibleDropdown === rowId && (
+                                                    {visibleDropdown === rowId && (
                                                       <div
                                                         style={{
                                                           position: "absolute",
@@ -2506,7 +2506,7 @@ const AllPayment = () => {
                                                           View Application
                                                         </div>
                                                       </div>
-                                                    )} */}
+                                                    )}
                                                   </div>
                                                 </td>
                                               </tr>
@@ -2617,7 +2617,7 @@ const AllPayment = () => {
                                                           onClick={() => handleMoreClick(rowId)}
                                                           style={{ cursor: "pointer" }}
                                                         />
-                                                        {/* {visibleDropdown === rowId && (
+                                                        {visibleDropdown === rowId && (
                                                           <div
                                                             style={{
                                                               position: "absolute",
@@ -2649,7 +2649,7 @@ const AllPayment = () => {
                                                               View Invoice
                                                             </div>
                                                           </div>
-                                                        )} */}
+                                                        )}
                                                       </div>
                                                     </td>
                                                   </tr>
@@ -2716,13 +2716,13 @@ const AllPayment = () => {
                                               color: "#000000",
                                               cursor: "pointer",
                                             }}
-                                            // onClick={handlePrevPage}
+                                            onClick={handlePrevPage}
                                             disabled={currentPage === 1}
                                           >
                                             {"<"}
                                           </button>
-                                          {/* {[...Array(totalPages)].map((_, page) => {
-                                          
+                                          {[...Array(totalPages)].map((_, page) => {
+                                            // Show only 5 pages or less if available
                                             if (
                                               page < 3 ||
                                               page === currentPage - 1 ||
@@ -2757,7 +2757,7 @@ const AllPayment = () => {
                                               );
                                             }
                                             return null;
-                                          })} */}
+                                          })}
                                           <button
                                             classes={{
                                               textAlign: "center",
@@ -2771,8 +2771,8 @@ const AllPayment = () => {
                                               color: "#000000",
                                               cursor: "pointer",
                                             }}
-                                            // onClick={handleNextPage}
-                                            // disabled={currentPage === totalPages}
+                                            onClick={handleNextPage}
+                                            disabled={currentPage === totalPages}
                                           >
                                             {">"}
                                           </button>

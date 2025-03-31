@@ -351,7 +351,7 @@ const AllPayment = () => {
           headers,
         });
         console.log(response);
-        const results = response?.data?.data;
+        const results = response.data?.data?.customer_invoice;
         const resultx = response.data?.data?.completed_applications;
         const resultxx = response.data?.data?.pending_applications;
         const resultxxx = response.data?.data?.total_applications;
@@ -2444,7 +2444,7 @@ const AllPayment = () => {
                                                       onClick={() => handleMoreClick(rowId)}
                                                       style={{ cursor: "pointer" }}
                                                     />
-                                                    {/* {visibleDropdown === rowId && (
+                                                    {visibleDropdown === rowId && (
                                                       <div
                                                         style={{
                                                           position: "absolute",
@@ -2506,7 +2506,7 @@ const AllPayment = () => {
                                                           View Application
                                                         </div>
                                                       </div>
-                                                    )} */}
+                                                    )}
                                                   </div>
                                                 </td>
                                               </tr>
@@ -2617,7 +2617,7 @@ const AllPayment = () => {
                                                           onClick={() => handleMoreClick(rowId)}
                                                           style={{ cursor: "pointer" }}
                                                         />
-                                                        {/* {visibleDropdown === rowId && (
+                                                        {visibleDropdown === rowId && (
                                                           <div
                                                             style={{
                                                               position: "absolute",
@@ -2649,7 +2649,7 @@ const AllPayment = () => {
                                                               View Invoice
                                                             </div>
                                                           </div>
-                                                        )} */}
+                                                        )}
                                                       </div>
                                                     </td>
                                                   </tr>
