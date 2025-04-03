@@ -890,11 +890,13 @@ const LandRatificationApp = () => {
       if (selectedFile22 && selectedFile22.length > 0) {
         formData.append("title_document", selectedFile22[0]);
       }
+      if (floorNumber && floorNumber.length > 0) {
+        formData.append("no_of_floors", floorNumber[0]);
+      }
 
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
       formData.append("zone_id", selectedBuilding);
-      formData.append("no_of_floors", floorNumber);
       formData.append("size_in_sqm", sizeSqm);
       formData.append("size_in_plot", sizePlot);
      
