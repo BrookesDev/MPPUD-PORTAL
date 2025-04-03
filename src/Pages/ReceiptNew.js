@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import classes from './InvoiceNew.module.css';
+import classes from './ReceiptNew.module.css';
 import { Container, Card } from 'react-bootstrap';
-import Olarms from '../../Asset/ogsglogo.png'
+import Olarms from '../Asset/ogsglogo.png'
 // import QRIcon from '../../../Asset/hhh.png'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import {QRCodeSVG} from 'qrcode.react';
 
 
-const InvoiceNew = () => {
+const ReceiptNew = () => {
   const [user, setUser] = useState("");
   const [bearer, setBearer] = useState('');
   const navigate = useNavigate();
@@ -138,7 +138,7 @@ const InvoiceNew = () => {
                   <div className={classes.rowcontacts}>
                     <div className={classes.lnne}/>
                     <div className={classes.colinvoiceto}>
-                      <div className={classes.invTxt}>INVOICE TO:</div>
+                      <div className={classes.invTxt}>BILLED TO:</div>
                       <h2 className={classes.invTxt1}>{userData?.customer?.name}</h2>
                       <div className={classes.invTxt2}>{userData?.customer?.address}</div>
                       <div >
@@ -146,7 +146,7 @@ const InvoiceNew = () => {
                       </div>
                     </div>
                     <div className={classes.colinvoicedetails}>
-                      <div className={classes.headercolor}>INVOICE</div>
+                      <div className={classes.headercolor}>RECEIPT</div>
                       <div>Date of Invoice: {formatDateTime(userData.created_at)}</div>
                       {/* <div >Due Date: 30/10/2018</div> */}
                     </div>
@@ -188,72 +188,8 @@ const InvoiceNew = () => {
                     
                   </table>
 
-                  <div className={classes.belowData}>
-                   
-                      <div className={classes.belowDatas}>
-                        <p className={classes.textleft222}>SUBTOTAL</p>
-                        <p className={classes.textleft222}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(userData.amount)}</p>
-                        </div>
-                        <div style={{ width: '70%', borderTop: '2px solid #ccc', marginTop: -20, marginBottom: 10 }} />
-                        <div className={classes.belowDatas}>
-                        <td className={classes.textleft22212}>GRAND TOTAL</td>
-                        <td className={classes.textleft22212}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(userData.amount)}</td>
-                        </div>
-                    </div>
-                  {/* <div className="thanks">Thank you!</div> */}
-                  <div className={classes.noticetexta} style={{ pageBreakBefore: 'always', breakBefore: 'page' }}>
-                   <h4>STEPS TO MAKE YOUR PAYMENT</h4>
-                  </div>
-                  <div className={classes.btmCards}>
-                  <div className={classes.noticetext}>
-                   <h4>ONLINE</h4>
-                  </div>
-                  <div className={classes.noticetexts}>
-                   <h4>BANK BRANCH (for Bank Tellers)</h4>
-                  </div>
-                  </div>
-                  <div className={classes.btmCards}>
-                  <div className={classes.noticetext}>
-                  <ul>
-        <li>Visit <a style={{color: "#0087C3"}} href="https://pay.ogunstate.gov.ng" target="_blank" rel="noopener noreferrer">pay.ogunstate.gov.ng</a></li>
-        <li>Enter the payment code</li>
-        <li>Input the Captcha and click "Get Details"</li>
-        <li>Select "Card" and click on the gateway to use</li>
-        <li>Click on "Make Payment" and continue the process</li>
-      </ul>
-                  </div>
-                  <div className={classes.noticetexts}>
-                  <ul>
-                  <li>A Teller logs in to <a style={{color: "#0087C3"}} href="https://www.remita.net" target="_blank" rel="noopener noreferrer">www.remita.net</a> or a Bank application using their login credentials</li>
-        <li>Go to the "Payments" menu and select "Pay Taxes"</li>
-        <li>Select "Ogun State Inland Revenue Service" from the dropdown list of Tax Authorities</li>
-        <li>Select "Pay with Payment Code" method from the "Service Name" dropdown</li>
-        <li>Input the Payment Code and click the "SEARCH" button</li>
-        <li>Continue to complete the transaction processing</li>
-      </ul>
-                  </div>
-                  </div>
-                  <div className={classes.btmCards}>
-                  <div className={classes.noticetext}>
-                  <ul>
-                  <li>Visit <a style={{color: "#0087C3"}} href="https://pay.ogunstate.gov.ng" target="_blank" rel="noopener noreferrer">pay.ogunstate.gov.ng</a></li>
-        <li>Enter the payment code</li>
-        <li>Input the Captcha and click "Get Details"</li>
-        <li>Select "Bank Transfer"</li>
-        <li>Click on "Make Payment" and continue the process</li>
-      </ul>
-                  </div>
-                  <div className={classes.noticetexts}>
-                  <ul>
-                  <li>Login into the system</li>
-        <li>On the Dashboard, select the state for which the transaction is to be performed (e.g., Ogun State)</li>
-        <li>On the transaction page, select the “Pay with Assessment/Bill (Payment Code)” payment method</li>
-        <li>Enter the Payment Code into the textbox provided</li>
-        <li>Click on the "Search" button to validate the payment code and fetch the payer and assessment information</li>
-        <li>Continue to complete the transaction processing</li>
-      </ul>
-                  </div>
-                  </div>
+                 
+                
                 </main>
                
               </div>
@@ -266,4 +202,4 @@ const InvoiceNew = () => {
   );
 }
 
-export default InvoiceNew;
+export default ReceiptNew;

@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import DashboardNav from "../../Components/Navigation.js/Navigation";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 import Horheader from "../../Components/horheader/horheader";
 import classes from "./AllPayment.module.css";
 import PdfIcon from "../../Asset/pdf.svg";
-import UploadIcon from "../../Asset/upload.png";
-import Printer from '../../Asset/printer.png';
+import Printer from "../../Asset/printer.png";
 import xport from "../../Asset/export.png";
 import search from "../../Asset/search.svg";
+import UploadIcon from "../../Asset/upload.png";
+import plus from "../../Asset/plus.png";
+import Card from "../../Components/Card";
 import Calender from "../../Asset/calendar.svg";
 import agent from "../../Asset/agent.svg";
 import { MdOutlineDownload } from "react-icons/md";
@@ -54,16 +57,42 @@ import { Navbar, Container, Button } from "react-bootstrap";
 import CurrencyInput from "react-currency-input-field";
 import { useTheme } from "../../ThemeContext";
 // import NewApplications from '../New Application/NewApplicationns';
-
+import { saveAs } from "file-saver";
+import Papa from "papaparse";
 // import axios from 'axios';
 // import localStorage from '@react-native-async-storage/async-storage';
 
 const AllPayment = () => {
+  const [taxStation, setTaxStation] = useState([]);
+  const [location2, setLocation2] = useState([]);
+  const [selectedStationName, setSelectedStationName] = useState("");
+  const [documentValue, setDocumentValue] = useState("");
+  const [selectedStation, setSelectedStation] = useState("");
   const [eyeClicked, setEyeClicked] = useState("");
+  const [roleLoading, setRoleLoading] = useState(false);
+  const [selectedLocationName, setSelectedLocationName] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [schemes, setSchemes] = useState([]);
+  const [showAllocation, setShowAllocation] = useState(false);
+  const [selectedSource, setSelectedSource] = useState("");
+  const [tableArea, setTableArea] = useState([]);
+  const [selectedNature, setSelectedNature] = useState("");
+  const [allLands, setAllLands] = useState([]);
+  const [selectedConsent, setSelectedConsent] = useState("");
+  const [consentTypes, setConsentTypes] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedLandStatus, setSelectedLandStatus] = useState("");
+  const [selectedAreaName, setSelectedAreaName] = useState("");
+  const [tableData32, setTableData32] = useState([]);
+  const [selectedArea, setSelectedArea] = useState("");
+  const [volumeNumber1, setVolumeNumber1] = useState("");
+  const [pageNumber1, setPageNumber1] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showRatification, setShowRatification] = useState(false);
+  const [showCFO, setShowCFO] = useState(false);
+  const [showLand, setShowLand] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const [cofoNumber, setCofONumber] = useState("");
-   const [isFilled, setIsFilled] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
   const [proposedRBuilding, setProposedRBuilding] = useState("");
   const [otherProperty, setOtherProperty] = useState("");
   const [plotSize, setPlotSize] = useState("");
@@ -86,12 +115,20 @@ const AllPayment = () => {
   const [show20, setShow20] = useState(false);
   const [download, setDownload] = useState(false);
   const [showUploadTCC, setShowUploadTCC] = useState(false);
-
+ const [searchTerm, setSearchTerm] = useState('');
   const fileInputRefs = useRef(null);
   const handleClose = () => setShow(false);
   const handleCloseTCC = () => setShowUploadTCC(false);
   const handleClose50 = () => setShow50(false);
   const handleClose20 = () => setShow20(false);
+  const handleCloseAllocation = () => setShowAllocation(false);
+  const handleCloseConfirmation = () => setShowConfirmation(false);
+  const handleCloseRatification = () => setShowRatification(false);
+  const handleCloseCFO = () => setShowCFO(false);
+  const handleCloseScheme = () => setShowScheme(false);
+  const handleCloseGovernor = () => setShowGovernor(false);
+  const handleCloseLand = () => setShowLand(false);
+  const handleCloseInfo = () => setShowInfo(false);
   const handleDownloadClose = () => setDownload(false);
   const handleShow = () => {
     setShow(true);
@@ -107,7 +144,14 @@ const AllPayment = () => {
     setShow20(true);
   };
 
+  const handleConsent = (e) => {
+    setSelectedConsent(e.target.value);
+  };
+
   const [bearer, setBearer] = useState("");
+  const [showGovernor, setShowGovernor] = useState(false);
+  const [surveyorName, setSurveyorName] = useState("");
+  const [surveyPlanNumber, setSurveyPlanNumber] = useState("");
   console.log(roless, "kh");
   const [landLocation, setLandLocation] = useState();
   const [name, setName] = useState("");
@@ -120,15 +164,21 @@ const AllPayment = () => {
     setClockTime(!clockTime);
   };
   const [showAlert, setShowAlert] = useState(false);
+  const [showScheme, setShowScheme] = useState(false);
+  const [caveatTypes, setCaveatTypes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [applicationModal1, setApplicationModal1] = useState(false);
   const [applicationModal2, setApplicationModal2] = useState(false);
   const [applicationModal3, setApplicationModal3] = useState(false);
   const [showSelectedDetailModal, setShowSelectedDetailModal] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [invoiceData,setInvoiceData] = useState([]);
   const [tableData1, setTableData1] = useState([]);
   const [tableData2, setTableData2] = useState([]);
   const [tableData3, setTableData3] = useState([]);
+  const [isFilled, setIsFilled] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [foundInvoice, setFoundInvoice] = useState([]);
   const [foundInvoiceID, setFoundInvoiceID] = useState("");
   const navigate = useNavigate();
@@ -138,19 +188,80 @@ const AllPayment = () => {
   const [totalPending, setTotalPending] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const formatDateForComparison = (dateString) => {
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+  const filteredData = tableData.filter((item) => {
+    const matchesDate = selectedDate
+      ? formatDateForComparison(item.created_at) === selectedDate
+      : true;
+  
+      const matchesSearch = searchTerm.trim()
+      ? item?.description.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
+      : true;
+  
+    return matchesDate && matchesSearch; // Both conditions must be met
+  });
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  // const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries1 = tableData1.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries2 = tableData2.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries3 = tableData3.slice(indexOfFirstEntry, indexOfLastEntry);
-  // const totalPages = Math.ceil(tableData?.length / entriesPerPage);
+  const totalPages = Math.ceil(tableData.length / entriesPerPage);
   const totalPages1 = Math.ceil(tableData1.length / entriesPerPage);
   const totalPages2 = Math.ceil(tableData2.length / entriesPerPage);
   const totalPages3 = Math.ceil(tableData3.length / entriesPerPage);
   const [benLoading, setBenLoading] = useState(false);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
   const dropdownRef = useRef(null);
+  const [LGA, setLGA] = useState([]);
+
+  const fetchCaveatTypes = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/all_caveat_type`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${bearer}`,
+        },
+      });
+
+      const results = response.data?.data || [];
+      setCaveatTypes(results);
+      console.log(results);
+    } catch (error) {
+      console.error(error.response?.data?.message || "Error fetching data");
+      setCaveatTypes([]);
+    }
+  };
+
+  const fetchGovernorsType = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/all_governor_consent_type`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
+
+      const results = response.data?.data || [];
+      setConsentTypes(results);
+      console.log(results);
+    } catch (error) {
+      console.error(error.response?.data?.message || "Error fetching data");
+      setConsentTypes([]);
+    }
+  };
+
+  useEffect(() => {
+    if (bearer) {
+      fetchCaveatTypes();
+      fetchGovernorsType();
+    }
+  }, [bearer]);
 
   const handleMoreClick = (id) => {
     setVisibleDropdown((prev) => (prev === id ? null : id));
@@ -220,6 +331,155 @@ const AllPayment = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedOption(null);
+  };
+
+  const handleSourceFund = (e) => {
+    setFund(e.target.value);
+    // setShowErrorMessage(false);
+  };
+
+  const fetchTax = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/get_areas`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${bearer}`,
+        },
+      });
+
+      const results = response.data?.data;
+      // const resultsss = response.data?.data?.stations;
+      setLGA(results);
+      // setTableData1(resultsss);
+      console.log(results);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Redirect to login page if unauthorized
+        // navigate("/");
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setLGA([]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (bearer) {
+      fetchTax();
+    }
+  }, [bearer]);
+
+  const handleAreaChange = (e) => {
+    const selectedId = e.target.value;
+    const areaName =
+      tableData.find((item) => item.id.toString() === selectedId)
+        ?.description || "";
+    setSelectedArea(selectedId);
+    setSelectedAreaName(areaName);
+    console.log(areaName);
+    if (selectedId) {
+      fetchLocation(selectedId); // Fetch locations based on selected area
+    }
+  };
+
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      setRoleLoading(true);
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/customer/show_all_scheme`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${bearer}`,
+            },
+          }
+        );
+        const results = response.data?.data;
+        setSchemes(results);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+        } else {
+          const errorStatus = error.response?.data?.message;
+          console.log(errorStatus);
+          setSchemes([]);
+        }
+      } finally {
+        setRoleLoading(false);
+      }
+    };
+    fetchSchemes();
+  }, [bearer]);
+
+  const fetchAllLandUse = async () => {
+    // setRoleLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/all_land_use`, { headers });
+      const results = response.data?.data;
+      // console.log(results);
+      setAllLands(results);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Redirect to login page if unauthorized
+        // navigate("/");
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setAllLands([]);
+      }
+    } finally {
+      // setRoleLoading(false);
+    }
+  };
+
+  //  const fetchAllApplications = async () => {
+  //     setRoleLoading(true);
+  //     try {
+  //       const response = await axios.get(`${BASE_URL}/fetch_all`, { headers });
+  //       const results = response.data?.data;
+  //       setAllApplications(results);
+  //       console.log(results);
+  //     } catch (error) {
+  //       if (error.response && error.response.status === 401) {
+
+  //       } else {
+  //         const errorStatus = error.response?.data?.message;
+  //         console.log(errorStatus);
+  //         setAllApplications([]);
+  //       }
+  //     } finally {
+  //       setRoleLoading(false);
+  //     }
+  //   };
+
+  useEffect(() => {
+    if (bearer) {
+      fetchAllLandUse();
+      // fetchAllApplications();
+    }
+  }, [bearer]);
+
+  const handleGrantNature = (e) => {
+    setSelectedNature(e.target.value);
+    // setShowErrorMessage(false);
+  };
+  const fetchStatus = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/all_land_status`, {
+        headers,
+      });
+      const results = response.data?.data;
+      setTableData32(results);
+      console.log(results);
+    } catch (error) {
+      const errorStatus = error.response?.data?.message;
+      console.log(errorStatus);
+      setTableData32([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   function formatDate(dateString) {
@@ -302,19 +562,30 @@ const AllPayment = () => {
   // const fetchallApplications = async () => {
   //   setBenLoading(true);
   //   try {
-  //     const response = await axios.get(`${BASE_URL}/customer/receipt`, {
+  //     const response = await axios.get(`${BASE_URL}/customer/view`, {
   //       headers,
   //     });
-  //     console.log(response)
   //     const results = response.data?.data?.applications;
-
+  //     const nPaid = response.data?.data?.unpaid_applications;
+  //     const inReview = response.data?.data?.application_inview;
+  //     const completed = response.data?.data?.completed_applications;
+  //     const resultx = response.data?.data?.total_completed_applications;
+  //     const resultxx = response.data?.data?.total_application_inview;
+  //     const resultxxx = response.data?.data?.total_applications;
+  //     const resultxxxx = response.data?.data?.total_unpaid_applications;
 
   //     setTableData(results);
   //     console.log(results);
- 
+  //     setTotalCompleted(resultx);
+  //     setTotalPending(resultxx);
+  //     setTotalApplications(resultxxx);
+  //     setTotalNotPaid(resultxxxx);
+  //     setTableData1(nPaid);
+  //     setTableData2(inReview);
+  //     setTableData3(completed);
   //   } catch (error) {
   //     if (error.response && error.response.status === 401) {
-       
+
   //     } else {
   //       let errorMessage = "An error occurred. Please try again.";
   //       if (
@@ -327,7 +598,7 @@ const AllPayment = () => {
   //         } else if (Array.isArray(error.response.data.message)) {
   //           errorMessage = error.response.data.message.join("; ");
   //         } else if (typeof error.response.data.message === "object") {
-           
+
   //           console.log(errorMessage);
   //         }
   //       }
@@ -338,72 +609,34 @@ const AllPayment = () => {
   //   }
   // };
 
+  const handleStationChange = (e) => {
+    const selectedId = e.target.value;
+    const stationName =
+      tableData1.find((item) => item.id.toString() === selectedId)
+        ?.description || "";
+    setSelectedStationName(stationName);
+    setSelectedStation(e.target.value);
+    console.log(stationName);
+    // setShowErrorMessage(false);
+  };
+
   // useEffect(() => {
   //   if (bearer) {
   //     fetchallApplications();
   //   }
   // }, [bearer]);
 
-   const fetchDashboardData = async () => {
-      setBenLoading(true);
-      try {
-        const response = await axios.get(`${BASE_URL}/customer/receipt`, {
-          headers,
-        });
-        console.log(response);
-        const results = response?.data?.data;
-        const resultx = response.data?.data?.completed_applications;
-        const resultxx = response.data?.data?.pending_applications;
-        const resultxxx = response.data?.data?.total_applications;
-        console.log(response?.data?.data);
-        setTableData(results);
-        console.log(results?.customer_invoice,"print all customer invoice")
-        setTotalCompleted(resultx);
-        setTotalPending(resultxx);
-        setTotalApplications(resultxxx);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // navigate('/applications');
-        } else {
-          let errorMessage = "An error occurred. Please try again.";
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) {
-            if (typeof error.response.data.message === "string") {
-              errorMessage = error.response.data.message;
-            } else if (Array.isArray(error.response.data.message)) {
-              errorMessage = error.response.data.message.join("; ");
-            } else if (typeof error.response.data.message === "object") {
-              // toast.error(errorMessage)
-              console.log(errorMessage);
-            }
-          }
-          setTableData([]);
-        }
-      } finally {
-        setBenLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      if (bearer) {
-        fetchDashboardData();
-      }
-    }, [bearer]);
-
   const handleOptionClick = (index) => {
     setSelectedOption(index);
   };
 
-  // const handlePrevPage = () => {
-  //   setCurrentPage(Math.max(currentPage - 1, 1));
-  // };
+  const handlePrevPage = () => {
+    setCurrentPage(Math.max(currentPage - 1, 1));
+  };
 
-  // const handleNextPage = () => {
-  //   setCurrentPage(Math.min(currentPage + 1, totalPages));
-  // };
+  const handleNextPage = () => {
+    setCurrentPage(Math.min(currentPage + 1, totalPages));
+  };
 
   const handleNewApplication = () => {
     navigate("/new_applications");
@@ -428,13 +661,13 @@ const AllPayment = () => {
       const applicationdocs = response.data?.data[0]?.application_document;
       const payment = response.data?.data[0]?.payment;
       console.log(roleList, ".LLSKKS");
-      console.log(payment)
+      console.log(payment);
       setCustomer(customer);
       setPayment(payment);
       setApplicationDocs(applicationdocs);
       setRoless(roleList);
       // console.log(roleList)
-      setLandLocation(roleList.location?.description);
+      setLandLocation(roleList.land_location);
       setAllocationDate(roless.allocation_date);
       setSelectedDevelopment(roless.land_development_status);
       setSelectedLandUse(roless.landuse_id);
@@ -446,6 +679,8 @@ const AllPayment = () => {
       setValueProperty(roless.value_of_property);
       setPlotSize(roless.size_in_plot);
       setSqm(roless.size_in_sqm);
+      console.log(roless.land_scheme);
+      setSelectedLandStatus(roless.land_scheme);
       setTenant(roless.tenement_rate_number);
       setOtherProperty(roless.other_property_size);
       setProposedRBuilding(roless.proposed_residential_building);
@@ -466,6 +701,7 @@ const AllPayment = () => {
     setSelectedDevelopment(e.target.value);
     // setShowErrorMessage(false);
   };
+
   const handleChange = (index, field, value) => {
     const updatedRows = rows.map((row, i) =>
       i === index ? { ...row, [field]: value } : row
@@ -496,6 +732,16 @@ const AllPayment = () => {
   const handleRemoveRow = (index) => {
     const updatedRows = rows.filter((_, i) => i !== index);
     setRows(updatedRows);
+  };
+
+  const handleLocationChanges = (e) => {
+    const selectedId = e.target.value;
+    // const stationName =
+    //   tableData2.find((item) => item.id.toString() === selectedId)?.location ||
+    //   "";
+    // setSelectedLocationName(stationName);
+    setLandLocation(e.target.value);
+    // setShowErrorMessage(false);
   };
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -549,12 +795,144 @@ const AllPayment = () => {
 
   const shouldShowAlert = missingFields.length > 0;
 
-  const handleEyeClick = async (id) => {
+  const handleEyeClick = async (id, appType) => {
+    console.log(appType);
     const foundInvoice = tableData.find((item) => item.id === id);
     setFoundInvoiceID(id);
     setFoundInvoice(foundInvoice);
-    await fetchData1(id); // Pass the ID to fetchData1 and wait for it to complete
-    setShow20(true); // Open the modal after the data is fetched
+
+    await fetchData1(id);
+
+    // setShow20(true);
+    if (appType === "Land Allocation") {
+      console.log(roless);
+      setShowAllocation(true);
+    } else if (appType === "Confirmation") {
+      console.log(roless);
+      setShowConfirmation(true);
+    } else if (appType === "Land Ratification") {
+      setShowRatification(true);
+    } else if (appType === "Certificate of Occupancy") {
+      setShowCFO(true);
+    } else if (appType === "Land Search") {
+      setShowLand(true);
+    } else if (appType === "Land Information") {
+      setShowInfo(true);
+    } else if (appType === "Governor's Consent") {
+      setShowGovernor(true);
+    } else if (appType === "Scheme Allocation") {
+      setShowScheme(true);
+    } else {
+      setShow20(true);
+    }
+  };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value)
+  }
+
+  const exportToCSV = () => {
+        if (tableData.length === 0) {
+          alert("No data available for export.");
+          return;
+        }
+      
+        // Define CSV Headers
+        const headers = ["S/N", "Payment Code", "Application Number", "Description", "Date", "Amount"];
+      
+        // Map the data to match CSV format
+        const csvData = tableData.map((item, index) => ({
+          "S/N": index +  1 || "N/A",
+          "Payment Code": item.payment_code || "N/A",
+          "Application Number": item.uuid || "N/A",
+          "Description": item.description || "N/A",
+          "Date": item.payment_date || "N/A",
+          "Amount": item.amount || "N/A",
+        }));
+      
+        // Convert to CSV format
+        const csv = Papa.unparse({ fields: headers, data: csvData });
+      
+        // Create a Blob for download
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        saveAs(blob, "Applications.csv");
+      };
+  
+
+  const fetchLocation = async (areaId) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/location_by_area?id=${areaId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
+
+      const resultsss = response.data?.data;
+      setLocation2(resultsss);
+      console.log(resultsss);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Redirect to login page if unauthorized
+        // navigate("/");
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setLocation2([]); // Ensure this is set properly
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (bearer) {
+      fetchLocation();
+    }
+  }, [bearer]);
+
+  useEffect(() => {
+    if (roless && roless.land_scheme) {
+      setSelectedLandStatus(roless.land_scheme);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.lga_of_land) {
+      setSelectedArea(roless.lga_of_land);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.land_location) {
+      setSelectedLocation(roless.land_location);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.landuse_id) {
+      setSelectedLandUse(roless.landuse_id);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.proposed_residential_building) {
+      setProposedRBuilding(roless.proposed_residential_building);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.size_in_sqm) {
+      setSqm(roless.size_in_sqm);
+    }
+  }, [roless]);
+  useEffect(() => {
+    if (roless && roless.proposed_source_of_fund) {
+      setFund(roless.proposed_source_of_fund);
+    }
+  }, [roless]);
+
+  const { isDarkMode } = useTheme();
+
+  const handleLandStatus = (e) => {
+    setSelectedLandStatus(e.target.value);
+    // setShowErrorMessage(false);
   };
   const handleDownloadClick = async (id) => {
     const foundInvoice = tableData.find((item) => item.id === id);
@@ -585,6 +963,16 @@ const AllPayment = () => {
     setFoundInvoice(foundInvoice);
     await fetchData1(id); // Pass the ID to fetchData1 and wait for it to complete
     setShow20(true);
+  };
+
+  const handleLocationChange = (e) => {
+    const selectedId = e.target.value;
+    const stationName =
+      tableData2.find((item) => item.id.toString() === selectedId)?.location ||
+      "";
+    setSelectedLocationName(stationName);
+    setSelectedLocation(e.target.value);
+    // setShowErrorMessage(false);
   };
 
   const addNewDocument = async () => {
@@ -704,19 +1092,87 @@ const AllPayment = () => {
     }
   };
 
+  const toSentenceCase = (name) => {
+    if (!name) return "";
+
+    // Check if the name is already in sentence case
+    const isSentenceCase = name
+      .split(" ")
+      .every(
+        (word) =>
+          word.charAt(0) === word.charAt(0).toUpperCase() &&
+          word.slice(1) === word.slice(1).toLowerCase()
+      );
+
+    if (isSentenceCase) {
+      return name;
+    }
+
+    // Convert to sentence case
+    return name
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const handleEyeClick5= (id) => {
     const foundUser = tableData.find((item) => item.id === id);
     // const foundApps = applicationDet.find((item) => item.id === id);
 
     if (foundUser) {
-      navigate('/view_invoices', { state: { userData: foundUser } });
+      navigate('/view_receipts', { state: { userData: foundUser } });
     }
   };
 
 
-   const { isDarkMode } = useTheme();
+  const fetchDashboardData = async () => {
+    setBenLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/customer/receipt`, {
+        headers,
+      });
+      console.log(response);
+      const results = response.data?.data;
+      // const resultx = response.data?.data?.completed_applications;
+      // const resultxx = response.data?.data?.pending_applications;
+      // const resultxxx = response.data?.data?.total_applications;
+      console.log(response?.data?.data);
+      setTableData(results);
+      // setTotalCompleted(resultx);
+      // setTotalPending(resultxx);
+      // setTotalApplications(resultxxx);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // navigate('/applications');
+      } else {
+        let errorMessage = "An error occurred. Please try again.";
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          if (typeof error.response.data.message === "string") {
+            errorMessage = error.response.data.message;
+          } else if (Array.isArray(error.response.data.message)) {
+            errorMessage = error.response.data.message.join("; ");
+          } else if (typeof error.response.data.message === "object") {
+            // toast.error(errorMessage)
+            console.log(errorMessage);
+          }
+        }
+        setTableData([]);
+      }
+    } finally {
+      setBenLoading(false);
+    }
+  };
 
-
+  useEffect(() => {
+    if (bearer) {
+      fetchDashboardData();
+    }
+  }, [bearer]);
 
   return (
     <>
@@ -750,10 +1206,9 @@ const AllPayment = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div>
-                <p className={classes.wlcm}>Payments</p>
+                <p className={classes.wlcm}>Invoices</p>
                 <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
-             
             </div>
             <Modal
               show={showModal}
@@ -834,6 +1289,2168 @@ const AllPayment = () => {
               </Modal.Body>
             </Modal>
 
+            {/* Land Allocation Modal */}
+
+            <Modal
+              show={showAllocation}
+              onHide={handleCloseAllocation}
+              size="lg"
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button
+                  variant="close"
+                  onClick={handleCloseAllocation}
+                ></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Local Government Area of Land</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Control
+                                        as="select"
+                                        className={`form-select ${classes.optioncss}`}
+                                        value={selectedArea}
+                                        onChange={handleAreaChange}
+                                        required
+                                      >
+                                        <option value="">Select LGA</option>
+                                        {LGA.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.lga_of_land
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Land Location</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Land Location"
+                                        value={landLocation}
+                                        onChange={(e) =>
+                                          setLandLocation(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.land_location
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th> Land Allocation Date</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="allocationDate">
+                                      <Form.Control
+                                        type="date"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Land Allocation Date"
+                                        value={allocationDate}
+                                        onChange={(e) =>
+                                          setAllocationDate(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.allocation_date
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Size in Sqm</th>
+
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter size in sqm"
+                                        value={sqm}
+                                        onChange={(e) => setSqm(e.target.value)}
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_sqm
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Development Status of Land</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        value={selectedDevelopment}
+                                        onChange={handleDevStatus}
+                                      >
+                                        <option value="">
+                                          Select Land Development Status
+                                        </option>
+                                        <option value="Fully Developed">
+                                          Fully Developed
+                                        </option>
+                                        <option value="Development Ongoing">
+                                          Development Ongoing
+                                        </option>
+                                        <option value="Fenced">Fenced</option>
+                                        <option value="No Development Yet">
+                                          No Development Yet
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.land_development_status
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Land Use</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLandUse}
+                                        value={selectedLandUse}
+                                      >
+                                        <option value="">
+                                          Select Land Use Type
+                                        </option>
+                                        <option value="1">Residential</option>
+                                        <option value="2">
+                                          Industrial/Commercial/Agricultural
+                                        </option>
+                                        <option value="3">
+                                          Civic/Religious/Charitable Programme
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.land_development_status === "1"
+                                  ? "Residential"
+                                  : roless.land_development_status === "2"
+                                  ? "Industrial/Commercial/Agricultural"
+                                  : roless.land_development_status === "3"
+                                  ? "Civic/Religious/Charitable Programme"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Proposed Residential Building</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="propsedBuild">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleProposedBuild}
+                                        value={proposedRBuilding}
+                                      >
+                                        <option value="">
+                                          Select Building Type
+                                        </option>
+                                        <option value="1">
+                                          Single-Family Home
+                                        </option>
+                                        <option value="2">
+                                          Multi-Family Home
+                                        </option>
+                                        <option value="3">Townhouse</option>
+                                        <option value="4">Apartment</option>
+                                        <option value="5">Bungalow</option>
+                                        <option value="6">Villa</option>
+                                        <option value="7">Duplex</option>
+                                        <option value="8">Penthouse</option>
+                                        <option value="9">
+                                          Studio Apartment
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.proposed_residential_building === "1"
+                                  ? "Single-Family Home"
+                                  : roless.proposed_residential_building === "2"
+                                  ? "Multi-Family Home"
+                                  : roless.proposed_residential_building === "3"
+                                  ? "Townhouse"
+                                  : roless.proposed_residential_building === "4"
+                                  ? "Apartment"
+                                  : roless.proposed_residential_building === "5"
+                                  ? "Bungalow"
+                                  : roless.proposed_residential_building === "6"
+                                  ? "Villa"
+                                  : roless.proposed_residential_building === "7"
+                                  ? "Duplex"
+                                  : roless.proposed_residential_building === "8"
+                                  ? "Penthouse"
+                                  : roless.proposed_residential_building === "9"
+                                  ? "Studio Apartment"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Proposed Development Timeline</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter TimeLine"
+                                        value={timeline}
+                                        onChange={(e) =>
+                                          setTimeLine(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.land_development_status
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Proposed Source of Fund</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter TimeLine"
+                                        value={fund}
+                                        onChange={(e) =>
+                                          setFund(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.proposed_source_of_fund
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Estimated Development Value</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentvalue">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Development Value"
+                                        value={developmentValue}
+                                        onChange={(e) =>
+                                          setDevelopmentValue(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.estimated_development_amount
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+
+            {/* Confirmation Modal */}
+
+            <Modal
+              show={showConfirmation}
+              onHide={handleCloseConfirmation}
+              size="lg"
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button
+                  variant="close"
+                  onClick={handleCloseConfirmation}
+                ></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Page Number</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Page Number"
+                                        value={pageNumber1}
+                                        onChange={(e) =>
+                                          setPageNumber1(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.page_number
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Volume Number</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="age No">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Volume Number"
+                                        value={volumeNumber1}
+                                        onChange={(e) =>
+                                          setVolumeNumber1(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.volume_number
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+            {/* Land Ratification Modal */}
+
+            <Modal
+              show={showRatification}
+              onHide={handleCloseRatification}
+              size="lg"
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button
+                  variant="close"
+                  onClick={handleCloseRatification}
+                ></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th> Tax Station</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        value={selectedStation}
+                                        onChange={handleStationChange}
+                                      >
+                                        <option value="">
+                                          Select Tax Station
+                                        </option>
+                                        {taxStation?.map((item, index) => (
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                            name={item.description}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.tax_station_name
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th> Area</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleAreaChange}
+                                        value={selectedArea}
+                                      >
+                                        <option value="">Select Area</option>
+                                        {tableArea?.map((item, index) => (
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                            name={item.description}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  tableArea.find(
+                                    (item) =>
+                                      String(item.id) === String(roless.area)
+                                  )?.description
+                                }
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th> Location</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLocationChange}
+                                        value={selectedLocation}
+                                      >
+                                        <option value="">
+                                          Select Location
+                                        </option>
+                                        {tableData2?.map((item, index) => (
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                            name={item.description}
+                                          >
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  tableData2.find(
+                                    (item) =>
+                                      String(item.id) ===
+                                      String(roless.location)
+                                  )?.description
+                                }
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th> Land Allocation Date</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="date"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Allocation Date"
+                                        value={allocationDate}
+                                        onChange={(e) =>
+                                          setAllocationDate(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.allocation_date
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Development Status of Land</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        value={selectedDevelopment}
+                                        onChange={handleDevStatus}
+                                      >
+                                        <option value="">
+                                          Select Land Development Status
+                                        </option>
+                                        <option value="Fully Developed">
+                                          Fully Developed
+                                        </option>
+                                        <option value="Development Ongoing">
+                                          Development Ongoing
+                                        </option>
+                                        <option value="Fenced">Fenced</option>
+                                        <option value="No Development Yet">
+                                          No Development Yet
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.land_development_status
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Land Use</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLandUse}
+                                        value={selectedLandUse}
+                                      >
+                                        <option value="">
+                                          Select Land Use Type
+                                        </option>
+                                        <option value="1">Residential</option>
+                                        <option value="2">
+                                          Industrial/Commercial/Agricultural
+                                        </option>
+                                        <option value="3">
+                                          Civic/Religious/Charitable Programme
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.land_development_status === "1"
+                                  ? "Residential"
+                                  : roless.land_development_status === "2"
+                                  ? "Industrial/Commercial/Agricultural"
+                                  : roless.land_development_status === "3"
+                                  ? "Civic/Religious/Charitable Programme"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Proposed Residential Building</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="propsedBuild">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleProposedBuild}
+                                        value={proposedRBuilding}
+                                      >
+                                        <option value="">
+                                          Select Building Type
+                                        </option>
+                                        <option value="1">
+                                          Single-Family Home
+                                        </option>
+                                        <option value="2">
+                                          Multi-Family Home
+                                        </option>
+                                        <option value="3">Townhouse</option>
+                                        <option value="4">Apartment</option>
+                                        <option value="5">Bungalow</option>
+                                        <option value="6">Villa</option>
+                                        <option value="7">Duplex</option>
+                                        <option value="8">Penthouse</option>
+                                        <option value="9">
+                                          Studio Apartment
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.proposed_residential_building === "1"
+                                  ? "Single-Family Home"
+                                  : roless.proposed_residential_building === "2"
+                                  ? "Multi-Family Home"
+                                  : roless.proposed_residential_building === "3"
+                                  ? "Townhouse"
+                                  : roless.proposed_residential_building === "4"
+                                  ? "Apartment"
+                                  : roless.proposed_residential_building === "5"
+                                  ? "Bungalow"
+                                  : roless.proposed_residential_building === "6"
+                                  ? "Villa"
+                                  : roless.proposed_residential_building === "7"
+                                  ? "Duplex"
+                                  : roless.proposed_residential_building === "8"
+                                  ? "Penthouse"
+                                  : roless.proposed_residential_building === "9"
+                                  ? "Studio Apartment"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Proposed Development Timeline</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter TimeLine"
+                                        value={timeline}
+                                        onChange={(e) =>
+                                          setTimeLine(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.land_development_status
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Size in Plot</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter plot size"
+                                        value={plotSize}
+                                        onChange={(e) =>
+                                          setPlotSize(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_plot
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Size in Sqm</th>
+
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter size in sqm"
+                                        value={sqm}
+                                        onChange={(e) => setSqm(e.target.value)}
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_sqm
+                              )}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Proposed Source of Fund</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter TimeLine"
+                                        value={fund}
+                                        onChange={(e) =>
+                                          setFund(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.proposed_source_of_fund
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Estimated Development Value</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentvalue">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Development Value"
+                                        value={developmentValue}
+                                        onChange={(e) =>
+                                          setDevelopmentValue(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.estimated_development_amount
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>
+                              Document Value (If it's Govt. allocated land)
+                            </th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentvalue">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter document value"
+                                        value={documentValue}
+                                        onChange={(e) =>
+                                          setDocumentValue(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.estimated_development_amount
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+
+            {/* Others */}
             <Modal show={show20} onHide={handleClose20} size="lg" centered>
               <Modal.Header>
                 <Modal.Title
@@ -882,7 +3499,17 @@ const AllPayment = () => {
                           <tr>
                             <th>Application Type</th>
                             <td>
-                              {roless.service?.name}
+                              {roless.type === "2"
+                                ? "Allocation"
+                                : roless.type === "1"
+                                ? "Ratification"
+                                : roless.type === "3"
+                                ? "Governor's Consent"
+                                : roless?.type === "4"
+                                ? "Developed Private C of O"
+                                : roless?.type === "5"
+                                ? "Under Developed Private C of O"
+                                : ""}
                             </td>
                           </tr>
                           <tr>
@@ -906,7 +3533,7 @@ const AllPayment = () => {
                                   </Col>
                                 </Row>
                               ) : (
-                                roless.location?.description
+                                roless.land_location
                               )}
                             </td>
                           </tr>
@@ -946,10 +3573,10 @@ const AllPayment = () => {
                                 {roless.land_development_status === "1"
                                   ? "Residential"
                                   : roless.land_development_status === "2"
-                                    ? "Industrial/Commercial/Agricultural"
-                                    : roless.land_development_status === "3"
-                                      ? "Civic/Religious/Charitable Programme"
-                                      : "Unknown"}
+                                  ? "Industrial/Commercial/Agricultural"
+                                  : roless.land_development_status === "3"
+                                  ? "Civic/Religious/Charitable Programme"
+                                  : "Unknown"}
                               </td>
                             )}
                           </tr>
@@ -1254,22 +3881,22 @@ const AllPayment = () => {
                                 {roless.proposed_residential_building === "1"
                                   ? "Single-Family Home"
                                   : roless.proposed_residential_building === "2"
-                                    ? "Multi-Family Home"
-                                    : roless.proposed_residential_building === "3"
-                                      ? "Townhouse"
-                                      : roless.proposed_residential_building === "4"
-                                        ? "Apartment"
-                                        : roless.proposed_residential_building === "5"
-                                          ? "Bungalow"
-                                          : roless.proposed_residential_building === "6"
-                                            ? "Villa"
-                                            : roless.proposed_residential_building === "7"
-                                              ? "Duplex"
-                                              : roless.proposed_residential_building === "8"
-                                                ? "Penthouse"
-                                                : roless.proposed_residential_building === "9"
-                                                  ? "Studio Apartment"
-                                                  : "Unknown"}
+                                  ? "Multi-Family Home"
+                                  : roless.proposed_residential_building === "3"
+                                  ? "Townhouse"
+                                  : roless.proposed_residential_building === "4"
+                                  ? "Apartment"
+                                  : roless.proposed_residential_building === "5"
+                                  ? "Bungalow"
+                                  : roless.proposed_residential_building === "6"
+                                  ? "Villa"
+                                  : roless.proposed_residential_building === "7"
+                                  ? "Duplex"
+                                  : roless.proposed_residential_building === "8"
+                                  ? "Penthouse"
+                                  : roless.proposed_residential_building === "9"
+                                  ? "Studio Apartment"
+                                  : "Unknown"}
                               </td>
                             )}
                           </tr>
@@ -1736,15 +4363,15 @@ const AllPayment = () => {
                                           <span>
                                             {item.document_path
                                               ? item.document_path
-                                                .split("/")
-                                                .pop().length > 30
+                                                  .split("/")
+                                                  .pop().length > 30
                                                 ? item.document_path
-                                                  .split("/")
-                                                  .pop()
-                                                  .substring(0, 30) + "..."
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
                                                 : item.document_path
-                                                  .split("/")
-                                                  .pop()
+                                                    .split("/")
+                                                    .pop()
                                               : "No File"}
                                           </span>
                                         </div>
@@ -1780,6 +4407,3173 @@ const AllPayment = () => {
                 </Accordion>
               </Modal.Body>
             </Modal>
+
+            {/* Scheme Allocation Modal  */}
+            <Modal
+              show={showScheme}
+              onHide={handleCloseScheme}
+              size="lg"
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button variant="close" onClick={handleCloseScheme}></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Land Schemes</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="sourceOfFunds">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLandStatus}
+                                        value={selectedLandStatus}
+                                      >
+                                        <option value="">
+                                          Select Land Scheme
+                                        </option>
+                                        {schemes.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.title}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {/* {schemes.find(item => String(item.id) === String(roless.land_scheme))?.title} */}
+                                {schemes.find(
+                                  (item) => item.id === roless.land_scheme
+                                )}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Area</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Control
+                                        as="select"
+                                        className={`form-select ${classes.optioncss}`}
+                                        value={selectedArea}
+                                        onChange={handleAreaChange}
+                                        required
+                                      >
+                                        <option value="">Select Area</option>
+                                        {tableArea.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {tableArea?.find(
+                                  (item) =>
+                                    String(item.id) ===
+                                    String(roless.lga_of_land)
+                                )?.description || "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Location</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Control
+                                        as="select"
+                                        className={`form-select ${classes.optioncss}`}
+                                        value={selectedLocation}
+                                        onChange={handleLocationChange}
+                                        required
+                                      >
+                                        <option value="">
+                                          Select Location
+                                        </option>
+                                        {tableData2.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {tableData2?.find(
+                                  (item) =>
+                                    String(item.id) ===
+                                    String(roless.lga_of_land)
+                                )?.description || "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th> Land Use</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        value={selectedLandUse}
+                                        onChange={handleLandUse}
+                                      >
+                                        <option value="">
+                                          Select Land Use Type
+                                        </option>
+                                        {allLands.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.name}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  allLands.find(
+                                    (item) =>
+                                      String(item.id) ===
+                                      String(roless.landuse_id)
+                                  )?.name
+                                }
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Proposed Residential Building</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="propsedBuild">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleProposedBuild}
+                                        value={proposedRBuilding}
+                                      >
+                                        <option value="">
+                                          Select Building Type
+                                        </option>
+                                        <option value="1">
+                                          Single-Family Home
+                                        </option>
+                                        <option value="2">
+                                          Multi-Family Home
+                                        </option>
+                                        <option value="3">Townhouse</option>
+                                        <option value="4">Apartment</option>
+                                        <option value="5">Bungalow</option>
+                                        <option value="6">Villa</option>
+                                        <option value="7">Duplex</option>
+                                        <option value="8">Penthouse</option>
+                                        <option value="9">
+                                          Studio Apartment
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.proposed_residential_building === "1"
+                                  ? "Single-Family Home"
+                                  : roless.proposed_residential_building === "2"
+                                  ? "Multi-Family Home"
+                                  : roless.proposed_residential_building === "3"
+                                  ? "Townhouse"
+                                  : roless.proposed_residential_building === "4"
+                                  ? "Apartment"
+                                  : roless.proposed_residential_building === "5"
+                                  ? "Bungalow"
+                                  : roless.proposed_residential_building === "6"
+                                  ? "Villa"
+                                  : roless.proposed_residential_building === "7"
+                                  ? "Duplex"
+                                  : roless.proposed_residential_building === "8"
+                                  ? "Penthouse"
+                                  : roless.proposed_residential_building === "9"
+                                  ? "Studio Apartment"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Plot of land in SQM</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="proposedTimeline">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Plot of  in sqm"
+                                        value={sqm}
+                                        onChange={(e) => setSqm(e.target.value)}
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_sqm
+                              )}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Proposed Source of Fund</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="sourceOfFunds">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleSourceFund}
+                                        value={fund}
+                                      >
+                                        <option value={""}>
+                                          Select Source of fund
+                                        </option>
+                                        <option value="salary">Salary</option>
+                                        <option value="investment">
+                                          Investment
+                                        </option>
+                                        <option value="loan">Loan</option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.proposed_source_of_fund === "salary"
+                                  ? "Salary"
+                                  : roless.proposed_source_of_fund ===
+                                    "investment"
+                                  ? "Investment"
+                                  : roless.proposed_source_of_fund === "loan"
+                                  ? "Loan"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+
+            {/* Governor's Consent Modal */}
+            <Modal
+              show={showGovernor}
+              onHide={handleCloseGovernor}
+              size="lg"
+              centered
+            >
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button variant="close" onClick={handleCloseGovernor}></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th> Type of Governor's Consent</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleConsent}
+                                        value={selectedConsent}
+                                      >
+                                        <option value="">Select Type</option>
+                                        {consentTypes?.map((item, index) => (
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                            name={item.name}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.gov_consent_id === "1"
+                                  ? "Deed of Assignment"
+                                  : roless.gov_consent_id === "2"
+                                  ? "Deed of Mortgage"
+                                  : roless.gov_consent_id === "3"
+                                  ? "Deed of Sublease"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Local Government Area of Land</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Control
+                                        as="select"
+                                        className={`form-select ${classes.optioncss}`}
+                                        value={selectedArea}
+                                        onChange={handleAreaChange}
+                                        required
+                                      >
+                                        <option value="">Select LGA</option>
+                                        {tableArea.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Control>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {tableArea?.find(
+                                  (item) =>
+                                    String(item.id) ===
+                                    String(roless.lga_of_land)
+                                )?.description || "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Land Location</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Land Location"
+                                        value={landLocation}
+                                        onChange={(e) =>
+                                          setLandLocation(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.land_location
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>C of O Number</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter C of O number"
+                                        value={cofoNumber}
+                                        onChange={(e) =>
+                                          setCofONumber(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.cofo_number
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Developement Status of Land</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentStatus">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        value={selectedDevelopment}
+                                        onChange={handleDevStatus}
+                                      >
+                                        <option value="">
+                                          Select Land Development Status
+                                        </option>
+                                        <option value="Fully Developed">
+                                          Fully Developed
+                                        </option>
+                                        <option value="Development Ongoing">
+                                          Development Ongoing
+                                        </option>
+                                        <option value="Fenced">Fenced</option>
+                                        <option value="No Development Yet">
+                                          No Development Yet
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.land_development_status
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th> Land Use</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        // value={selectedDevelopment}
+                                        onChange={handleLandUse}
+                                      >
+                                        <option value="">
+                                          Select Land Use Type
+                                        </option>
+                                        {allLands.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.name}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  allLands.find(
+                                    (item) =>
+                                      String(item.id) ===
+                                      String(roless.landuse_id)
+                                  )?.name
+                                }
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Proposed Residential Building</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="propsedBuild">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleProposedBuild}
+                                        value={proposedRBuilding}
+                                      >
+                                        <option value="">
+                                          Select Building Type
+                                        </option>
+                                        <option value="1">
+                                          Single-Family Home
+                                        </option>
+                                        <option value="2">
+                                          Multi-Family Home
+                                        </option>
+                                        <option value="3">Townhouse</option>
+                                        <option value="4">Apartment</option>
+                                        <option value="5">Bungalow</option>
+                                        <option value="6">Villa</option>
+                                        <option value="7">Duplex</option>
+                                        <option value="8">Penthouse</option>
+                                        <option value="9">
+                                          Studio Apartment
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.proposed_residential_building === "1"
+                                  ? "Single-Family Home"
+                                  : roless.proposed_residential_building === "2"
+                                  ? "Multi-Family Home"
+                                  : roless.proposed_residential_building === "3"
+                                  ? "Townhouse"
+                                  : roless.proposed_residential_building === "4"
+                                  ? "Apartment"
+                                  : roless.proposed_residential_building === "5"
+                                  ? "Bungalow"
+                                  : roless.proposed_residential_building === "6"
+                                  ? "Villa"
+                                  : roless.proposed_residential_building === "7"
+                                  ? "Duplex"
+                                  : roless.proposed_residential_building === "8"
+                                  ? "Penthouse"
+                                  : roless.proposed_residential_building === "9"
+                                  ? "Studio Apartment"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+
+                          <tr>
+                            <th>Property Size in Plot</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Size in plot"
+                                        value={plotSize}
+                                        onChange={(e) =>
+                                          setPlotSize(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_plot
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Property Size in SQM</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="proposedTimeline">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="nter Size in SQM"
+                                        value={sqm}
+                                        onChange={(e) => setSqm(e.target.value)}
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.size_in_sqm
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th> State nature of Grant</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="sourceOfFunds">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleGrantNature}
+                                        // value={proposedRBuilding}
+                                      >
+                                        <option value="">
+                                          Select nature of grant
+                                        </option>
+                                        <option value="sublease">
+                                          Sublease
+                                        </option>
+                                        <option value="assignment">
+                                          Assignment
+                                        </option>
+                                        <option value="mortgage">
+                                          Mortgage
+                                        </option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.nature_of_grant === "sublease"
+                                  ? "Sublease"
+                                  : roless.nature_of_grant === "assignment"
+                                  ? "Assignment"
+                                  : roless.nature_of_grant === "mortgage"
+                                  ? "Mortgage"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+
+            {/* Certificate of Occupancy Modal */}
+
+            <Modal show={showCFO} onHide={handleCloseCFO} size="lg" centered>
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button variant="close" onClick={handleCloseCFO}></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Local Government Area of Land</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleAreaChange}
+                                        value={selectedArea}
+                                        required
+                                      >
+                                        <option value="">Select LGA</option>
+                                        {LGA.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  LGA.find(
+                                    (items) =>
+                                      String(items.id) ===
+                                      String(roless.lga_of_land)
+                                  )?.description
+                                }
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Land Location</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLocationChanges}
+                                        value={landLocation}
+                                        required
+                                      >
+                                        <option value="">
+                                          Select Location
+                                        </option>
+                                        {location2.map((item, index) => (
+                                          <option key={index} value={item.id}>
+                                            {item.description}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {
+                                  location2.find(
+                                    (items) =>
+                                      String(items.id) ===
+                                      String(roless.land_location)
+                                  )?.description
+                                }
+                              </td>
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+            {/* Land Search Modal */}
+
+            <Modal show={showLand} onHide={handleCloseLand} size="lg" centered>
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button variant="close" onClick={handleCloseLand}></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Page Number</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Page Number"
+                                        value={pageNumber1}
+                                        onChange={(e) =>
+                                          setPageNumber1(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.page_number
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Volume Number</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="age No">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Volume Number"
+                                        value={volumeNumber1}
+                                        onChange={(e) =>
+                                          setVolumeNumber1(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.volume_number
+                            )}
+                          </tr>
+                          <tr>
+                            <th> Date Issued</th>
+                            {/* <td>{roless.land_development_status}</td> */}
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="age No">
+                                      <Form.Control
+                                        type="date"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Volume Number"
+                                        value={allocationDate}
+                                        onChange={(e) =>
+                                          setAllocationDate(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              roless.date_issued
+                            )}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+            {/* Land Information Modal */}
+
+            <Modal show={showInfo} onHide={handleCloseInfo} size="lg" centered>
+              <Modal.Header>
+                <Modal.Title
+                  style={{
+                    fontSize: 18,
+                    color: "#333333",
+                    fontWeight: 500,
+                  }}
+                >
+                  Application Details
+                </Modal.Title>
+                <Button variant="close" onClick={handleCloseInfo}></Button>
+              </Modal.Header>
+              <Modal.Body>
+                <Accordion
+                  defaultActiveKey="1"
+                  style={{ paddingBottom: "30px" }}
+                >
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Application Details
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.status !== "1" && (
+                        <div className={classes.divUpdate}>
+                          <button className={classes.updateBtn}>
+                            Update Application
+                          </button>
+                        </div>
+                      )}
+
+                      <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                        <tbody style={{ whiteSpace: "nowrap" }}>
+                          <tr>
+                            <th style={{ width: "50%" }}>Application Number</th>
+                            <td style={{ width: "50%" }}>
+                              {roless.application_number}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Land Location</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Land Location"
+                                        value={landLocation}
+                                        onChange={(e) =>
+                                          setLandLocation(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.land_location
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th> Surveyor's Name</th>
+                            {/* <td>{roless.status === "0" ? <input value={landLocation} onChange={(e) => setLandLocation(e.target.value)}/> : roless.land_location}</td> */}
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landLocation">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Survey Plan Coordinates"
+                                        value={surveyorName}
+                                        onChange={(e) =>
+                                          setSurveyorName(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.surveyor_name
+                              )}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th>Land Use</th>
+                            {roless.status === "0" ? (
+                              <td>
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="landUse">
+                                      <Form.Select
+                                        className={classes.optioncss}
+                                        onChange={handleLandUse}
+                                        value={selectedLandUse}
+                                      >
+                                        <option value="">
+                                          Select Land Use Type
+                                        </option>
+                                        <option value="1">Residential</option>
+                                        <option value="2">
+                                          Industrial/Commercial/Agricultural
+                                        </option>
+                                        <option value="3">
+                                          Civic/Religious/Charitable Programme
+                                        </option>
+                                        <option value="4">Agricultural</option>
+                                        <option value="5">Commercial</option>
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </td>
+                            ) : (
+                              <td>
+                                {roless.land_development_status === "1"
+                                  ? "Residential"
+                                  : roless.land_development_status === "2"
+                                  ? "Industrial/Commercial/Agricultural"
+                                  : roless.land_development_status === "3"
+                                  ? "Civic/Religious/Charitable Programme"
+                                  : roless.land_development_status === "4"
+                                  ? "Agricultural"
+                                  : roless.land_development_status === "5"
+                                  ? "Commercial"
+                                  : "Unknown"}
+                              </td>
+                            )}
+                          </tr>
+                          <tr>
+                            <th>Survey Plan Number</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="developmentvalue">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        placeholder="Enter Plan Number"
+                                        value={surveyPlanNumber}
+                                        onChange={(e) =>
+                                          setSurveyPlanNumber(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.survey_plan_number
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Date</th>
+                            <td>
+                              {roless.status === "0" ? (
+                                <Row>
+                                  <Col md={12}>
+                                    <Form.Group controlId="lengthpossession">
+                                      <Form.Control
+                                        type="text"
+                                        className={classes.optioncss}
+                                        value={selectedDate}
+                                        onChange={(e) =>
+                                          setSelectedDate(e.target.value)
+                                        }
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                roless.date_issued
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Uploaded Documents
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {roless.type === "1" && (
+                        <>
+                          <h5>Survey Plan</h5>
+                          {roless.survey_plan ? (
+                            <iframe
+                              src={roless.survey_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Survey Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No survey plan available.</p>
+                          )}
+
+                          <h5>Land Receipt</h5>
+                          {roless.land_receipt ? (
+                            <iframe
+                              src={roless.land_receipt}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Land Receipt"
+                            ></iframe>
+                          ) : (
+                            <p>No land receipt available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "2" && (
+                        <>
+                          <h5>File</h5>
+                          {roless.file ? (
+                            <iframe
+                              src={roless.file}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="File"
+                            ></iframe>
+                          ) : (
+                            <p>No file available.</p>
+                          )}
+
+                          <h5>Document</h5>
+                          {roless.document ? (
+                            <iframe
+                              src={roless.document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Document"
+                            ></iframe>
+                          ) : (
+                            <p>No document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "3" && (
+                        <>
+                          <h5>C of O Document</h5>
+                          {roless.cofo_document ? (
+                            <iframe
+                              src={roless.cofo_document}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="C of O Document"
+                            ></iframe>
+                          ) : (
+                            <p>No C of O document available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "4" && (
+                        <>
+                          <h5>Evidence of Ownership</h5>
+                          {roless.evidence_of_ownership ? (
+                            <iframe
+                              src={roless.evidence_of_ownership}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Ownership"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of ownership available.</p>
+                          )}
+
+                          <h5>Building Plan</h5>
+                          {roless.building_plan ? (
+                            <iframe
+                              src={roless.building_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Building Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No building plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      {roless.type === "5" && (
+                        <>
+                          <h5>Evidence of Title</h5>
+                          {roless.evidence_of_title ? (
+                            <iframe
+                              src={roless.evidence_of_title}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Evidence of Title"
+                            ></iframe>
+                          ) : (
+                            <p>No evidence of title available.</p>
+                          )}
+
+                          <h5>Site Plan</h5>
+                          {roless.site_plan ? (
+                            <iframe
+                              src={roless.site_plan}
+                              width="100%"
+                              height="500px"
+                              style={{ border: "none" }}
+                              title="Site Plan"
+                            ></iframe>
+                          ) : (
+                            <p>No site plan available.</p>
+                          )}
+                        </>
+                      )}
+
+                      <h5>Other Supporting Documents</h5>
+                      {roless.document ? (
+                        <iframe
+                          src={roless.document}
+                          width="100%"
+                          height="500px"
+                          style={{ border: "none" }}
+                          title="Land Receipt"
+                        ></iframe>
+                      ) : (
+                        <p>No other documents available.</p>
+                      )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header
+                      style={{
+                        maxWidth: "900px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      GIS Details
+                    </Accordion.Header>
+                    <Accordion.Body>No data</Accordion.Body>
+                  </Accordion.Item>
+
+                  <div className={classes.formIntBtn}>
+                    {/* {shouldShowAlert && !showAlert && ( */}
+                    <Alert variant="warning" className="w-100">
+                      <Alert.Heading>Requirement Checklist</Alert.Heading>
+                      {/* <p>
+                          The application is missing the following required
+                          fields:
+                        </p> */}
+                      <ul style={{ listStyleType: "none", padding: 0 }}>
+                        <li style={{ color: customer.tin ? "green" : "red" }}>
+                          {customer.tin ? "✔" : "❌"} STIN (State Tax
+                          Identification Number)
+                        </li>
+                        {customer.user_type === "corporate" && (
+                          <li style={{ color: customer.cac ? "green" : "red" }}>
+                            {customer.cac ? "✔" : "❌"} CAC
+                          </li>
+                        )}
+                        {customer.user_type === "individual" && (
+                          <li style={{ color: customer.nin ? "green" : "red" }}>
+                            {customer.nin ? "✔" : "❌"} NIN (National
+                            Identification Number)
+                          </li>
+                        )}
+                        <li style={{ color: customer.tcc ? "green" : "red" }}>
+                          {customer.tcc ? "✔" : "❌"} Tax Clearance Certificate
+                          {customer.ogun_resident === "No" && !customer.tcc && (
+                            <span
+                              className={classes.tccStyle}
+                              onClick={handleShowTCC}
+                            >
+                              Click here to upload TCC
+                            </span>
+                          )}
+                        </li>
+                      </ul>
+                    </Alert>
+                    {/* / )} */}
+                  </div>
+                  <Tabs
+                    defaultActiveKey="invoicesandreceipts"
+                    id="uncontrolled-tab-example"
+                    className="mb-3 confirm-tabs "
+                    variant="underline"
+                    color="white"
+                    style={{ marginTop: "15px", textDecoration: "none" }}
+                  >
+                    <Tab
+                      eventKey="invoicesandreceipts"
+                      title="Invoices and Receipts"
+                    >
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Invoices & Receipts</h5>
+                        </div>
+                        <table className="table m-0 bg-white display table-bordered table-striped table-hover card-table">
+                          <thead style={{ whiteSpace: "nowrap" }}>
+                            <tr>
+                              <th>S/N</th>
+                              <th>Description</th>
+                              <th>Transaction Date</th>
+                              <th>Payment Code</th>
+                              <th>Payment Status</th>
+                              <th>Amount</th>
+                              {/* <th>Action</th> */}
+                            </tr>
+                          </thead>
+                          <tbody style={{ whiteSpace: "nowrap" }}>
+                            {payment.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td style={{ whiteSpace: "wrap" }}>
+                                  {item.description}
+                                </td>
+                                <td>
+                                  {new Date(item.created_at).toLocaleString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                    }
+                                  )}
+                                </td>
+                                <td>{item.payment_code}</td>
+                                <td
+                                  style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {item.status === "1" ? (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #50b848",
+                                        borderRadius: 3,
+                                        color: "#50b848",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      PAID
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        height: 15,
+                                        width: 70,
+                                        border: "1px solid #ff5400",
+                                        borderRadius: 3,
+                                        color: "#ff5400",
+                                        fontSize: 10,
+                                        textAlign: "center",
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      UNPAID
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  {parseFloat(item.amount).toLocaleString(
+                                    "en-US",
+                                    {
+                                      minimumIntegerDigits: 1,
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="documents" title="Documents">
+                      <div className="w-100" style={{ margin: "20px 0 0 0" }}>
+                        <div className={classes.formIntBtn12}>
+                          <h5>Uploaded Document</h5>
+                          <Button
+                            variant="success"
+                            className={classes.btn1}
+                            onClick={handleShow50}
+                          >
+                            Add New Document
+                          </Button>
+                        </div>
+                        {applicationDocs.length > 0 && (
+                          <Container>
+                            {applicationDocs
+                              .reduce((rows, item, index) => {
+                                if (index % 2 === 0) {
+                                  rows.push([]);
+                                }
+                                rows[rows.length - 1].push(item);
+                                return rows;
+                              }, [])
+                              .map((row, rowIndex) => (
+                                <Row key={rowIndex} className="mb-3">
+                                  {row.map((item, index) => (
+                                    <Col key={index} lg={6}>
+                                      <p>{item.description}</p>
+                                      <div className={classes.pdfTablem}>
+                                        <div className={classes.pdfTableL}>
+                                          <img
+                                            src={PdfIcon}
+                                            alt="icon"
+                                            className={classes.pdfIcon}
+                                          />
+                                          <span>
+                                            {item.document_path
+                                              ? item.document_path
+                                                  .split("/")
+                                                  .pop().length > 30
+                                                ? item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                                    .substring(0, 30) + "..."
+                                                : item.document_path
+                                                    .split("/")
+                                                    .pop()
+                                              : "No File"}
+                                          </span>
+                                        </div>
+                                        <div
+                                          className={classes.pdfTableR}
+                                          onClick={() =>
+                                            openFileInModal(item.document_path)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <p>
+                                            {" "}
+                                            View{" "}
+                                            <span>
+                                              <img
+                                                src={DownloadIcon}
+                                                alt="Download icon"
+                                                className={classes.downloadIcon}
+                                              />
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              ))}
+                          </Container>
+                        )}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </Accordion>
+              </Modal.Body>
+            </Modal>
+
             <Modal
               show={download}
               onHide={handleDownloadClose}
@@ -2188,600 +7982,557 @@ const AllPayment = () => {
               </Modal.Body>
             </Modal>
             <div>
-        
-           
-                         <div className={classes.allcards}>
-                         
-                            
-                               {" "}
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                     Overall Amount Requested
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                   Total Amount Approved
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                               <div className={classes.card}>
-                                 <div className={classes.cardContent}>
-                                   <h4 className={classes.title}>
-                                   Total Amount Utilized
-                                   </h4>
-                                   <p className={classes.amount}>
-                                     ₦{"000,000,00"}
-                                     <span className={classes.litnmbr}>.00</span>
-                                   </p>
-                                   <span className={classes.percentage}>▲ 00%</span>
-                                 </div>
-           
-                                 {/* Mini Line Chart */}
-                                 {/* <div className={classes.chartContainer}>
-                                                <ResponsiveContainer width="100%" height={50}>
-                                                  <LineChart data={"data"}>
-                                                    <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
-                                                  </LineChart>
-                                                </ResponsiveContainer>
-                                              </div> */}
-                               </div>
-                            
-                     
-                         </div>
-                       </div>
-           
+              <div className={classes.allcards}>
+                {" "}
+                <div className={classes.card}>
+                  <div className={classes.cardContent}>
+                    <h4 className={classes.title}>Overall Amount Requested</h4>
+                    <p className={classes.amount}>
+                      ₦{"000,000,00"}
+                      <span className={classes.litnmbr}>.00</span>
+                    </p>
+                    <span className={classes.percentage}>▲ 00%</span>
+                  </div>
 
-          
-                    
-                                <div
-                                  className={
-                                    isDarkMode
-                                      ? classes.applicationHistory1
-                                      : classes.applicationHistory
-                                  }
-                                >
-                                  <div className={classes.hortrstns}>
-                                    <h1 className={classes.recenttrsd}>My Payment</h1>
-                                    <div className={classes.midDiv}>
-                                      <div className={classes.divSearch}>
-                                        <img
-                                          src={search}
-                                          alt="search"
-                                          className={classes.searchIcon}
-                                        />
-                                        <input
-                                          type="text"
-                                          placeholder="Search"
-                                          className={classes.search}
-                                        />
-                                      </div>
-                                      <Form.Select
-                                        id="status"
-                                        style={{
-                                          width: 100,
-                                          height: 40,
-                                          borderRadius: 8,
-                                          fontSize: 12,
-                                          border: "1px solid #E0E0E0",
-                                          fontWeight: 400,
-                                          color: "#4F4F4F",
-                                          padding: "0.5rem",
-                                          // backgroundColor: '#F2F2F2',
-                                          // border: 0
-                                        }}
-                                        name="DataTables_Table_0_length"
-                                        aria-controls="DataTables_Table_0"
-                                        className="custom-select custom-select-sm form-control form-control-sm"
-                                      >
-                                        <option value="All">Status</option>
-                                        <option value="All">Status</option>
-                                        <option value="All">Status</option>
-                                        <option value="All">Status</option>
-                                      </Form.Select>
-                    
-                                      <button className={classes.bttens}>
-                                        Pick date{" "}
-                                        <img
-                                          src={Calender}
-                                          className={classes.imgss}
-                                          alt="calender icon"
-                                        />
-                                      </button>
-                    
-                                      <label
-                                        style={{
-                                          fontSize: 14,
-                                          color: " #828282",
-                                          fontWeight: 600,
-                                          gap: 10,
-                                          borderRadius: 8,
-                                          // backgroundColor: '#F2F2F2',
-                                          marginLeft: 10,
-                                        }}
-                                      >
-                                        <div className={classes.divBtn}>
-                                          <div className={classes.divOne}>
-                                            <div className={classes.stIC}>
-                                              <p className={classes.stN}>Export</p>
-                                              <img
-                                                src={xport}
-                                                alt="status"
-                                                className={classes.filter}
-                                              />
-                                            </div>
+                  {/* Mini Line Chart */}
+                  {/* <div className={classes.chartContainer}>
+                                     <ResponsiveContainer width="100%" height={50}>
+                                       <LineChart data={"data"}>
+                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
+                                       </LineChart>
+                                     </ResponsiveContainer>
+                                   </div> */}
+                </div>
+                <div className={classes.card}>
+                  <div className={classes.cardContent}>
+                    <h4 className={classes.title}>Total Amount Approved</h4>
+                    <p className={classes.amount}>
+                      ₦{"000,000,00"}
+                      <span className={classes.litnmbr}>.00</span>
+                    </p>
+                    <span className={classes.percentage}>▲ 00%</span>
+                  </div>
+
+                  {/* Mini Line Chart */}
+                  {/* <div className={classes.chartContainer}>
+                                     <ResponsiveContainer width="100%" height={50}>
+                                       <LineChart data={"data"}>
+                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
+                                       </LineChart>
+                                     </ResponsiveContainer>
+                                   </div> */}
+                </div>
+                <div className={classes.card}>
+                  <div className={classes.cardContent}>
+                    <h4 className={classes.title}>Total Amount Utilized</h4>
+                    <p className={classes.amount}>
+                      ₦{"000,000,00"}
+                      <span className={classes.litnmbr}>.00</span>
+                    </p>
+                    <span className={classes.percentage}>▲ 00%</span>
+                  </div>
+
+                  {/* Mini Line Chart */}
+                  {/* <div className={classes.chartContainer}>
+                                     <ResponsiveContainer width="100%" height={50}>
+                                       <LineChart data={"data"}>
+                                         <Line type="linear" dataKey="value" stroke="#22C55E" strokeWidth={2} dot={false} />
+                                       </LineChart>
+                                     </ResponsiveContainer>
+                                   </div> */}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={
+                isDarkMode
+                  ? classes.applicationHistory1
+                  : classes.applicationHistory
+              }
+            >
+              <div className={classes.hortrstns}>
+                <h1 className={classes.recenttrsd}>My Receipts</h1>
+                <div className={classes.midDiv}>
+                  <div className={classes.divSearch}>
+                    <img
+                      src={search}
+                      alt="search"
+                      className={classes.searchIcon}
+                    />
+                   <input
+                                     value={searchTerm}
+                                       type="text"
+                                       placeholder="Search"
+                                       className={classes.search}
+                                       onChange={(e) => {
+                                         setSearchTerm(e.target.value);
+                                       }}
+                                       
+                                     />
+                                     {searchTerm && (
+                         <button 
+                           onClick={() => setSearchTerm('')}
+                           style={{
+                             position: 'absolute',
+                             right: '10px',
+                             top: '50%',
+                             transform: 'translateY(-50%)',
+                             background: 'none',
+                             border: 'none',
+                             cursor: 'pointer',
+                             color: '#000'
+                           }}
+                         >
+                           ×
+                         </button>
+                         )}
+                  </div>
+                 
+
+                  <input 
+                    type="date" 
+                    className={classes.bttens} 
+                    onChange={handleDateChange} name="date" value={selectedDate}
+                  />
+
+                  <label
+                    style={{
+                      fontSize: 14,
+                      color: " #828282",
+                      fontWeight: 600,
+                      gap: 10,
+                      borderRadius: 8,
+                      // backgroundColor: '#F2F2F2',
+                      marginLeft: 10,
+                    }}
+                  >
+                    <div className={classes.divBtn}>
+                                        <div className={classes.divOne}>
+                                          <div onClick={exportToCSV} className={classes.stIC}>
+                                            <p className={classes.stN} sty>Export CSV</p>
+                                            <img src={xport} alt="status" className={classes.filter} />
                                           </div>
                                         </div>
-                                      </label>
+                                      </div>
+                  </label>
+                </div>
+              </div>
+
+              <div className={classes.mainTables}>
+                {benLoading ? (
+                  <>
+                    <Placeholder xs={6} />
+                    <Placeholder className="w-75" />{" "}
+                    <Placeholder classes={{ width: "25%" }} />
+                  </>
+                ) : tableData?.length === 0 ? (
+                  <div className={classes.notFound}>
+                    <img src={notransaction} alt="not-found" />
+                    <p>No Receipt found</p>
+                  </div>
+                ) : (
+                  <div>
+                    <table style={{ width: "98%" }}>
+                      <thead style={{ whiteSpace: "nowrap", width: "100%" }}>
+                      <tr>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              S/N
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                             Payment Code
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Application Number
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Description
+                            </th>
+                           
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Date
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Amount
+                            </th>
+                            <th></th>
+                          </tr>
+                      </thead>
+
+                      <tbody style={{ whiteSpace: "wrap",  }}>
+                        {currentEntries?.map((rowId, index) => (
+                          <tr
+                            key={rowId}
+                            style={{
+                              backgroundColor:
+                                index % 2 !== 0
+                                  ? "rgba(30, 165, 82, 0.1)"
+                                  : "transparent",
+                            }}
+                          >
+                            <td style={{ padding: 10 }}>{index + 1}</td>
+                            <td style={{ padding: 10 }}>
+                              {rowId?.payment_code}
+                            </td>
+                            <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                            
+                            <td style={{ padding: 10 }}>
+                              {rowId?.description}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {formatDate(rowId.payment_date)}
+                            </td>
+                            <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                                minimumIntegerDigits: 1,
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}</td>
+                           
+                            
+                            {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
+                            <td
+                              style={{ padding: 10 }}
+                              className={classes.moreTxt}
+                            >
+                              <div
+                                style={{ position: "relative" }}
+                                className={classes.menuWeb}
+                              >
+                                <img
+                                  className={classes.moreIcon}
+                                  src={MoreIcon}
+                                  alt="more"
+                                  onClick={() => handleMoreClick(rowId)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                                {visibleDropdown === rowId && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "100%",
+                                      right: 0,
+                                      backgroundColor: "white",
+                                      zIndex: 9999,
+                                      boxShadow:
+                                        "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                      borderRadius: "4px",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "5px 10px",
+                                        cursor: "pointer",
+                                        textAlign: "left",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                      onClick={() => handleEyeClick5(rowId.id)}
+                                    >
+                                      <img
+                                        src={Printer}
+                                        alt="invoice"
+                                        style={{
+                                          width: "20px",
+                                          marginRight: "10px",
+                                        }}
+                                      />
+                                      View Receipt
+                                    </div>
+                                   
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              <div className={classes.mobileView}>
+                <div className={classes.mainTable}>
+                  {benLoading ? (
+                    <p>Loading data, Please wait...</p>
+                  ) : (
+                    <div
+                      className={classes.tableCon}
+                      style={{
+                        overflowX: "auto", // Horizontal scroll for table
+                        whiteSpace: "nowrap", // Prevent table from wrapping
+                        maxWidth: "100%", // Limit container width to screen size
+                      }}
+                    >
+                      <table
+                        className="table display table-hover m-0 card-table"
+                        style={{
+                          minWidth: "600px", // Minimum table width to ensure visibility
+                        }}
+                      >
+                        <thead>
+                          <tr>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              S/N
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                             Payment Code
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Application Number
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Description
+                            </th>
+                           
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Date
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Amount
+                            </th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody style={{ whiteSpace: "wrap" }}>
+                        {currentEntries?.map((rowId, index) => (
+                          <tr
+                            key={rowId}
+                            style={{
+                              backgroundColor:
+                                index % 2 !== 0
+                                  ? "rgba(30, 165, 82, 0.1)"
+                                  : "transparent",
+                            }}
+                          >
+                            <td style={{ padding: 10 }}>{index + 1}</td>
+                            <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                            <td style={{ padding: 10 }}>
+                              {rowId?.description}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {formatDate(rowId.updated_at)}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {rowId.approval_status === 0
+                                ? "Ongoing"
+                                : "Completed"}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {rowId.payment_status === "0" ? "Unpaid" : "Paid"}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {rowId.payment_status === "0"
+                                ? "Awaiting your Payment"
+                                : rowId.payment_status === "1" &&
+                                  rowId.approval_status === "0"
+                                ? rowId.role?.name
+                                : rowId.payment_status === "1" &&
+                                  rowId.approval_status === "1"
+                                ? "Approved"
+                                : null}
+                            </td>
+                            {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
+                            <td
+                              style={{ padding: 10 }}
+                              className={classes.moreTxt}
+                            >
+                              <div
+                                style={{ position: "relative" }}
+                                className={classes.menuWeb}
+                              >
+                                <img
+                                  className={classes.moreIcon}
+                                  src={MoreIcon}
+                                  alt="more"
+                                  onClick={() => handleMoreClick(rowId)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                                {visibleDropdown === rowId && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "100%",
+                                      right: 0,
+                                      backgroundColor: "white",
+                                      zIndex: 9999,
+                                      boxShadow:
+                                        "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                      borderRadius: "4px",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "5px 10px",
+                                        cursor: "pointer",
+                                        textAlign: "left",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                      onClick={() => handleEyeClick5(rowId.id)}
+                                    >
+                                      <img
+                                        src={Printer}
+                                        alt="invoice"
+                                        style={{
+                                          width: "20px",
+                                          marginRight: "10px",
+                                        }}
+                                      />
+                                      View Invoice
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        handleEyeClick(
+                                          rowId.id,
+                                          rowId?.apptype?.description
+                                        );
+                                        handleMoreClick(null);
+                                      }}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "5px 10px",
+                                        cursor: "pointer",
+                                        textAlign: "left",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
+                                      <img
+                                        src={ViewIcon}
+                                        alt="view application"
+                                        style={{
+                                          width: "20px",
+                                          marginRight: "10px",
+                                        }}
+                                      />
+                                      View Application
                                     </div>
                                   </div>
-                    
-                                  <div className={classes.mainTables}>
-                                    {benLoading ? (
-                                      <>
-                                        <Placeholder xs={6} />
-                                        <Placeholder className="w-75" />{" "}
-                                        <Placeholder classes={{ width: "25%" }} />
-                                      </>
-                                    ) : tableData?.length === 0 ? (
-                                      <div className={classes.notFound}>
-                                        <img src={notransaction} alt="not-found" />
-                                        <p>No Applications found</p>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <table classes={{ width: "98%" }}>
-                                          <thead classes={{ whiteSpace: "nowrap" }}>
-                                            <tr>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                S/N
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Application Number
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Application Type
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Submission Date
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Application Status
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Payment Status
-                                              </th>
-                                              <th classes={{ color: isDarkMode && "white" }}>
-                                                Approval Required by
-                                              </th>
-                                              {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
-                                              <th></th>
-                                            </tr>
-                                          </thead>
-                    
-                                          <tbody style={{ whiteSpace: "wrap" }}>
-                                            {tableData?.map((rowId, index) => (
-                                              <tr
-                                                key={rowId}
-                                                style={{
-                                                  backgroundColor:
-                                                    index % 2 !== 0
-                                                      ? "rgba(30, 165, 82, 0.1)"
-                                                      : "transparent",
-                                                }}
-                                              >
-                                                <td style={{ padding: 10 }}>{index + 1}</td>
-                                                <td style={{ padding: 10 }}>{rowId.uuid}</td>
-                                                <td style={{ padding: 10 }}>
-                                                  {rowId?.description}
-                                                </td>
-                                                <td style={{ padding: 10 }}>
-                                                  {formatDate(rowId.updated_at)}
-                                                </td>
-                                                <td style={{ padding: 10 }}>
-                                                  {rowId.approval_status === 0
-                                                    ? "Ongoing"
-                                                    : "Completed"}
-                                                </td>
-                                                <td style={{ padding: 10 }}>
-                                                  {rowId.payment_status === "0" ? "Unpaid" : "Paid"}
-                                                </td>
-                                                <td style={{ padding: 10 }}>
-                                                  {rowId.payment_status === "0"
-                                                    ? "Awaiting your Payment"
-                                                    : rowId.payment_status === "1" &&
-                                                      rowId.approval_status === "0"
-                                                    ? rowId.role?.name
-                                                    : rowId.payment_status === "1" &&
-                                                      rowId.approval_status === "1"
-                                                    ? "Approved"
-                                                    : null}
-                                                </td>
-                                                {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
-                                                <td
-                                                  style={{ padding: 10 }}
-                                                  className={classes.moreTxt}
-                                                >
-                                                  <div
-                                                    style={{ position: "relative" }}
-                                                    className={classes.menuWeb}
-                                                  >
-                                                    <img
-                                                      className={classes.moreIcon}
-                                                      src={MoreIcon}
-                                                      alt="more"
-                                                      onClick={() => handleMoreClick(rowId)}
-                                                      style={{ cursor: "pointer" }}
-                                                    />
-                                                    {/* {visibleDropdown === rowId && (
-                                                      <div
-                                                        style={{
-                                                          position: "absolute",
-                                                          top: "100%",
-                                                          right: 0,
-                                                          backgroundColor: "white",
-                                                          zIndex: 9999,
-                                                          boxShadow:
-                                                            "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                                          borderRadius: "4px",
-                                                        }}
-                                                      >
-                                                        <div
-                                                          style={{
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            padding: "5px 10px",
-                                                            cursor: "pointer",
-                                                            textAlign: "left",
-                                                            whiteSpace: "nowrap",
-                                                          }}
-                                                          onClick={() => handleEyeClick5(rowId.id)}
-                                                        >
-                                                          <img
-                                                            src={Printer}
-                                                            alt="invoice"
-                                                            style={{
-                                                              width: "20px",
-                                                              marginRight: "10px",
-                                                            }}
-                                                          />
-                                                          View Invoice
-                                                        </div>
-                                                        <div
-                                                          onClick={() => {
-                                                            handleEyeClick(
-                                                              rowId.id,
-                                                              rowId?.apptype?.description
-                                                            );
-                                                            handleMoreClick(null);
-                                                          }}
-                                                          style={{
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            padding: "5px 10px",
-                                                            cursor: "pointer",
-                                                            textAlign: "left",
-                                                            whiteSpace: "nowrap",
-                                                          }}
-                                                        >
-                                                          <img
-                                                            src={ViewIcon}
-                                                            alt="view application"
-                                                            style={{
-                                                              width: "20px",
-                                                              marginRight: "10px",
-                                                            }}
-                                                          />
-                                                          View Application
-                                                        </div>
-                                                      </div>
-                                                    )} */}
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            ))}
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    )}
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+               {!benLoading && (
+                              <div className={classes.endded}>
+                                <div className={classes.showTxt}>
+                                  <div className={classes.show}>
+                                    <label style={{
+                                      fontSize: 14,
+                                      color: isDarkMode ? '#ffffff' : '#333333',
+                                      fontWeight: 600,
+                                      gap: 10
+                                    }} className="d-flex justify-content-start align-items-center">
+                                      Showing
+                                      <Form.Select style={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
+                                        value={entriesPerPage}
+                                        onChange={(e) => {
+                                          setEntriesPerPage(parseInt(e.target.value));
+                                          setCurrentPage(1);
+                                        }}
+                                      >
+                                        <option value={10} >10 entries</option>
+                                        <option value={25} >25 entries</option>
+                                        <option value={50} >50 entries</option>
+                                        <option value={100} >100 entries</option>
+                                      </Form.Select>
+                                    </label>
                                   </div>
-                    
-                                  <div className={classes.mobileView}>
-                                    <div className={classes.mainTable}>
-                                      {benLoading ? (
-                                        <p>Loading data, Please wait...</p>
-                                      ) : (
-                                        <div
-                                          className={classes.tableCon}
-                                          classes={{
-                                            overflowX: "auto", // Horizontal scroll for table
-                                            whiteSpace: "nowrap", // Prevent table from wrapping
-                                            maxWidth: "100%", // Limit container width to screen size
-                                          }}
-                                        >
-                                          <table
-                                            className="table display table-hover m-0 card-table"
-                                            classes={{
-                                              minWidth: "600px", // Minimum table width to ensure visibility
-                                            }}
-                                          >
-                                            <thead>
-                                              <tr>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  S/N
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Application Number
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Application Type
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Submission Date
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Status
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Approval Required by
-                                                </th>
-                                                <th classes={{ color: isDarkMode && "white" }}>
-                                                  Amount
-                                                </th>
-                                                <th></th>
-                                              </tr>
-                                            </thead>
-                                            <tbody style={{ whiteSpace: "wrap" }}>
-                                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
-                                                (rowId, index) => (
-                                                  <tr
-                                                    key={rowId}
-                                                    style={{
-                                                      backgroundColor:
-                                                        index % 2 !== 0
-                                                          ? "rgba(30, 165, 82, 0.1)"
-                                                          : "transparent",
-                                                    }}
-                                                  >
-                                                    <td style={{ padding: 10 }}>{rowId}</td>
-                                                    <td style={{ padding: 10 }}>
-                                                      ACME MEDICARE CLINICS LTD
-                                                    </td>
-                                                    <td style={{ padding: 10 }}>
-                                                      January 2025 Monthly PAYE Returns
-                                                    </td>
-                                                    <td style={{ padding: 10 }}>₦528,861.00</td>
-                                                    <td style={{ padding: 10 }}>₦528,861.00</td>
-                                                    <td style={{ padding: 10 }}>0003000178320</td>
-                                                    <td style={{ padding: 10 }}>
-                                                      {/* <img
-                                                              className={classes.statusIconsuccess}
-                                                              src={succesful}
-                                                              alt="status"
-                                                          /> */}
-                                                      <td
-                                                        style={{ padding: 10 }}
-                                                        className={classes.info1}
-                                                      >
-                                                        <p
-                                                          className={`${classes["status-success"]} ${classes.info}`}
-                                                        >
-                                                          Approved
-                                                        </p>
-                                                      </td>
-                                                    </td>
-                    
-                                                    <td
-                                                      style={{ padding: 10 }}
-                                                      className={classes.moreTxt}
-                                                    >
-                                                      <div
-                                                        style={{ position: "relative" }}
-                                                        className={classes.menuWeb}
-                                                      >
-                                                        <img
-                                                          className={classes.moreIcon}
-                                                          src={MoreIcon}
-                                                          alt="more"
-                                                          onClick={() => handleMoreClick(rowId)}
-                                                          style={{ cursor: "pointer" }}
-                                                        />
-                                                        {/* {visibleDropdown === rowId && (
-                                                          <div
-                                                            style={{
-                                                              position: "absolute",
-                                                              top: "100%",
-                                                              right: 0,
-                                                              backgroundColor: "white",
-                                                              zIndex: 9999,
-                                                              boxShadow:
-                                                                "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                                              borderRadius: "4px",
-                                                            }}
-                                                          >
-                                                            <div
-                                                              style={{
-                                                                display: "flex",
-                                                                alignItems: "center",
-                                                                padding: "5px 10px",
-                                                                cursor: "pointer",
-                                                              }}
-                                                            >
-                                                              <img
-                                                                src={Printer} // Replace with your actual path
-                                                                alt="contact"
-                                                                style={{
-                                                                  width: "20px",
-                                                                  marginRight: "10px",
-                                                                }}
-                                                              />
-                                                              View Invoice
-                                                            </div>
-                                                          </div>
-                                                        )} */}
-                                                      </div>
-                                                    </td>
-                                                  </tr>
-                                                )
-                                              )}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                  {!benLoading && (
-                                    <div className={classes.endded}>
-                                      <div className={classes.showTxt}>
-                                        <div className={classes.show}>
-                                          <label
-                                            classes={{
-                                              fontSize: 14,
-                                              color: isDarkMode ? "#ffffff" : "#333333",
-                                              fontWeight: 600,
-                                              gap: 10,
-                                            }}
-                                            className="d-flex justify-content-start align-items-center"
-                                          >
-                                            Showing
-                                            <Form.Select
-                                              classes={{
-                                                width: 114,
-                                                height: 44,
-                                                borderRadius: 8,
-                                                fontSize: 14,
-                                                fontWeight: 600,
-                                              }}
-                                              name="DataTables_Table_0_length"
-                                              aria-controls="DataTables_Table_0"
-                                              className="custom-select custom-select-sm form-control form-control-sm"
-                                              value={entriesPerPage}
-                                              onChange={(e) => {
-                                                setEntriesPerPage(parseInt(e.target.value));
-                                                setCurrentPage(1);
-                                              }}
-                                            >
-                                              <option value={10}>10 entries</option>
-                                              <option value={25}>25 entries</option>
-                                              <option value={50}>50 entries</option>
-                                              <option value={100}>100 entries</option>
-                                            </Form.Select>
-                                          </label>
-                                        </div>
-                                      </div>
-                    
-                                      <div className={classes.btmPagination}>
-                                        <div classes={{ display: "flex" }}>
-                                          <button
-                                            classes={{
-                                              textAlign: "center",
-                                              border: "1px solid #F1F1F1",
-                                              backgroundColor: "#fff",
-                                              borderRadius: 8,
-                                              height: "32px",
-                                              width: "32px",
-                                              fontWeight: 700,
-                                              fontSize: 14,
-                                              color: "#000000",
-                                              cursor: "pointer",
-                                            }}
-                                            // onClick={handlePrevPage}
-                                            disabled={currentPage === 1}
-                                          >
-                                            {"<"}
-                                          </button>
-                                          {/* {[...Array(totalPages)].map((_, page) => {
-                                          
-                                            if (
-                                              page < 3 ||
-                                              page === currentPage - 1 ||
-                                              page === totalPages - 1
-                                            ) {
-                                              return (
-                                                <button
-                                                  key={page + 1}
-                                                  classes={{
-                                                    textAlign: "center",
-                                                    marginLeft: "0.4rem",
-                                                    marginRight: "0.4rem",
-                                                    fontSize: "14px",
-                                                    fontWeight: 700,
-                                                    color:
-                                                      page + 1 === currentPage
-                                                        ? "#ffffff"
-                                                        : "#333333",
-                                                    backgroundColor:
-                                                      page + 1 === currentPage ? "#21B55A" : "#fff",
-                                                    height: "32px",
-                                                    borderRadius: "8px",
-                                                    //   padding: '0.5rem',
-                                                    border: "1px solid #F1F1F1",
-                                                    width: "32px",
-                                                    cursor: "pointer",
-                                                  }}
-                                                  onClick={() => setCurrentPage(page + 1)}
-                                                >
-                                                  {page + 1}
-                                                </button>
-                                              );
-                                            }
-                                            return null;
-                                          })} */}
-                                          <button
-                                            classes={{
-                                              textAlign: "center",
-                                              border: "1px solid #F1F1F1",
-                                              backgroundColor: "#fff",
-                                              borderRadius: 8,
-                                              height: "32px",
-                                              width: "32px",
-                                              fontWeight: 700,
-                                              fontSize: 14,
-                                              color: "#000000",
-                                              cursor: "pointer",
-                                            }}
-                                            // onClick={handleNextPage}
-                                            // disabled={currentPage === totalPages}
-                                          >
-                                            {">"}
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  )}
-                                  
                                 </div>
+              
+                                <div className={classes.btmPagination}>
+                                      <div style={{ display: "flex" }}>
+                                        <button
+                                          style={{
+                                            textAlign: "center",
+                                            border: "1px solid #F1F1F1",
+                                            backgroundColor: "#fff",
+                                            borderRadius: 8,
+                                            height: "32px",
+                                            width: "32px",
+                                            fontWeight: 700,
+                                            fontSize: 14,
+                                            color: "#000000",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={handlePrevPage}
+                                          disabled={currentPage === 1}
+                                        >
+                                          {"<"}
+                                        </button>
+                                        {[...Array(totalPages)].map((_, page) => {
+                                          // Show only 5 pages or less if available
+                                          if (
+                                            page < 3 ||
+                                            page === currentPage - 1 ||
+                                            page === totalPages - 1
+                                          ) {
+                                            return (
+                                              <button
+                                                key={page + 1}
+                                                style={{
+                                                  textAlign: "center",
+                                                  marginLeft: "0.4rem",
+                                                  marginRight: "0.4rem",
+                                                  fontSize: "14px",
+                                                  fontWeight: 700,
+                                                  color:
+                                                    page + 1 === currentPage
+                                                      ? "#ffffff"
+                                                      : "#333333",
+                                                  backgroundColor:
+                                                    page + 1 === currentPage
+                                                      ? "#21B55A"
+                                                      : "#fff",
+                                                  height: "32px",
+                                                  borderRadius: "8px",
+                                                  //   padding: '0.5rem',
+                                                  border: "1px solid #F1F1F1",
+                                                  width: "32px",
+                                                  cursor: "pointer",
+                                                }}
+                                                onClick={() => setCurrentPage(page + 1)}
+                                              >
+                                                {page + 1}
+                                              </button>
+                                            );
+                                          }
+                                          return null;
+                                        })}
+                                        <button
+                                          style={{
+                                            textAlign: "center",
+                                            border: "1px solid #F1F1F1",
+                                            backgroundColor: "#fff",
+                                            borderRadius: 8,
+                                            height: "32px",
+                                            width: "32px",
+                                            fontWeight: 700,
+                                            fontSize: 14,
+                                            color: "#000000",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={handleNextPage}
+                                          disabled={currentPage === totalPages}
+                                        >
+                                          {">"}
+                                        </button>
+                                      </div>
+                                    </div>
+              
+                              </div>
+                            )}
+              
+            </div>
           </div>
         </div>
       </div>

@@ -970,7 +970,7 @@ const AllApplications = () => {
                   <div className={classes.divBtn}>
                     <div className={classes.divOne}>
                       <div onClick={exportToCSV} className={classes.stIC}>
-                        <p className={classes.stN}>Export</p>
+                        <p className={classes.stN}>Export CSV</p>
                         <img src={xport} alt="status" className={classes.filter} />
                       </div>
                     </div>
@@ -996,17 +996,17 @@ const AllApplications = () => {
                   </div> 
                  ) : ( 
                   <div >
-                    <table classes={{ width: "98%" }}>
+                    <table style={{ width: "98%" }}>
 
-                      <thead classes={{ whiteSpace: 'nowrap' }}>
+                      <thead style={{ whiteSpace: 'nowrap' }}>
                         <tr>
-                          <th classes={{ color: isDarkMode && "white" }}>S/N</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Number</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Submission Date</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Status</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Payment Status</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
+                          <th style={{ color: isDarkMode && "white" }}>S/N</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th style={{ color: isDarkMode && "white" }}>Submission Date</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Payment Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Approval Required by</th>
                           {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
                           <th></th>
                         </tr>
@@ -1120,7 +1120,7 @@ const AllApplications = () => {
                   ) : (
                     <div
                       className={classes.tableCon}
-                      classes={{
+                      style={{
                         overflowX: "auto", // Horizontal scroll for table
                         whiteSpace: "nowrap", // Prevent table from wrapping
                         maxWidth: "100%", // Limit container width to screen size
@@ -1129,19 +1129,19 @@ const AllApplications = () => {
                     >
                       <table
                         className="table display table-hover m-0 card-table"
-                        classes={{
+                        style={{
                           minWidth: "600px", // Minimum table width to ensure visibility
                         }}
                       >
                         <thead>
                           <tr>
-                          <th classes={{ color: isDarkMode && "white" }}>S/N</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Number</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Submission Date</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Status</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Payment Status</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Approval Required by</th>
+                          <th style={{ color: isDarkMode && "white" }}>S/N</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th style={{ color: isDarkMode && "white" }}>Submission Date</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Payment Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Approval Required by</th>
                           {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
                           <th></th>
                           </tr>

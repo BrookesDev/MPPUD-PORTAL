@@ -43,6 +43,7 @@ import NewCacCompleteReg from "./Pages/CAC Complete Reg/NewCacCompleteReg.js";
 import ApplicationPage from "./Pages/ApplicationPage/Application.js";
 import InvoiceNew from "./Pages/All Invoices/InvoiceNew.js";
 import Invoices from "./Pages/Invoices/Invoices.js";
+import ReceiptNew from "./Pages/ReceiptNew.js";
 
 
 function App() {
@@ -92,6 +93,7 @@ function App() {
             <Route path="/my_account" element={<MyAccount />} />
             <Route path="/invoices" element={<Allinvoices />} />
             <Route path="/view_invoices" element={<InvoiceNew />} />
+            <Route path="/view_receipts" element={<ReceiptNew />} />
             <Route path="/payments" element={<AllPayment />} />
             <Route path='/new_applications' element={<NewApplications />} />
             <Route path='/applications_building_permit' element={<LandRatificationApp />} />

@@ -57,7 +57,8 @@ import { Navbar, Container, Button } from "react-bootstrap";
 import CurrencyInput from "react-currency-input-field";
 import { useTheme } from "../../ThemeContext";
 // import NewApplications from '../New Application/NewApplicationns';
-
+import { saveAs } from "file-saver";
+import Papa from "papaparse";
 // import axios from 'axios';
 // import localStorage from '@react-native-async-storage/async-storage';
 
@@ -114,7 +115,7 @@ const Allinvoices = () => {
   const [show20, setShow20] = useState(false);
   const [download, setDownload] = useState(false);
   const [showUploadTCC, setShowUploadTCC] = useState(false);
-
+ const [searchTerm, setSearchTerm] = useState('');
   const fileInputRefs = useRef(null);
   const handleClose = () => setShow(false);
   const handleCloseTCC = () => setShowUploadTCC(false);
@@ -187,9 +188,23 @@ const Allinvoices = () => {
   const [totalPending, setTotalPending] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const formatDateForComparison = (dateString) => {
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+  const filteredData = tableData.filter((item) => {
+    const matchesDate = selectedDate
+      ? formatDateForComparison(item.created_at) === selectedDate
+      : true;
+  
+      const matchesSearch = searchTerm.trim()
+      ? item?.description.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
+      : true;
+  
+    return matchesDate && matchesSearch; // Both conditions must be met
+  });
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  // const currentEntries = tableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries1 = tableData1.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries2 = tableData2.slice(indexOfFirstEntry, indexOfLastEntry);
   const currentEntries3 = tableData3.slice(indexOfFirstEntry, indexOfLastEntry);
@@ -811,6 +826,38 @@ const Allinvoices = () => {
       setShow20(true);
     }
   };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value)
+  }
+
+  const exportToCSV = () => {
+        if (tableData.length === 0) {
+          alert("No data available for export.");
+          return;
+        }
+      
+        // Define CSV Headers
+        const headers = ["S/N", "Payment Code", "Application Number", "Description", "Date", "Amount"];
+      
+        // Map the data to match CSV format
+        const csvData = tableData.map((item, index) => ({
+          "S/N": index +  1 || "N/A",
+          "Payment Code": item.payment_code || "N/A",
+          "Application Number": item.uuid || "N/A",
+          "Description": item.description || "N/A",
+          "Date": item.payment_date || "N/A",
+          "Amount": item.amount || "N/A",
+        }));
+      
+        // Convert to CSV format
+        const csv = Papa.unparse({ fields: headers, data: csvData });
+      
+        // Create a Blob for download
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        saveAs(blob, "Applications.csv");
+      };
+  
 
   const fetchLocation = async (areaId) => {
     try {
@@ -8014,44 +8061,41 @@ const Allinvoices = () => {
                       alt="search"
                       className={classes.searchIcon}
                     />
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      className={classes.search}
-                    />
+                   <input
+                                     value={searchTerm}
+                                       type="text"
+                                       placeholder="Search"
+                                       className={classes.search}
+                                       onChange={(e) => {
+                                         setSearchTerm(e.target.value);
+                                       }}
+                                       
+                                     />
+                                     {searchTerm && (
+                         <button 
+                           onClick={() => setSearchTerm('')}
+                           style={{
+                             position: 'absolute',
+                             right: '10px',
+                             top: '50%',
+                             transform: 'translateY(-50%)',
+                             background: 'none',
+                             border: 'none',
+                             cursor: 'pointer',
+                             color: '#000'
+                           }}
+                         >
+                           ×
+                         </button>
+                         )}
                   </div>
-                  <Form.Select
-                    id="status"
-                    style={{
-                      width: 100,
-                      height: 40,
-                      borderRadius: 8,
-                      fontSize: 12,
-                      border: "1px solid #E0E0E0",
-                      fontWeight: 400,
-                      color: "#4F4F4F",
-                      padding: "0.5rem",
-                      // backgroundColor: '#F2F2F2',
-                      // border: 0
-                    }}
-                    name="DataTables_Table_0_length"
-                    aria-controls="DataTables_Table_0"
-                    className="custom-select custom-select-sm form-control form-control-sm"
-                  >
-                    <option value="All">Status</option>
-                    <option value="All">Status</option>
-                    <option value="All">Status</option>
-                    <option value="All">Status</option>
-                  </Form.Select>
+                 
 
-                  <button className={classes.bttens}>
-                    Pick date{" "}
-                    <img
-                      src={Calender}
-                      className={classes.imgss}
-                      alt="calender icon"
-                    />
-                  </button>
+                  <input 
+                    type="date" 
+                    className={classes.bttens} 
+                    onChange={handleDateChange} name="date" value={selectedDate}
+                  />
 
                   <label
                     style={{
@@ -8065,17 +8109,13 @@ const Allinvoices = () => {
                     }}
                   >
                     <div className={classes.divBtn}>
-                      <div className={classes.divOne}>
-                        <div className={classes.stIC}>
-                          <p className={classes.stN}>Export</p>
-                          <img
-                            src={xport}
-                            alt="status"
-                            className={classes.filter}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                                        <div className={classes.divOne}>
+                                          <div onClick={exportToCSV} className={classes.stIC}>
+                                            <p className={classes.stN} sty>Export CSV</p>
+                                            <img src={xport} alt="status" className={classes.filter} />
+                                          </div>
+                                        </div>
+                                      </div>
                   </label>
                 </div>
               </div>
@@ -8090,41 +8130,38 @@ const Allinvoices = () => {
                 ) : tableData?.length === 0 ? (
                   <div className={classes.notFound}>
                     <img src={notransaction} alt="not-found" />
-                    <p>No Applications found</p>
+                    <p>No Invoice found</p>
                   </div>
                 ) : (
                   <div>
-                    <table classes={{ width: "98%" }}>
-                      <thead classes={{ whiteSpace: "nowrap" }}>
-                        <tr>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            S/N
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Application Number
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Application Type
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Submission Date
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Application Status
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Payment Status
-                          </th>
-                          <th classes={{ color: isDarkMode && "white" }}>
-                            Approval Required by
-                          </th>
-                          {/* <th classes={{ color: isDarkMode && "white" }}>Amount</th> */}
-                          <th></th>
-                        </tr>
+                    <table style={{ width: "98%" }}>
+                      <thead style={{ whiteSpace: "nowrap", width: "100%" }}>
+                      <tr>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              S/N
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                             Payment Code
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Application Number
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Description
+                            </th>
+                           
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Date
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Amount
+                            </th>
+                            <th></th>
+                          </tr>
                       </thead>
 
-                      <tbody style={{ whiteSpace: "wrap" }}>
-                        {tableData?.map((rowId, index) => (
+                      <tbody style={{ whiteSpace: "wrap",  }}>
+                        {currentEntries?.map((rowId, index) => (
                           <tr
                             key={rowId}
                             style={{
@@ -8135,32 +8172,24 @@ const Allinvoices = () => {
                             }}
                           >
                             <td style={{ padding: 10 }}>{index + 1}</td>
+                            <td style={{ padding: 10 }}>
+                              {rowId?.payment_code}
+                            </td>
                             <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                            
                             <td style={{ padding: 10 }}>
                               {rowId?.description}
                             </td>
                             <td style={{ padding: 10 }}>
-                              {formatDate(rowId.updated_at)}
+                              {formatDate(rowId.payment_date)}
                             </td>
-                            <td style={{ padding: 10 }}>
-                              {rowId.approval_status === 0
-                                ? "Ongoing"
-                                : "Completed"}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {rowId.payment_status === "0" ? "Unpaid" : "Paid"}
-                            </td>
-                            <td style={{ padding: 10 }}>
-                              {rowId.payment_status === "0"
-                                ? "Awaiting your Payment"
-                                : rowId.payment_status === "1" &&
-                                  rowId.approval_status === "0"
-                                ? rowId.role?.name
-                                : rowId.payment_status === "1" &&
-                                  rowId.approval_status === "1"
-                                ? "Approved"
-                                : null}
-                            </td>
+                            <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                                minimumIntegerDigits: 1,
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}</td>
+                           
+                            
                             {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
                             <td
                               style={{ padding: 10 }}
@@ -8212,32 +8241,36 @@ const Allinvoices = () => {
                                       View Invoice
                                     </div>
                                     <div
-                                      onClick={() => {
-                                        handleEyeClick(
-                                          rowId.id,
-                                          rowId?.apptype?.description
-                                        );
-                                        handleMoreClick(null);
-                                      }}
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        padding: "5px 10px",
-                                        cursor: "pointer",
-                                        textAlign: "left",
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "5px 10px",
+              cursor: "pointer",
+              textAlign: "left",
                                         whiteSpace: "nowrap",
-                                      }}
-                                    >
-                                      <img
-                                        src={ViewIcon}
-                                        alt="view application"
-                                        style={{
-                                          width: "20px",
-                                          marginRight: "10px",
-                                        }}
-                                      />
-                                      View Application
-                                    </div>
+            }}
+          >
+            <a
+              href={rowId.payment_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                textDecoration: "none",
+                color: "#101828",
+                padding: 0,
+              }}
+            >
+              <img
+                src={PaymentIcon}
+                alt="make payment"
+                style={{
+                  width: "20px",
+                  marginRight: "10px",
+                }}
+              />
+              Make Payment
+            </a>
+          </div>
                                   </div>
                                 )}
                               </div>
@@ -8257,7 +8290,7 @@ const Allinvoices = () => {
                   ) : (
                     <div
                       className={classes.tableCon}
-                      classes={{
+                      style={{
                         overflowX: "auto", // Horizontal scroll for table
                         whiteSpace: "nowrap", // Prevent table from wrapping
                         maxWidth: "100%", // Limit container width to screen size
@@ -8265,254 +8298,266 @@ const Allinvoices = () => {
                     >
                       <table
                         className="table display table-hover m-0 card-table"
-                        classes={{
+                        style={{
                           minWidth: "600px", // Minimum table width to ensure visibility
                         }}
                       >
                         <thead>
                           <tr>
-                            <th classes={{ color: isDarkMode && "white" }}>
+                            <th style={{ color: isDarkMode && "white" }}>
                               S/N
                             </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
+                            <th style={{ color: isDarkMode && "white" }}>
+                             Payment Code
+                            </th>
+                            <th style={{ color: isDarkMode && "white" }}>
                               Application Number
                             </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
-                              Application Type
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Description
                             </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
-                              Submission Date
+                           
+                            <th style={{ color: isDarkMode && "white" }}>
+                              Date
                             </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
-                              Status
-                            </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
-                              Approval Required by
-                            </th>
-                            <th classes={{ color: isDarkMode && "white" }}>
+                            <th style={{ color: isDarkMode && "white" }}>
                               Amount
                             </th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody style={{ whiteSpace: "wrap" }}>
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
-                            (rowId, index) => (
-                              <tr
-                                key={rowId}
-                                style={{
-                                  backgroundColor:
-                                    index % 2 !== 0
-                                      ? "rgba(30, 165, 82, 0.1)"
-                                      : "transparent",
-                                }}
+                        {currentEntries?.map((rowId, index) => (
+                          <tr
+                            key={rowId}
+                            style={{
+                              backgroundColor:
+                                index % 2 !== 0
+                                  ? "rgba(30, 165, 82, 0.1)"
+                                  : "transparent",
+                            }}
+                          >
+                            <td style={{ padding: 10 }}>{index + 1}</td>
+                            <td style={{ padding: 10 }}>
+                              {rowId?.payment_code}
+                            </td>
+                            <td style={{ padding: 10 }}>{rowId.uuid}</td>
+                            
+                            <td style={{ padding: 10 }}>
+                              {rowId?.description}
+                            </td>
+                            <td style={{ padding: 10 }}>
+                              {formatDate(rowId.payment_date)}
+                            </td>
+                            <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                                minimumIntegerDigits: 1,
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}</td>
+                           
+                            
+                            {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
+                            <td
+                              style={{ padding: 10 }}
+                              className={classes.moreTxt}
+                            >
+                              <div
+                                style={{ position: "relative" }}
+                                className={classes.menuWeb}
                               >
-                                <td style={{ padding: 10 }}>{rowId}</td>
-                                <td style={{ padding: 10 }}>
-                                  ACME MEDICARE CLINICS LTD
-                                </td>
-                                <td style={{ padding: 10 }}>
-                                  January 2025 Monthly PAYE Returns
-                                </td>
-                                <td style={{ padding: 10 }}>₦528,861.00</td>
-                                <td style={{ padding: 10 }}>₦528,861.00</td>
-                                <td style={{ padding: 10 }}>0003000178320</td>
-                                <td style={{ padding: 10 }}>
-                                  {/* <img
-                                          className={classes.statusIconsuccess}
-                                          src={succesful}
-                                          alt="status"
-                                      /> */}
-                                  <td
-                                    style={{ padding: 10 }}
-                                    className={classes.info1}
-                                  >
-                                    <p
-                                      className={`${classes["status-success"]} ${classes.info}`}
-                                    >
-                                      Approved
-                                    </p>
-                                  </td>
-                                </td>
-
-                                <td
-                                  style={{ padding: 10 }}
-                                  className={classes.moreTxt}
-                                >
+                                <img
+                                  className={classes.moreIcon}
+                                  src={MoreIcon}
+                                  alt="more"
+                                  onClick={() => handleMoreClick(rowId)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                                {visibleDropdown === rowId && (
                                   <div
-                                    style={{ position: "relative" }}
-                                    className={classes.menuWeb}
+                                    style={{
+                                      position: "absolute",
+                                      top: "100%",
+                                      right: 0,
+                                      backgroundColor: "white",
+                                      zIndex: 9999,
+                                      boxShadow:
+                                        "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                      borderRadius: "4px",
+                                    }}
                                   >
-                                    <img
-                                      className={classes.moreIcon}
-                                      src={MoreIcon}
-                                      alt="more"
-                                      onClick={() => handleMoreClick(rowId)}
-                                      style={{ cursor: "pointer" }}
-                                    />
-                                    {visibleDropdown === rowId && (
-                                      <div
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "5px 10px",
+                                        cursor: "pointer",
+                                        textAlign: "left",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                      onClick={() => handleEyeClick5(rowId.id)}
+                                    >
+                                      <img
+                                        src={Printer}
+                                        alt="invoice"
                                         style={{
-                                          position: "absolute",
-                                          top: "100%",
-                                          right: 0,
-                                          backgroundColor: "white",
-                                          zIndex: 9999,
-                                          boxShadow:
-                                            "0px 4px 8px rgba(0, 0, 0, 0.2)",
-                                          borderRadius: "4px",
+                                          width: "20px",
+                                          marginRight: "10px",
                                         }}
-                                      >
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            padding: "5px 10px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <img
-                                            src={Printer} // Replace with your actual path
-                                            alt="contact"
-                                            style={{
-                                              width: "20px",
-                                              marginRight: "10px",
-                                            }}
-                                          />
-                                          View Invoice
-                                        </div>
-                                      </div>
-                                    )}
+                                      />
+                                      View Invoice
+                                    </div>
+                                    <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "5px 10px",
+              cursor: "pointer",
+              textAlign: "left",
+                                        whiteSpace: "nowrap",
+            }}
+          >
+            <a
+              href={rowId.payment_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                textDecoration: "none",
+                color: "#101828",
+                padding: 0,
+              }}
+            >
+              <img
+                src={PaymentIcon}
+                alt="make payment"
+                style={{
+                  width: "20px",
+                  marginRight: "10px",
+                }}
+              />
+              Make Payment
+            </a>
+          </div>
                                   </div>
-                                </td>
-                              </tr>
-                            )
-                          )}
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
                         </tbody>
                       </table>
                     </div>
                   )}
                 </div>
               </div>
-              {!benLoading && (
-                <div className={classes.endded}>
-                  <div className={classes.showTxt}>
-                    <div className={classes.show}>
-                      <label
-                        classes={{
-                          fontSize: 14,
-                          color: isDarkMode ? "#ffffff" : "#333333",
-                          fontWeight: 600,
-                          gap: 10,
-                        }}
-                        className="d-flex justify-content-start align-items-center"
-                      >
-                        Showing
-                        <Form.Select
-                          classes={{
-                            width: 114,
-                            height: 44,
-                            borderRadius: 8,
-                            fontSize: 14,
-                            fontWeight: 600,
-                          }}
-                          name="DataTables_Table_0_length"
-                          aria-controls="DataTables_Table_0"
-                          className="custom-select custom-select-sm form-control form-control-sm"
-                          value={entriesPerPage}
-                          onChange={(e) => {
-                            setEntriesPerPage(parseInt(e.target.value));
-                            setCurrentPage(1);
-                          }}
-                        >
-                          <option value={10}>10 entries</option>
-                          <option value={25}>25 entries</option>
-                          <option value={50}>50 entries</option>
-                          <option value={100}>100 entries</option>
-                        </Form.Select>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className={classes.btmPagination}>
-                    <div classes={{ display: "flex" }}>
-                      <button
-                        classes={{
-                          textAlign: "center",
-                          border: "1px solid #F1F1F1",
-                          backgroundColor: "#fff",
-                          borderRadius: 8,
-                          height: "32px",
-                          width: "32px",
-                          fontWeight: 700,
-                          fontSize: 14,
-                          color: "#000000",
-                          cursor: "pointer",
-                        }}
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                      >
-                        {"<"}
-                      </button>
-                      {[...Array(totalPages)].map((_, page) => {
-                        // Show only 5 pages or less if available
-                        if (
-                          page < 3 ||
-                          page === currentPage - 1 ||
-                          page === totalPages - 1
-                        ) {
-                          return (
-                            <button
-                              key={page + 1}
-                              classes={{
-                                textAlign: "center",
-                                marginLeft: "0.4rem",
-                                marginRight: "0.4rem",
-                                fontSize: "14px",
-                                fontWeight: 700,
-                                color:
-                                  page + 1 === currentPage
-                                    ? "#ffffff"
-                                    : "#333333",
-                                backgroundColor:
-                                  page + 1 === currentPage ? "#21B55A" : "#fff",
-                                height: "32px",
-                                borderRadius: "8px",
-                                //   padding: '0.5rem',
-                                border: "1px solid #F1F1F1",
-                                width: "32px",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => setCurrentPage(page + 1)}
-                            >
-                              {page + 1}
-                            </button>
-                          );
-                        }
-                        return null;
-                      })}
-                      <button
-                        classes={{
-                          textAlign: "center",
-                          border: "1px solid #F1F1F1",
-                          backgroundColor: "#fff",
-                          borderRadius: 8,
-                          height: "32px",
-                          width: "32px",
-                          fontWeight: 700,
-                          fontSize: 14,
-                          color: "#000000",
-                          cursor: "pointer",
-                        }}
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        {">"}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+               {!benLoading && (
+                              <div className={classes.endded}>
+                                <div className={classes.showTxt}>
+                                  <div className={classes.show}>
+                                    <label style={{
+                                      fontSize: 14,
+                                      color: isDarkMode ? '#ffffff' : '#333333',
+                                      fontWeight: 600,
+                                      gap: 10
+                                    }} className="d-flex justify-content-start align-items-center">
+                                      Showing
+                                      <Form.Select style={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
+                                        value={entriesPerPage}
+                                        onChange={(e) => {
+                                          setEntriesPerPage(parseInt(e.target.value));
+                                          setCurrentPage(1);
+                                        }}
+                                      >
+                                        <option value={10} >10 entries</option>
+                                        <option value={25} >25 entries</option>
+                                        <option value={50} >50 entries</option>
+                                        <option value={100} >100 entries</option>
+                                      </Form.Select>
+                                    </label>
+                                  </div>
+                                </div>
+              
+                                <div className={classes.btmPagination}>
+                                      <div style={{ display: "flex" }}>
+                                        <button
+                                          style={{
+                                            textAlign: "center",
+                                            border: "1px solid #F1F1F1",
+                                            backgroundColor: "#fff",
+                                            borderRadius: 8,
+                                            height: "32px",
+                                            width: "32px",
+                                            fontWeight: 700,
+                                            fontSize: 14,
+                                            color: "#000000",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={handlePrevPage}
+                                          disabled={currentPage === 1}
+                                        >
+                                          {"<"}
+                                        </button>
+                                        {[...Array(totalPages)].map((_, page) => {
+                                          // Show only 5 pages or less if available
+                                          if (
+                                            page < 3 ||
+                                            page === currentPage - 1 ||
+                                            page === totalPages - 1
+                                          ) {
+                                            return (
+                                              <button
+                                                key={page + 1}
+                                                style={{
+                                                  textAlign: "center",
+                                                  marginLeft: "0.4rem",
+                                                  marginRight: "0.4rem",
+                                                  fontSize: "14px",
+                                                  fontWeight: 700,
+                                                  color:
+                                                    page + 1 === currentPage
+                                                      ? "#ffffff"
+                                                      : "#333333",
+                                                  backgroundColor:
+                                                    page + 1 === currentPage
+                                                      ? "#21B55A"
+                                                      : "#fff",
+                                                  height: "32px",
+                                                  borderRadius: "8px",
+                                                  //   padding: '0.5rem',
+                                                  border: "1px solid #F1F1F1",
+                                                  width: "32px",
+                                                  cursor: "pointer",
+                                                }}
+                                                onClick={() => setCurrentPage(page + 1)}
+                                              >
+                                                {page + 1}
+                                              </button>
+                                            );
+                                          }
+                                          return null;
+                                        })}
+                                        <button
+                                          style={{
+                                            textAlign: "center",
+                                            border: "1px solid #F1F1F1",
+                                            backgroundColor: "#fff",
+                                            borderRadius: 8,
+                                            height: "32px",
+                                            width: "32px",
+                                            fontWeight: 700,
+                                            fontSize: 14,
+                                            color: "#000000",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={handleNextPage}
+                                          disabled={currentPage === totalPages}
+                                        >
+                                          {">"}
+                                        </button>
+                                      </div>
+                                    </div>
+              
+                              </div>
+                            )}
               
             </div>
           </div>

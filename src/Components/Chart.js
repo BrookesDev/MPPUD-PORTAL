@@ -124,6 +124,7 @@ const Chart = () => {
             <option>Last 122 months</option>
           </select>
         </div>
+        
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
@@ -131,11 +132,12 @@ const Chart = () => {
               dataKey="value"
               nameKey="name"
               cx="50%"
-              cy="50%"
+              cy="60%"
               innerRadius={50}
               outerRadius={80}
               paddingAngle={0}
             >
+              
               {summaryData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}

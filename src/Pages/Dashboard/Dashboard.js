@@ -287,9 +287,11 @@ const Dashboard = () => {
                   }
                 </p>
               </div>
+              {isFilled === "2" && (
               <button className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
                 <span> Make New Request</span>
               </button>
+               )}
             </div>
 
 
@@ -387,38 +389,40 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <div >
-                    <table classes={{ width: "98%" }}>
+                    <table style={{ width: "100%" }}>
 
-                      <thead classes={{ whiteSpace: 'nowrap' }}>
+                      <thead style={{ whiteSpace: 'wrap' }}>
                         <tr>
-                          <th classes={{ color: isDarkMode && "white" }}>Application Type</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Payment Code</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Date</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Amount</th>
-                          <th classes={{ color: isDarkMode && "white" }}>Status</th>
-                          <th></th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th style={{ color: isDarkMode && "white" }}>Date</th>
+                          <th style={{ color: isDarkMode && "white" }}>Payment Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th style={{ color: isDarkMode && "white", textAlign: "right" }}>Amount</th>
                         </tr>
                       </thead>
 
-                      <tbody classes={{ whiteSpace: "nowrap" }}>
-                        {currentEntries.map((rowId) => (
-                          <tr key={rowId}>
-                            <td classes={{ padding: 10, width: 100 }}>{rowId?.service?.name}</td>
-                            <td classes={{ padding: 10, fontWeight: 500, color: isDarkMode ? "#21B55A" : "#0E4F27", }}>{rowId.payment[0]?.payment_code}</td>
-                            <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                            <td classes={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                      <tbody style={{ whiteSpace: "wrap" }}>
+                        {currentEntries.map((rowId, index) => (
+                           <tr key={rowId} style={{
+                            backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
+                          }}>
+                            <td style={{ padding: 10,  }}>{rowId?.uuid}</td>
+                            <td style={{ padding: 10,}}>{rowId?.service?.description}</td>
+                            <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
+                            <td style={{ padding: 10 }}>
+                                {rowId.payment_status === "0" ? "Unpaid" : "Paid"}
+                              </td>
+                            <td style={{ padding: 10 }}>
+                            {rowId.approval_status === "0" ? "Ongoing" : "Completed"}
+                            </td>
+                            <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500, textAlign: "right" }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
                               minimumIntegerDigits: 1,
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}</td>
-                            <td classes={{ padding: 10 }}>
-                              <img
-                                className={classes.statusIcon}
-                                src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
-                                alt="status"
-                              />
-                            </td>
-                            <td classes={{ padding: 10 }} className={classes.moreTxt}>
+                            
+                            {/* <td classes={{ padding: 10 }} className={classes.moreTxt}>
                               <div classes={{ position: "relative" }}>
                                 <img
                                   className={classes.moreIcon}
@@ -478,7 +482,7 @@ const Dashboard = () => {
                                   </div>
                                 )}
                               </div>
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>
@@ -494,7 +498,7 @@ const Dashboard = () => {
                   ) : (
                     <div
                       className={classes.tableCon}
-                      classes={{
+                      style={{
                         overflowX: "auto", // Horizontal scroll for table
                         whiteSpace: "nowrap", // Prevent table from wrapping
                         maxWidth: "100%", // Limit container width to screen size
@@ -503,48 +507,101 @@ const Dashboard = () => {
                     >
                       <table
                         className="table display table-hover m-0 card-table"
-                        classes={{
+                        style={{
                           minWidth: "600px", // Minimum table width to ensure visibility
                         }}
                       >
                         <thead>
                           <tr>
-                            <th >Application Type</th>
-                            <th >Payment Code</th>
-                            <th >Date</th>
-                            <th >Amount</th>
-                            <th >Status</th>
-                            <th></th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Number</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Type</th>
+                          <th style={{ color: isDarkMode && "white" }}>Date</th>
+                          <th style={{ color: isDarkMode && "white" }}>Payment Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Status</th>
+                          <th style={{ color: isDarkMode && "white" }}>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {currentEntries.map((rowId) => (
-                            <tr key={rowId}>
-                              <td classes={{ padding: 10, width: 100 }}>{rowId.service.name}</td>
-                              <td classes={{ padding: 10, color: "#0E4F27", fontWeight: 500 }}>{rowId.payment[0]?.payment_code}</td>
-                              <td classes={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                              <td classes={{ padding: 10, color: "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
+                          {currentEntries.map((rowId, index) => (
+                            <tr key={rowId} style={{
+                              backgroundColor: index % 2 !== 0 ? "rgba(30, 165, 82, 0.1)" : "transparent",
+                            }}>
+                              <td style={{ padding: 10, }}>{rowId?.uuid}</td>
+                              <td style={{ padding: 10, }}>{rowId?.service?.description}</td>
+                              <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
+                              <td style={{ padding: 10 }}>
+                                {rowId.payment_status === "0" ? "Unpaid" : "Paid"}
+                              </td>
+                              <td style={{ padding: 10 }}>
+                              {rowId.approval_status === "0" ? "Ongoing" : "Completed"}
+                              </td>
+                              <td style={{ padding: 10, color: isDarkMode ? "#ffffff" : "#333333", fontWeight: 500 }}>₦{parseFloat(rowId.amount).toLocaleString('en-US', {
                                 minimumIntegerDigits: 1,
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })}</td>
-                              <td classes={{ padding: 10 }}>
-                                <img
-                                  className={classes.statusIcon}
-                                  src={rowId.payment_status === "0" ? NotPaidPaymentIcon : PaidIcon}
-                                  alt="status"
-                                />
-                              </td>
-                              {/* <td classes={{ padding: 10 }}>Tue 28th June - 9:30 AM</td> */}
-                              <td classes={{ padding: 10 }} className={classes.moreTxt}>
-                                <div classes={{ display: 'flex', flexDirection: "row", gap: 10 }}>
+                              
+                              {/* <td classes={{ padding: 10 }} className={classes.moreTxt}>
+                                <div classes={{ position: "relative" }}>
                                   <img
-                                    src={rowId?.payment_status === "0" ? MakePaymentIcon : TrackIcon} // Replace with your actual path
-                                    alt="download"
-                                    classes={{ width: "20px", marginRight: "10px" }}
+                                    className={classes.moreIcon}
+                                    src={MoreIcon}
+                                    alt="more"
+                                    onClick={() => handleMoreClick(rowId)}
+                                    classes={{ cursor: "pointer" }}
                                   />
+                                  {visibleDropdown === rowId && (
+                                    <div
+                                      ref={dropdownRef} // Attach ref to the dropdown
+                                      classes={{
+                                        position: "absolute",
+                                        top: "100%",
+                                        right: 0,
+                                        backgroundColor: "white",
+                                        zIndex: 9999,
+                                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                                        borderRadius: "4px",
+                                      }}
+                                    >
+                                      {rowId.payment_status === "0" ? (
+                                        <div
+                                          classes={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            padding: "5px 10px",
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          <a
+                                            href={rowId.payment[0]?.payment_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            classes={{
+                                              textDecoration: "none",
+                                              color: "#101828",
+                                              padding: 0,
+                                            }}
+                                          >
+  
+                                            Make Payment
+                                          </a>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          classes={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            padding: "5px 10px",
+                                            cursor: "pointer",
+                                          }}
+                                        >
+                                          Track Application
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
-                              </td>
+                              </td> */}
                             </tr>
                           ))}
                         </tbody>
@@ -553,83 +610,115 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              {!benLoading && (
-                <div className={classes.endded}>
-                  <div className={classes.showTxt}>
-                    <div className={classes.show}>
-                      <label classes={{
-                        fontSize: 14,
-                        color: isDarkMode ? '#ffffff' : '#333333',
-                        fontWeight: 600,
-                        gap: 10
-                      }} className="d-flex justify-content-start align-items-center">
-                        Showing
-                        <Form.Select classes={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
-                          value={entriesPerPage}
-                          onChange={(e) => {
-                            setEntriesPerPage(parseInt(e.target.value));
-                            setCurrentPage(1);
-                          }}
-                        >
-                          <option value={10} >10 entries</option>
-                          <option value={25} >25 entries</option>
-                          <option value={50} >50 entries</option>
-                          <option value={100} >100 entries</option>
-                        </Form.Select>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className={classes.btmPagination}>
-                    <div classes={{ display: 'flex' }}>
-                      <button
-                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                      >
-                        {"<"}
-                      </button>
-                      {[...Array(totalPages)].map((_, page) => {
-                        // Show only 5 pages or less if available
-                        if (page < 3 || page === currentPage - 1 || page === totalPages - 1) {
-                          return (
-                            <button
-                              key={page + 1}
-                              classes={{
-                                textAlign: "center",
-                                marginLeft: '0.4rem',
-                                marginRight: '0.4rem',
-                                fontSize: '14px',
-                                fontWeight: 700,
-                                color: page + 1 === currentPage ? '#ffffff' : '#333333',
-                                backgroundColor: page + 1 === currentPage ? '#21B55A' : '#fff',
-                                height: '32px',
-                                borderRadius: '8px',
-                                //   padding: '0.5rem',
-                                border: '1px solid #F1F1F1',
-                                width: '32px',
-                                cursor: "pointer"
-                              }}
-                              onClick={() => setCurrentPage(page + 1)}
-                            >
-                              {page + 1}
-                            </button>
-                          );
-                        }
-                        return null;
-                      })}
-                      <button
-                        classes={{ textAlign: "center", border: '1px solid #F1F1F1', backgroundColor: '#fff', borderRadius: 8, height: '32px', width: '32px', fontWeight: 700, fontSize: 14, color: '#000000', cursor: "pointer" }}
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        {">"}
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-              )}
+             {!benLoading && (
+                            <div className={classes.endded}>
+                              <div className={classes.showTxt}>
+                                <div className={classes.show}>
+                                  <label classes={{
+                                    fontSize: 14,
+                                    color: isDarkMode ? '#ffffff' : '#333333',
+                                    fontWeight: 600,
+                                    gap: 10
+                                  }} className="d-flex justify-content-start align-items-center">
+                                    Showing
+                                    <Form.Select classes={{ width: 114, height: 44, borderRadius: 8, fontSize: 14, fontWeight: 600 }} name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" className="custom-select custom-select-sm form-control form-control-sm"
+                                      value={entriesPerPage}
+                                      onChange={(e) => {
+                                        setEntriesPerPage(parseInt(e.target.value));
+                                        setCurrentPage(1);
+                                      }}
+                                    >
+                                      <option value={10} >10 entries</option>
+                                      <option value={25} >25 entries</option>
+                                      <option value={50} >50 entries</option>
+                                      <option value={100} >100 entries</option>
+                                    </Form.Select>
+                                  </label>
+                                </div>
+                              </div>
+            
+                              <div className={classes.btmPagination}>
+                                    <div style={{ display: "flex" }}>
+                                      <button
+                                        style={{
+                                          textAlign: "center",
+                                          border: "1px solid #F1F1F1",
+                                          backgroundColor: "#fff",
+                                          borderRadius: 8,
+                                          height: "32px",
+                                          width: "32px",
+                                          fontWeight: 700,
+                                          fontSize: 14,
+                                          color: "#000000",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={handlePrevPage}
+                                        disabled={currentPage === 1}
+                                      >
+                                        {"<"}
+                                      </button>
+                                      {[...Array(totalPages)].map((_, page) => {
+                                        // Show only 5 pages or less if available
+                                        if (
+                                          page < 3 ||
+                                          page === currentPage - 1 ||
+                                          page === totalPages - 1
+                                        ) {
+                                          return (
+                                            <button
+                                              key={page + 1}
+                                              style={{
+                                                textAlign: "center",
+                                                marginLeft: "0.4rem",
+                                                marginRight: "0.4rem",
+                                                fontSize: "14px",
+                                                fontWeight: 700,
+                                                color:
+                                                  page + 1 === currentPage
+                                                    ? "#ffffff"
+                                                    : "#333333",
+                                                backgroundColor:
+                                                  page + 1 === currentPage
+                                                    ? "#21B55A"
+                                                    : "#fff",
+                                                height: "32px",
+                                                borderRadius: "8px",
+                                                //   padding: '0.5rem',
+                                                border: "1px solid #F1F1F1",
+                                                width: "32px",
+                                                cursor: "pointer",
+                                              }}
+                                              onClick={() => setCurrentPage(page + 1)}
+                                            >
+                                              {page + 1}
+                                            </button>
+                                          );
+                                        }
+                                        return null;
+                                      })}
+                                      <button
+                                        style={{
+                                          textAlign: "center",
+                                          border: "1px solid #F1F1F1",
+                                          backgroundColor: "#fff",
+                                          borderRadius: 8,
+                                          height: "32px",
+                                          width: "32px",
+                                          fontWeight: 700,
+                                          fontSize: 14,
+                                          color: "#000000",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={handleNextPage}
+                                        disabled={currentPage === totalPages}
+                                      >
+                                        {">"}
+                                      </button>
+                                    </div>
+                                  </div>
+            
+                            </div>
+                          )}
               {/* <div className={classes.notFound}>
                 <img src={notransaction} alt="not-found" />
                 <p>No Applications found</p>

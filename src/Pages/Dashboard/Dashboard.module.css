@@ -1090,6 +1090,31 @@ display: block; /* Visible by default */
  overflow-x: hidden !important;
 }
 
+.usrwlcm {
+  display: flex;
+ flex-direction: column;
+align-items: center;
+}
+
+.wlcmcont {
+  width: 90%;
+}
+
+
+.btnadd {
+  
+  
+  width: 100%;
+  height: 40px;
+  box-shadow:  0px 7px 13.5px 0px rgba(33, 181, 90, 0.12);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+ text-align: center;
+ align-items: center;
+
+}
+
   .applicationHistory{
   
     width: 100%;
