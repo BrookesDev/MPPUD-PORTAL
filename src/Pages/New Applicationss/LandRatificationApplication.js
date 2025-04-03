@@ -2843,7 +2843,7 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Select Type <span style={{color:"red"}}>*</span>
+                      Select Building Type <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Select
                       className={classes.optioncss}
