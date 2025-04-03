@@ -491,7 +491,7 @@ const AllApplications = () => {
                             <td>{sizePlot}</td>
                           </tr>
                           <tr>
-                            <th>Size in Sqm </th>
+                            <th>Size in plot</th>
                             <td>{sizeSqm}</td>
                           </tr>
                         </tbody>

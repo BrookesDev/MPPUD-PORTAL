@@ -59,7 +59,6 @@ const AllApplications = () => {
   const [customer, setCustomer] = useState([]);
   const handleCloseModal = () => setShowModal(false);
   const [sizePlot,setSizePlot] = useState("")
-  const [sizeSqm,setSizeSqm] = useState("")
   const handleShow = () => setShow(true);
   const [tableData1, setTableData1] = useState([]);
   const [bearer, setBearer] = useState('');
@@ -489,10 +488,6 @@ const AllApplications = () => {
                           <tr>
                             <th>Size in plot</th>
                             <td>{sizePlot}</td>
-                          </tr>
-                          <tr>
-                            <th>Size in Sqm </th>
-                            <td>{sizeSqm}</td>
                           </tr>
                         </tbody>
                       </table>

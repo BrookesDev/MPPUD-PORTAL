@@ -58,8 +58,6 @@ const AllApplications = () => {
   const handleClose = () => setShow(false);
   const [customer, setCustomer] = useState([]);
   const handleCloseModal = () => setShowModal(false);
-  const [sizePlot,setSizePlot] = useState("")
-  const [sizeSqm,setSizeSqm] = useState("")
   const handleShow = () => setShow(true);
   const [tableData1, setTableData1] = useState([]);
   const [bearer, setBearer] = useState('');
@@ -302,8 +300,6 @@ const AllApplications = () => {
     // setBuildingArea(response?.data?.dat)
      setType(response?.data?.data[0]?.building_plan?.type?.description)
      console.log(response?.data?.data[0]?.building_plan?.type?.description,"Getting the type")
-     setSizePlot(response?.data?.data[0]?.building_plan?.size_in_plot)
-     setSizeSqm(response?.data?.data[0]?.building_plan?.size_in_sqm )
      setSurveyPlan(response?.data?.data[0]?.building_plan?.survey_plan)
      setBuildingPlan(response?.data?.data[0]?.building_plan?.building_plan)
      setElectricalPlan(response?.data?.data[0]?.building_plan?.electrical_plan)
@@ -487,12 +483,8 @@ const AllApplications = () => {
                             <td>{type}</td>
                           </tr>
                           <tr>
-                            <th>Size in plot</th>
-                            <td>{sizePlot}</td>
-                          </tr>
-                          <tr>
-                            <th>Size in Sqm </th>
-                            <td>{sizeSqm}</td>
+                            <th>Type</th>
+                            <td>{type}</td>
                           </tr>
                         </tbody>
                       </table>

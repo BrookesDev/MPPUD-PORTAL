@@ -490,10 +490,6 @@ const AllApplications = () => {
                             <th>Size in plot</th>
                             <td>{sizePlot}</td>
                           </tr>
-                          <tr>
-                            <th>Size in Sqm </th>
-                            <td>{sizeSqm}</td>
-                          </tr>
                         </tbody>
                       </table>
                     </Accordion.Body>
