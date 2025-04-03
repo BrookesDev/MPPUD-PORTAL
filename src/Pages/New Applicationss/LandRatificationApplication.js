@@ -171,6 +171,7 @@ const LandRatificationApp = () => {
   const [allocationDate, setAllocationDate] = useState("");
   const [timeLine, setTimeLine] = useState("");
   const [sizePlot, setSizePlot] = useState("");
+  const [floorNumber, setFloorNumber] = useState("");
 
   const [sizeSqm, setSizeSqm] = useState("");
   const [selectedType, setSelectedType] = useState("");
@@ -893,6 +894,7 @@ const LandRatificationApp = () => {
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
       formData.append("zone_id", selectedBuilding);
+      formData.append("floor_number", floorNumber);
      
 
       // console.log(selectedFile);
@@ -2794,6 +2796,71 @@ const LandRatificationApp = () => {
                 </Col>
               </Row>
               <Row className="mb-3">
+              <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      onChange={(e) => setSizeSqm(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+              <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Select Type <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      onChange={handleType}
+                      value={selectedType}
+                    >
+                      <option value="">Select Building Type</option>
+               {tableData2?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
                 <Col md={6}>
                   <Form.Group controlId="option3">
                     <Form.Label
@@ -2820,17 +2887,39 @@ const LandRatificationApp = () => {
                ))}
                     </Form.Select>
                   </Form.Group>
+                </Col>                
+              </Row>
+              <Row className="mb-3">
+               {selectedType == 3 && (
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                  <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Number of Floors <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter floor in number e.g 2"
+                      value={floorNumber}
+                      onChange={(e) => setFloorNumber(e.target.value)}
+                    />
+                  </Form.Group>
                 </Col>
-
+               )}
+                {selectedBuildingType === "1" && (
                 <Col md={6}>
                   <Form.Group controlId="option3">
                   <Form.Label
   className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
 >
-  Building Area/Location {selectedBuildingType === "1" && <span style={{color: "red"}}>*</span>}
+  Building Area/Location <span style={{color: "red"}}>*</span>
 </Form.Label>
                     <Form.Select
-                    disabled={selectedBuildingType !== "1"}
+                    // disabled={selectedBuildingType !== "1"}
                       className={classes.optioncss}
                       onChange={handleBuildingChange}
                       value={selectedBuilding}
@@ -2848,77 +2937,8 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                
+                )}                
               </Row>
-              <Row className="mb-3">
-              <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Type <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                      onChange={handleType}
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData2?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in plot <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter plot size in number e.g 2"
-                      value={sizePlot}
-                      onChange={(e) => setSizePlot(e.target.value)}
-                    />
-                  </Form.Group>
-                </Col>
-                
-              </Row>
-              <Row className="mb-3">
-              <Col md={12}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in Sqm <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter sqm size in number e.g 2"
-                      value={sizeSqm}
-                      onChange={(e) => setSizeSqm(e.target.value)}
-                    />
-                  </Form.Group>
-                </Col>
-              
-              </Row>
-
               <Row className="mb-3">
                 <Col md={12}>
                   <Form.Group controlId="attestation">
