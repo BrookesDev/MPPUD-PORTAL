@@ -189,7 +189,7 @@ const [activeIndex, setActiveIndex] = useState(0);
         `${BASE_URL}/customer_registration`,
         {
           tin: sTin,
-          ogun_resident: isTaxpayer,
+          // ogun_resident: isTaxpayer,
           registration_type: selectedRegType,
         },
         {
@@ -201,7 +201,7 @@ const [activeIndex, setActiveIndex] = useState(0);
       );
   
       // Navigate to the next page on success
-      navigate('/completed_registration_successful');
+      navigate('/login');
     } catch (error) {
       let errorMessage = 'An error occurred. Please try again.';
   
@@ -268,8 +268,8 @@ const [activeIndex, setActiveIndex] = useState(0);
             <h6> To continue, please enter STIN</h6>
 
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
-              <Form.Label className={classes.inputLabel}>Are you an Ogun State Resident?</Form.Label>
-              <Form.Select
+              {/* <Form.Label className={classes.inputLabel}>Are you an Ogun State Resident?</Form.Label> */}
+              {/* <Form.Select
               style={{
                 padding: "10px",
                 height: '46px',
@@ -283,8 +283,8 @@ const [activeIndex, setActiveIndex] = useState(0);
       <option value="Yes">Yes</option>
       <option value="No">No</option>
 
-              </Form.Select>
-              {isTaxpayer === "Yes" && (
+              </Form.Select> */}
+              {/* {isTaxpayer === "Yes" && ( */}
                     <>
                       <div className={`mb-3 ${classes.stintext}`} style={{marginTop: 10}}>
                         <label htmlFor="sTin" className={classes.textstyle}>
@@ -361,7 +361,7 @@ const [activeIndex, setActiveIndex] = useState(0);
                         </p>
                       )}
                     </>
-                  )}
+                  {/* )} */}
             </Form.Group>
            
            

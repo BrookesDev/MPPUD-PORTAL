@@ -40,7 +40,7 @@ function CompletedSuccess() {
             <img src={success} alt="Olarms Logo" className={classes.successimage} />
             <h1> Your Registration is Complete </h1>
             <br />
-            <h6> Thank you for completing your registration! You're now ready to manage your land administration and property needs effortlessly with OLARMS. </h6>
+            <h6> Thank you for completing your registration! You're now ready to manage your buildings and property needs effortlessly with MPPUD. </h6>
             <Button onClick={() => navigate('/login')} variant="success" className={classes.btngreen}>
               Continue
             </Button>

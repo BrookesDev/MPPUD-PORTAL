@@ -1,0 +1,77 @@
+
+  
+  .back {
+    width: 689px; 
+    /* Adjust based on your requirement */
+    height: auto;
+  }
+  
+  .mWR {
+    position: absolute;
+    top: 10%;
+    right: 25%;
+    z-index: 1;
+    width: 50px;
+}
+.bank {
+    position: absolute;
+    top: 35%;
+    right: 10%;
+    z-index: 1;
+    width: 380px;
+}
+ 
+  .block{
+    height: 100vh;
+    width: 69%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+      
+     .but button {
+     
+        padding: 15px;
+        background-color:#21B55A;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        width: 462px;
+        margin-top: 10px;
+      }
+   
+    .main{
+      display: flex;
+      /* gap: 15px; */
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+  }
+  .password{
+    color: #55BB7C;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .group {
+    display: flex;
+    flex-direction: column;
+    margin-top:2px;
+  }
+  .group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 580px;
+  }
+  
+  .group input {
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 462px;
+  }

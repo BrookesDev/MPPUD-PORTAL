@@ -105,7 +105,7 @@ export default function Horheader() {
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/customer/support-notifications`,
+        `${BASE_URL}/fetch_app_notifications`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -320,8 +320,8 @@ export default function Horheader() {
             <Dropdown style={{ display: "flex", justifyContent: "flex-end" }}>
               <Dropdown.Toggle className={isDarkMode ? classes.usrinfos : classes.usrinfo}>
                 <img
-                  // src={customerImages || customerPicture || ProfileIcon}
-                  src={customerPicture || ProfileIcon}
+                  src={customerPicture || customerPicture || ProfileIcon}
+                  // src={customerPicture || ProfileIcon}
                   alt="profile-picture"
                   className={classes.bel}
                   onError={(e) => (e.target.src = ProfileIcon)}

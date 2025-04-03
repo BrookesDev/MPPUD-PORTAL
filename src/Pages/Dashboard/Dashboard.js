@@ -38,6 +38,7 @@ const Dashboard = () => {
   const [bearer, setBearer] = useState('');
   const [totalCompleted, setTotalCompleted] = useState('');
   const [totalApplications, setTotalApplications] = useState('');
+  const [totalAmountPaid, setTotalAmountPaid] = useState('');
   const [totalPending, setTotalPending] = useState('');
   const [name, setName] = useState('');
   const [isFilled, setIsFilled] = useState('');
@@ -99,8 +100,7 @@ const Dashboard = () => {
         setIsFilled(detailss);
       }
 
-      console.log("isFilled");
-
+ 
     } catch (e) {
       alert('Failed to fetch the input from storage');
     }
@@ -109,6 +109,8 @@ const Dashboard = () => {
   useEffect(() => {
     readData();
   }, []);
+
+ 
 
   const headers = {
     "Content-Type": "application/json",
@@ -123,12 +125,14 @@ const Dashboard = () => {
         { headers }
       );
       const results = response.data?.data?.applications;
-      const resultx = response.data?.data?.completed_applications;
+      // const resultx = response.data?.data?.completed_applications;
       const resultxx = response.data?.data?.pending_applications;
       const resultxxx = response.data?.data?.total_applications;
+      const totalPaid = results.reduce((sum, item) => sum + Number(item.amount || 0), 0);
       console.log(response?.data?.data);
+      setTotalAmountPaid(totalPaid);
       setTableData(results);
-      setTotalCompleted(resultx);
+      // setTotalCompleted(resultx);
       setTotalPending(resultxx);
       setTotalApplications(resultxxx);
     } catch (error) {
@@ -223,6 +227,13 @@ const Dashboard = () => {
       .join(' ');
   };
 
+  const fullName = `${toSentenceCase(firstName)} ${toSentenceCase(lastName)}`;
+  const truncatedName = fullName.length > 17 
+    ? fullName.split(" ").reduce((acc, word) => {
+        return acc.length + word.length <= 17 ? acc + " " + word : acc;
+      }, "").trim() + "..."
+    : fullName;
+
 
   return (
     <>
@@ -250,10 +261,10 @@ const Dashboard = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div className={classes.wlcmcont}>
-                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {toSentenceCase(firstName)} {toSentenceCase(lastName)}👋 <span classes={{ fontSize: 15 }}><Badge classes={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
+                <p classes={{ color: isDarkMode ? "white" : "#000" }} className={classes.wlcm}>Welcome, {truncatedName}👋 <span style={{ fontSize: 15 }}><Badge style={{ borderRadius: 88, border: isFilled === "2" ? "none" : "1px solid #EB5757", color: isFilled === "2" ? "#fff" : "#EB5757" }} bg={isFilled === "2" ? "success" : "light"}>{isFilled === "2" ? "Verified" : "Not Verified"}</Badge></span></p>
                 <p
                   className={isFilled === "2" ? classes.wlcmintro : ""}
-                  classes={(isFilled === "0" || isFilled === "1") ? {
+                  style={(isFilled === "0" || isFilled === "1") ? {
                     background: "linear-gradient(to bottom, #21B55A, #0C5C2B)",
                     color: "#fff",
                     textAlign: "center",
@@ -269,10 +280,10 @@ const Dashboard = () => {
                   onClick={isFilled === "0" ? () => navigate("/complete_your_registration") : isFilled === "1" ? () => navigate("/finish_onboarding_process") : undefined}
                 >
                   {isFilled === "2" ?
-                    "Here’s a summary of the current activity on your account." :
-                    <span className={classes.classesdpText} >
-                      Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.
-                    </span>
+                    "Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions." :
+                    <>
+                    ⚠️ Application incomplete. 👉 Tap to complete!
+                  </>
                   }
                 </p>
               </div>
@@ -285,23 +296,78 @@ const Dashboard = () => {
 
 
             <div className={classes.allcards}>
-              <div className={classes.card_rd}>
+              {/* <div className={classes.card_rd}>
                 <div className={classes.card1}>
                   {" "}
-                  <Card title="Overall Amount Requested" amount={'00,000,000'} />
-                  <Card title="Total Amount Approved" amount={'00,000,000'} />
+                  <Card title="Total Amount Paid" amount={'00,000,000'} />
+                  <Card title="Total Applications" amount={'00,000,000'} />
                 </div>
                 <div className={classes.card2}>
                   {" "}
-                  <Card title="Total Amount Utilized" amount={'00,000,000'} />
+                  <Card title="Total Pending Applications" amount={'00,000,000'} />
+                </div>
+              </div> */}
+
+              <div className={classes.onekad}>
+                <div className={classes.onekadfrstp}>
+                  {/* <img src={featured} className={classes.featuredicon} /> */}
+                  <p className={classes.walltp}>Total Amount Paid</p>
+                  <p className={classes.walltpm}>
+
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      `₦${parseFloat(totalAmountPaid).toLocaleString('en-US', {
+                        minimumIntegerDigits: 1,
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`
+                    )}
+
+                  </p>
+                </div>
+
+              </div>
+
+              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  {/* <img src={TotalIcon} className={classes.featuredicon2} /> */}
+                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Applications</p>
+                  <p className={`${isDarkMode ? classes.walltpmblkk : classes.walltpmblk} ${classes.walltpmblka}`}>
+                    {benLoading ? (
+                      <Placeholder animation="glow">
+                        <Placeholder xs={12} />
+                      </Placeholder>
+                    ) : (
+                      totalApplications
+                    )}
+                  </p>
                 </div>
               </div>
-              <div className={classes.chartSection}>
-                <Chart />
+
+              <div className={isDarkMode ? classes.twokad1 : classes.twokad}>
+                <div className={classes.twokadfrstp}>
+                  {/* <img src={PendingIcon} className={classes.featuredicon2} /> */}
+                  <p className={isDarkMode ? classes.walltp22 : classes.walltp2}>Total Pending Applications</p>
+                  <p className={isDarkMode ? classes.walltpmblkk : classes.walltpmblk}>{benLoading ? (
+                    <Placeholder animation="glow">
+                      <Placeholder xs={12} />
+                    </Placeholder>
+                  ) : (
+                    totalPending
+                  )}</p>
+                </div>
               </div>
 
-            </div>
 
+
+
+            </div>
+            <div className={classes.chartSection}>
+              <Chart />
+            </div>
 
             {/* Table container starts here */}
 

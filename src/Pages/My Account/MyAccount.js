@@ -108,7 +108,7 @@ const MyAccount = () => {
   const [loading, setLoading] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState({});
-  const [consultants, setConsultants] = useState([{ id: 1 }]);
+  // const [consultants, setConsultants] = useState([{ id: 1 }]);
 
   const handleFileChange = (event, fieldName) => {
     const file = event.target.files[0];
@@ -118,23 +118,23 @@ const MyAccount = () => {
     }));
   };
 
-  const addConsultant = () => {
-    setConsultants([...consultants, { id: Date.now() }]);
-  };
+  // const addConsultant = () => {
+  //   setConsultants([...consultants, { id: Date.now() }]);
+  // };
 
-  const removeConsultant = (id) => {
-    setConsultants(consultants.filter((c) => c.id !== id));
-  };
+  // const removeConsultant = (id) => {
+  //   setConsultants(consultants.filter((c) => c.id !== id));
+  // };
 
-  const fields = [
-    "Survey plan",
-    "Building Architectural Plan",
-    "Electrical Architectural Plan",
-    "Mechanical Architectural Plan",
-    "Structural Engineering",
-    "Title Document",
+  // const fields = [
+  //   "Survey plan",
+  //   "Building Architectural Plan",
+  //   "Electrical Architectural Plan",
+  //   "Mechanical Architectural Plan",
+  //   "Structural Engineering",
+  //   "Title Document",
 
-  ];
+  // ];
 
 
   const handleClockTime = () => {
@@ -814,322 +814,1084 @@ const MyAccount = () => {
       />
     </div> */}
                   <div className={classes.formCont}>
-                    {userData === "individual" && (
-                      <Container>
-                        <Form>
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput1">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  First Name
-                                </Form.Label>
-                                <Form.Control
-                                  className={classes.formInpt}
-                                  disabled
-                                  value={firstName}
-                                  type="text"
-                                  placeholder="Toluwani"
-                                />
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group controlId="formInput2">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  Last Name
-                                </Form.Label>
-                                <Form.Control
-                                  className={classes.formInpt}
-                                  disabled
-                                  value={lastName}
-                                  type="text"
-                                  placeholder="Adekoya"
-                                />
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput6">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                  S-TIN
-                                </Form.Label>
-                                <Form.Control
-                                  disabled
-                                  value={stin}
-                                  className={classes.formInpt}
-                                  type="text"
-                                  placeholder="12345678-1234"
-                                />
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group controlId="formInput5">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  NIN Number
-                                </Form.Label>
-                                <Form.Control
-                                  disabled
-                                  value={nin}
-                                  className={classes.formInpt}
-                                  type="text"
-                                  placeholder="123456789098764"
-                                />
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                    {/* {userData === "individual" && ( */}
+                    {/*    // <Container>
+                      //   <Form>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput1">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             First Name
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             className={classes.formInpt}
+                      //             disabled
+                      //             value={firstName}
+                      //             type="text"
+                      //             placeholder="Toluwani"
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput2">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             Last Name
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             className={classes.formInpt}
+                      //             disabled
+                      //             value={lastName}
+                      //             type="text"
+                      //             placeholder="Adekoya"
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput6">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
+                      //             S-TIN
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             disabled
+                      //             value={stin}
+                      //             className={classes.formInpt}
+                      //             type="text"
+                      //             placeholder="12345678-1234"
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput5">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             NIN Number
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             disabled
+                      //             value={nin}
+                      //             className={classes.formInpt}
+                      //             type="text"
+                      //             placeholder="123456789098764"
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
 
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput3">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  Email Address
-                                </Form.Label>
-                                <Form.Control
-                                  className={classes.formInpt}
-                                  disabled
-                                  value={customerEmail}
-                                  onChange={(e) =>
-                                    setCustomerEmail(e.target.value)
-                                  }
-                                  type="email"
-                                  placeholder="adekoyatoluwani5@gmail.com"
-                                />
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group controlId="formInput4">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  Phone Number
-                                </Form.Label>
-                                <Form.Control
-                                  className={classes.formInpt}
-                                  disabled
-                                  value={customerPhone}
-                                  type="tel"
-                                  placeholder="070 1798 1231"
-                                  onChange={(e) =>
-                                    setCustomerPhone(e.target.value)
-                                  }
-                                />
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput3">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             Email Address
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             className={classes.formInpt}
+                      //             disabled
+                      //             value={customerEmail}
+                      //             onChange={(e) =>
+                      //               setCustomerEmail(e.target.value)
+                      //             }
+                      //             type="email"
+                      //             placeholder="adekoyatoluwani5@gmail.com"
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput4">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             Phone Number
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             className={classes.formInpt}
+                      //             disabled
+                      //             value={customerPhone}
+                      //             type="tel"
+                      //             placeholder="070 1798 1231"
+                      //             onChange={(e) =>
+                      //               setCustomerPhone(e.target.value)
+                      //             }
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
 
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="dob">
-                                <Form.Label>Date of Birth</Form.Label>
-                                <Form.Control
-                                  disabled
-                                  value={dateBirth}
-                                  className={classes.formInpt}
-                                  type="date"
-                                  onChange={(e) => setDateBirth(e.target.value)}
-                                />
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group controlId="formInput6">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                  Gender
-                                </Form.Label>
-                                <Form.Select
-                                  className={classes.formInpt}
-                                  disabled
-                                  value={gender}
-                                  onChange={(e) => setGender(e.target.value)}
-                                >
-                                  <option>Select Gender</option>
-                                  <option value="male">Male</option>
-                                  <option value="female">Female</option>
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput5">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  Address
-                                </Form.Label>
-                                <Form.Control
-                                  className={classes.formInpt}
-                                  // disabled
-                                  value={customerAddress}
-                                  type="text"
-                                  placeholder="Enter address"
-                                  onChange={(e) =>
-                                    setCustomerAddress(e.target.value)
-                                  }
-                                />
-                              </Form.Group>
-                            </Col>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="dob">
+                      //           <Form.Label>Date of Birth</Form.Label>
+                      //           <Form.Control
+                      //             disabled
+                      //             value={dateBirth}
+                      //             className={classes.formInpt}
+                      //             type="date"
+                      //             onChange={(e) => setDateBirth(e.target.value)}
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput6">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
+                      //             Gender
+                      //           </Form.Label>
+                      //           <Form.Select
+                      //             className={classes.formInpt}
+                      //             disabled
+                      //             value={gender}
+                      //             onChange={(e) => setGender(e.target.value)}
+                      //           >
+                      //             <option>Select Gender</option>
+                      //             <option value="male">Male</option>
+                      //             <option value="female">Female</option>
+                      //           </Form.Select>
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput5">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             Address
+                      //           </Form.Label>
+                      //           <Form.Control
+                      //             className={classes.formInpt}
+                      //             // disabled
+                      //             value={customerAddress}
+                      //             type="text"
+                      //             placeholder="Enter address"
+                      //             onChange={(e) =>
+                      //               setCustomerAddress(e.target.value)
+                      //             }
+                      //           />
+                      //         </Form.Group>
+                      //       </Col>
 
-                            <Col md={6}>
-                              <Form.Group controlId="formInput6">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                  Marital Status
-                                </Form.Label>
-                                <Form.Select
-                                  className={classes.formInpt}
-                                  // disabled
-                                  value={status}
-                                  onChange={(e) => setStatus(e.target.value)}
-                                >
-                                  <option>Select Status</option>
-                                  <option value="SINGLE">Single</option>
-                                  <option value="MARRIED">Married</option>
-                                  <option value="DIVORCE">Divorce</option>
-                                  <option value="SEPERATED">Seperated</option>
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput6">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                  Nationality
-                                </Form.Label>
-                                <Form.Select
-                                  className={classes.formInpt}
-                                  // disabled
-                                  value={nationality}
-                                  onChange={(e) =>
-                                    setNationality(e.target.value)
-                                  }
-                                >
-                                  <option>Select Nationality</option>
-                                  <option value="s">Nigerian</option>
-                                  <option value="m">Non-Nigerian</option>
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput6">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
+                      //             Marital Status
+                      //           </Form.Label>
+                      //           <Form.Select
+                      //             className={classes.formInpt}
+                      //             // disabled
+                      //             value={status}
+                      //             onChange={(e) => setStatus(e.target.value)}
+                      //           >
+                      //             <option>Select Status</option>
+                      //             <option value="SINGLE">Single</option>
+                      //             <option value="MARRIED">Married</option>
+                      //             <option value="DIVORCE">Divorce</option>
+                      //             <option value="SEPERATED">Seperated</option>
+                      //           </Form.Select>
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput6">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
+                      //             Nationality
+                      //           </Form.Label>
+                      //           <Form.Select
+                      //             className={classes.formInpt}
+                      //             // disabled
+                      //             value={nationality}
+                      //             onChange={(e) =>
+                      //               setNationality(e.target.value)
+                      //             }
+                      //           >
+                      //             <option>Select Nationality</option>
+                      //             <option value="s">Nigerian</option>
+                      //             <option value="m">Non-Nigerian</option>
+                      //           </Form.Select>
+                      //         </Form.Group>
+                      //       </Col>
 
-                            <Col md={6}>
-                              <Form.Group controlId="formInput6">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
-                                  State
-                                </Form.Label>
-                                <Form.Select
-                                  className={classes.formInpt}
-                                  // disabled
-                                  value={
-                                    statesInNigeria.find(
-                                      (state) =>
-                                        state.toUpperCase() ===
-                                        customerState.toUpperCase()
-                                    ) || ""
-                                  }
-                                  onChange={(e) =>
-                                    setCustomerState(e.target.value)
-                                  }
-                                >
-                                  <option>Select State</option>
-                                  {statesInNigeria.map((state) => (
-                                    <option key={state} value={state}>
-                                      {state}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput6">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel} l>
+                      //             State
+                      //           </Form.Label>
+                      //           <Form.Select
+                      //             className={classes.formInpt}
+                      //             // disabled
+                      //             value={
+                      //               statesInNigeria.find(
+                      //                 (state) =>
+                      //                   state.toUpperCase() ===
+                      //                   customerState.toUpperCase()
+                      //               ) || ""
+                      //             }
+                      //             onChange={(e) =>
+                      //               setCustomerState(e.target.value)
+                      //             }
+                      //           >
+                      //             <option>Select State</option>
+                      //             {statesInNigeria.map((state) => (
+                      //               <option key={state} value={state}>
+                      //                 {state}
+                      //               </option>
+                      //             ))}
+                      //           </Form.Select>
+                      //         </Form.Group>
+                      //       </Col>
+                      //     </Row>
 
-                          <Row className="mb-3">
-                            <Col md={6}>
-                              <Form.Group controlId="formInput5">
-                                <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
-                                  Local Government Area
-                                </Form.Label>
-                                <Form.Select
-                                  className={classes.formInpt}
-                                  // disabled
-                                  value={
-                                    ogunStateLGAs.find(
-                                      (lga) =>
-                                        lga
-                                          .replace(/\s+/g, "_")
-                                          .toUpperCase() ===
-                                        customerLga.toUpperCase()
-                                    ) || ""
-                                  }
-                                  onChange={(e) =>
-                                    setCustomerLga(e.target.value)
-                                  }
-                                >
-                                  <option>Select LGA</option>
-                                  {ogunStateLGAs.map((lga) => (
-                                    <option key={lga} value={lga}>
-                                      {lga}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
+                      //     <Row className="mb-3">
+                      //       <Col md={6}>
+                      //         <Form.Group controlId="formInput5">
+                      //           <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                      //             Local Government Area
+                      //           </Form.Label>
+                      //           <Form.Select
+                      //             className={classes.formInpt}
+                      //             // disabled
+                      //             value={
+                      //               ogunStateLGAs.find(
+                      //                 (lga) =>
+                      //                   lga
+                      //                     .replace(/\s+/g, "_")
+                      //                     .toUpperCase() ===
+                      //                   customerLga.toUpperCase()
+                      //               ) || ""
+                      //             }
+                      //             onChange={(e) =>
+                      //               setCustomerLga(e.target.value)
+                      //             }
+                      //           >
+                      //             <option>Select LGA</option>
+                      //             {ogunStateLGAs.map((lga) => (
+                      //               <option key={lga} value={lga}>
+                      //                 {lga}
+                      //               </option>
+                      //             ))}
+                      //           </Form.Select>
+                      //         </Form.Group>
+                      //       </Col>
 
-                            <Col md={6}>
-                              <Form.Label className={classes.labelTxt}>
-                                Upload Recent Passport Photograph
-                              </Form.Label>
-                              <div
-                                className={classes.fileUpload}
-                                onClick={handleClick}
+                      //       <Col md={6}>
+                      //         <Form.Label className={classes.labelTxt}>
+                      //           Upload Recent Passport Photograph
+                      //         </Form.Label>
+                      //         <div
+                      //           className={classes.fileUpload}
+                      //           onClick={handleClick}
+                      //         >
+                      //           <img
+                      //             src={ImageIcon}
+                      //             alt="icon"
+                      //             className={classes.leftIcon}
+                      //           />
+                      //           <span className={classes.uploadText}>
+                      //             {fileName.length > 30
+                      //               ? fileName.slice(0, 30) + "..."
+                      //               : fileName}
+                      //           </span>
+                      //           <div className={classes.uploadButton}>
+                      //             <img
+                      //               src={UploadIcon}
+                      //               alt="upload"
+                      //               className={classes.uploadIcon}
+                      //             />
+                      //           </div>
+                      //           <input
+                      //             type="file"
+                      //             accept=".jpeg,.jpeg,.png"
+                      //             ref={fileInputRef}
+                      //             onChange={handleFileChange2}
+                      //             className={classes.hiddenFile}
+                      //           />
+                      //         </div>
+                      //         <p style={{ fontSize: 12, color: "red" }}>
+                      //           {imgError1}
+                      //         </p>
+                      //       </Col>
+                      //     </Row>
+
+                      //     <Row className="mb-3"></Row>
+
+                      //     <Button
+                      //       className={classes.editDetailsBtn1}
+                      //       variant="success"
+                      //       onClick={() => customerInfo()}
+                      //     >
+                      //       {customerLoading ? (
+                      //         <>
+                      //           <Spinner size="sm" />
+                      //           {/* <span style={{ marginLeft: "5px" }}>
+                      //                                     Uploading, please wait...
+                      //                                   </span> */}
+                    {/* //         </>
+                      //       ) : userData === "corporate" ? (
+                      //         "Upload Corporate Information"
+                      //       ) : (
+                      //         "Upload Personal Information"
+                      //       )}
+                      //     </Button>
+                      //   </Form>
+                      // </Container>*/}
+                    <Container>
+                      <Form>
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput1">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
                               >
-                                <img
-                                  src={ImageIcon}
-                                  alt="icon"
-                                  className={classes.leftIcon}
-                                />
-                                <span className={classes.uploadText}>
-                                  {fileName.length > 30
-                                    ? fileName.slice(0, 30) + "..."
-                                    : fileName}
-                                </span>
-                                <div className={classes.uploadButton}>
-                                  <img
-                                    src={UploadIcon}
-                                    alt="upload"
-                                    className={classes.uploadIcon}
-                                  />
-                                </div>
-                                <input
-                                  type="file"
-                                  accept=".jpeg,.jpeg,.png"
-                                  ref={fileInputRef}
-                                  onChange={handleFileChange2}
-                                  className={classes.hiddenFile}
-                                />
-                              </div>
-                              <p style={{ fontSize: 12, color: "red" }}>
-                                {imgError1}
-                              </p>
-                            </Col>
-                          </Row>
+                                First Name
+                              </Form.Label>
+                              <Form.Control
+                                className={classes.formInpt}
+                                disabled
+                                value={firstName}
+                                type="text"
+                                placeholder="Toluwani"
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group controlId="formInput2">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                Last Name
+                              </Form.Label>
+                              <Form.Control
+                                className={classes.formInpt}
+                                disabled
+                                value={lastName}
+                                type="text"
+                                placeholder="Adekoya"
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput6">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                                l
+                              >
+                                S-TIN
+                              </Form.Label>
+                              <Form.Control
+                                disabled
+                                value={stin}
+                                className={classes.formInpt}
+                                type="text"
+                                placeholder="12345678-1234"
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group controlId="formInput5">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                NIN Number
+                              </Form.Label>
+                              <Form.Control
+                                disabled
+                                value={nin}
+                                className={classes.formInpt}
+                                type="text"
+                                placeholder="123456789098764"
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
 
-                          <Row className="mb-3"></Row>
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput3">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                Email Address
+                              </Form.Label>
+                              <Form.Control
+                                className={classes.formInpt}
+                                disabled
+                                value={customerEmail}
+                                onChange={e => setCustomerEmail(e.target.value)}
+                                type="email"
+                                placeholder="adekoyatoluwani5@gmail.com"
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group controlId="formInput4">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                Phone Number
+                              </Form.Label>
+                              <Form.Control
+                                className={classes.formInpt}
+                                disabled
+                                value={customerPhone}
+                                type="tel"
+                                placeholder="070 1798 1231"
+                                onChange={e => setCustomerPhone(e.target.value)}
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
 
-                          <Button
-                            className={classes.editDetailsBtn1}
-                            variant="success"
-                            onClick={() => customerInfo()}
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="dob">
+                              <Form.Label>Date of Birth</Form.Label>
+                              <Form.Control
+                                disabled
+                                value={dateBirth}
+                                className={classes.formInpt}
+                                type="date"
+                                onChange={e => setDateBirth(e.target.value)}
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group controlId="formInput6">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                                l
+                              >
+                                Gender
+                              </Form.Label>
+                              <Form.Select
+                                className={classes.formInpt}
+                                disabled
+                                value={gender}
+                                onChange={e => setGender(e.target.value)}
+                              >
+                                <option>Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput5">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                Address
+                              </Form.Label>
+                              <Form.Control
+                                className={classes.formInpt}
+                                disabled
+                                value={customerAddress}
+                                type="text"
+                                placeholder="Enter address"
+                                onChange={e =>
+                                  setCustomerAddress(e.target.value)
+                                }
+                              />
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={6}>
+                            <Form.Group controlId="formInput6">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                                l
+                              >
+                                Marital Status
+                              </Form.Label>
+                              <Form.Select
+                                className={classes.formInpt}
+                                disabled
+                                value={status}
+                                onChange={e => setStatus(e.target.value)}
+                              >
+                                <option>Select Status</option>
+                                <option value="SINGLE">Single</option>
+                                <option value="MARRIED">Married</option>
+                                <option value="DIVORCE">Divorce</option>
+                                <option value="SEPERATED">Seperated</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput6">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                                l
+                              >
+                                Nationality
+                              </Form.Label>
+                              <Form.Select
+                                className={classes.formInpt}
+                                disabled
+                                value={nationality}
+                                onChange={e => setNationality(e.target.value)}
+                              >
+                                <option>Select Nationality</option>
+                                <option value="s">Nigerian</option>
+                                <option value="m">Non-Nigerian</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={6}>
+                            <Form.Group controlId="formInput6">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                                l
+                              >
+                                State
+                              </Form.Label>
+                              <Form.Select
+                                className={classes.formInpt}
+                                disabled
+                                value={
+                                  statesInNigeria.find(
+                                    state =>
+                                      state.toUpperCase() ===
+                                      customerState.toUpperCase()
+                                  ) || ""
+                                }
+                                onChange={e => setCustomerState(e.target.value)}
+                              >
+                                <option>Select State</option>
+                                {statesInNigeria.map(state => (
+                                  <option key={state} value={state}>
+                                    {state}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+
+                        <Row className="mb-3">
+                          <Col md={6}>
+                            <Form.Group controlId="formInput5">
+                              <Form.Label
+                                className={
+                                  isDarkMode
+                                    ? classes.formLabel1
+                                    : classes.formLabel
+                                }
+                              >
+                                Local Government Area
+                              </Form.Label>
+                              <Form.Select
+                                className={classes.formInpt}
+                                disabled
+                                value={
+                                  ogunStateLGAs.find(
+                                    lga =>
+                                      lga.replace(/\s+/g, "_").toUpperCase() ===
+                                      customerLga.toUpperCase()
+                                  ) || ""
+                                }
+                                onChange={e => setCustomerLga(e.target.value)}
+                              >
+                                <option>Select LGA</option>
+                                {ogunStateLGAs.map(lga => (
+                                  <option key={lga} value={lga}>
+                                    {lga}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                          {/*               
+                                                                <Col md={6}>
+                                                                  <Form.Label className={classes.labelTxt}>
+                                                                    Upload Recent Passport Photograph
+                                                                  </Form.Label>
+                                                                  <div
+                                                                    className={classes.fileUpload}
+                                                                    onClick={handleClick}
+                                                                  >
+                                                                    <img
+                                                                      src={ImageIcon}
+                                                                      alt="icon"
+                                                                      className={classes.leftIcon}
+                                                                    />
+                                                                    <span className={classes.uploadText}>
+                                                                      {fileName.length > 30
+                                                                        ? fileName.slice(0, 30) + "..."
+                                                                        : fileName}
+                                                                    </span>
+                                                                    <div className={classes.uploadButton}>
+                                                                      <img
+                                                                        src={UploadIcon}
+                                                                        alt="upload"
+                                                                        className={classes.uploadIcon}
+                                                                      />
+                                                                    </div>
+                                                                    <input
+                                                                      type="file"
+                                                                      accept=".jpeg,.jpeg,.png"
+                                                                      ref={fileInputRef}
+                                                                      onChange={handleFileChange2}
+                                                                      className={classes.hiddenFile}
+                                                                    />
+                                                                  </div>
+                                                                  <p style={{ fontSize: 12, color: "red" }}>
+                                                                    {imgError1}
+                                                                  </p>
+                                                                </Col> */}
+                        </Row>
+
+                        <Row className="mb-3"></Row>
+
+                        {/* <Button
+                                                                className={classes.editDetailsBtn1}
+                                                                variant="success"
+                                                                onClick={() => customerInfo()}
+                                                              >
+                                                                {customerLoading ? (
+                                                                  <>
+                                                                    <Spinner size="sm" />
+                                                                 
+                                                                  </>
+                                                                ) : userData === "corporate" ? (
+                                                                  "Upload Corporate Information"
+                                                                ) : (
+                                                                  "Upload Personal Information"
+                                                                )}
+                                                              </Button> */}
+                      </Form>
+                      {userData === "individual" && (
+                        <>
+                          <div style={{}} />
+                          <div
+                            className={
+                              isDarkMode
+                                ? classes.applicationHistoryy
+                                : classes.applicationHistory
+                            }
                           >
-                            {customerLoading ? (
-                              <>
-                                <Spinner size="sm" />
-                                {/* <span style={{ marginLeft: "5px" }}>
-                                                          Uploading, please wait...
-                                                        </span> */}
-                              </>
-                            ) : userData === "corporate" ? (
-                              "Upload Corporate Information"
-                            ) : (
-                              "Upload Personal Information"
-                            )}
-                          </Button>
-                        </Form>
-                      </Container>
-                    )}
+                            <div className={classes.firstDiv}></div>
+
+                            <div className={classes.formCont}>
+                              <div
+                                className={
+                                  isDarkMode
+                                    ? classes.firstInfos
+                                    : classes.firstInfo
+                                }
+                                style={{ marginTop: 30 }}
+                              >
+                                <h1>Occupation Information</h1>
+                              </div>
+
+                              <Form>
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput1">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Company's Name
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={businessName}
+                                        disabled
+                                        onChange={e =>
+                                          setBusinessName(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="ABC Company"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput2">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Job Title/Position
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={jobTitle}
+                                        disabled
+                                        onChange={e =>
+                                          setJobTitle(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Managing Director"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput3">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Business Industry
+                                      </Form.Label>
+                                      <Form.Select
+                                        disabled
+                                        value={selectedBusinessIndustry}
+                                        onChange={e =>
+                                          setSelectedBusinessIndustry(
+                                            e.target.value
+                                          )
+                                        }
+                                        className={classes.formInpt}
+                                      >
+                                        <option>
+                                          Select Business Industry
+                                        </option>
+                                        {[
+                                          "Agriculture",
+                                          "Technology",
+                                          "Healthcare",
+                                          "Finance",
+                                          "Education",
+                                          "Manufacturing",
+                                          "Retail",
+                                          "Construction",
+                                          "Transportation",
+                                          "Hospitality",
+                                        ].map(industry => (
+                                          <option
+                                            key={industry}
+                                            value={industry}
+                                          >
+                                            {industry}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    </Form.Group>
+                                  </Col>
+                                  {/* <Col md={6}>
+                                                                    <Form.Group controlId="formInput4">
+                                                                      <Form.Label className={isDarkMode ? classes.formLabel1 : classes.formLabel}>
+                                                                        Employment Status
+                                                                      </Form.Label>
+                                                                      <Form.Select value={selectedEmploymentStatus} onChange={(e) => setSelectedEmploymentStatus(e.target.value)} className={classes.formInpt}>
+                                                                        <option>Select Employment Status</option>
+                                                                        {[
+                                                                          "Employed",
+                                                                          "Self-Employed",
+                                                                          "Unemployed",
+                                                                          "Student",
+                                                                          "Retired",
+                                                                          "Freelancer",
+                                                                          "Contractor",
+                                                                        ].map((status) => (
+                                                                          <option key={status} value={status}>
+                                                                            {status}
+                                                                          </option>
+                                                                        ))}
+                                                                      </Form.Select>
+                                                                    </Form.Group>
+                                                                  </Col> */}
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput1">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Company's Address
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={compAddress}
+                                        disabled
+                                        onChange={e =>
+                                          setAddress(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Enter Address"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput2">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Company's Phone Number
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={compPhone}
+                                        disabled
+                                        onChange={e =>
+                                          setcompPhone(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Enter Phone Number"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput2">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Company's Email Address
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={CompEmail}
+                                        disabled
+                                        onChange={e =>
+                                          setCompEmail(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Enter Email Address"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </Form>
+
+                              {/* <div className={classes.editDetailsBtn}>
+                                                              <button onClick={() => occupationInformation()}>
+                                                                {loading ? "Updating" : "Update Details"}
+                                                              </button>
+                                                            </div> */}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {userData === "individual" && (
+                        <>
+                          <div style={{}} />
+                          <div
+                            className={
+                              isDarkMode
+                                ? classes.applicationHistoryy
+                                : classes.applicationHistory
+                            }
+                          >
+                            <div className={classes.firstDiv}></div>
+
+                            <div className={classes.formCont}>
+                              <div
+                                className={
+                                  isDarkMode
+                                    ? classes.firstInfos
+                                    : classes.firstInfo
+                                }
+                              >
+                                <h1>Next of Kin Information</h1>
+                              </div>
+
+                              <Form>
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput1">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        First Name
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={nokFirstName}
+                                        disabled
+                                        onChange={e =>
+                                          setNokFirstName(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Toluwani"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput2">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Last Name
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={nokLastName}
+                                        disabled
+                                        onChange={e =>
+                                          setNokLastName(e.target.value)
+                                        }
+                                        type="text"
+                                        placeholder="Adekoya"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput3">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Email
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={nokEmail}
+                                        disabled
+                                        onChange={e =>
+                                          setNokEmail(e.target.value)
+                                        }
+                                        type="email"
+                                        placeholder="adekoyatoluwani5@gmail.com"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput4">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Telephone Number
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={nokPhone}
+                                        disabled
+                                        onChange={e =>
+                                          setNokPhone(e.target.value)
+                                        }
+                                        type="tel"
+                                        placeholder="070 1798 1231"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                                <Row className="mb-3">
+                                  <Col md={6}>
+                                    <Form.Group controlId="formInput3">
+                                      <Form.Label
+                                        className={
+                                          isDarkMode
+                                            ? classes.formLabel1
+                                            : classes.formLabel
+                                        }
+                                      >
+                                        Address
+                                      </Form.Label>
+                                      <Form.Control
+                                        className={classes.formInpt}
+                                        value={nokAddress}
+                                        disabled
+                                        onChange={e =>
+                                          setNokAddress(e.target.value)
+                                        }
+                                        type="address"
+                                        placeholder="adekoyatoluwani5@gmail.com"
+                                      />
+                                    </Form.Group>
+                                  </Col>
+                                </Row>
+                              </Form>
+
+                              {/* <div className={classes.editDetailsBtn}>
+                                                              <button onClick={() => occupationInformation()}>
+                                                                {loading ? "Updating" : "Update Details"}
+                                                              </button>
+                                                            </div> */}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </Container>
+                    {/* )} */}
                     {userData === "corporate" && (
                       <Container>
                         <Form>
@@ -1687,7 +2449,8 @@ const MyAccount = () => {
                     </div>
                   </div>
                 </div> */}
-                <div className={classes.cont}>
+
+                {/* <div className={classes.cont}>
                   <div className={classes.container}>
                     {fields.map((field, index) => (
                       <div key={index} className={classes.fileInput}>
@@ -1707,56 +2470,90 @@ const MyAccount = () => {
                   </div>
 
 
-                  <p>Select Land Use Type*</p>
+
                   <div className={classes.selectContainer}>
-                    <select>
-                      <option>Select Land Use Type</option>
-                      <option>Residential</option>
-                      <option>Commercial</option>
-                    </select>
+                    {/* Land Use Type Select */}
+                {/* <div className={classes.selectWrapper}>
+                      <label className={classes.selectLabel}>Land Use Type</label>
+                      <select>
+                        <option>Select Land Use Type</option>
+                        <option>Residential</option>
+                        <option>Commercial</option>
+                      </select>
+                    </div> */}
+
+                {/* Select Type Select */}
+                {/* <div className={classes.selectWrapper}>
+                      <label className={classes.selectLabel}>Select Type*</label>
+                      <select>
+                        <option>Select Type</option>
+                        <option>Type A</option>
+                        <option>Type B</option>
+                      </select>
+                    </div>
+                  </div> */}
 
 
-
-                    <select>
-                      <option>Select Type</option>
-                      <option>Type A</option>
-                      <option>Type B</option>
-                    </select>
-                  </div>
-
-
-                  <button className={classes.addMoreBtn} onClick={addConsultant}>
+                {/*<button className={classes.addMoreBtn} onClick={addConsultant}>
                     Add More
                   </button>
+                  <div className={classes.bill}>
+                    {consultants.map((consultant) => (
+                      <div key={consultant.id} className={classes.consultantRow}>
+
+                        {/* Consultant Select Dropdown */}
+                {/* <div className={classes.inputGroup}>
+                  <label htmlFor={`consultant-${consultant.id}`}>Consultant</label>
+                  <select id={`consultant-${consultant.id}`}>
+                    <option>Choose Consultant</option>
+                    <option>John Doe</option>
+                    <option>Jane Smith</option>
+                  </select>
+                </div> */}
+
+                {/* Email Input */}
+                {/* <div className={classes.inputGroup}>
+                  <label htmlFor={`email-${consultant.id}`}>Email</label>
+                  <input
+                    type="email"
+                    id={`email-${consultant.id}`}
+                    placeholder=""
+                  />
+                </div> */}
+
+                {/* Designation Input */}
+                {/* <div className={classes.inputGroup}>
+                          <label htmlFor={`designation-${consultant.id}`}>Designated*</label>
+                          <input
+                            type="text"
+                            id={`designation-${consultant.id}`}
+                            placeholder=""
+                          />
+                        </div>
+
+                        
+                        <div className={classes.inputGroup}>
+                          <label>Del*</label>
+                          <button
+                            className={classes.deleteBtn}
+                            onClick={() => removeConsultant(consultant.id)}
+                          >
+                            Del
+                          </button>
+                        </div>
+{/* Delete Button */}
+
+                {/* </div>
 
 
-                  {consultants.map((consultant) => (
-                    <div key={consultant.id} className={classes.consultantRow}>
-                      <select>
-                        <option>Choose Consultant</option>
-                        <option>John Doe</option>
-                        <option>Jane Smith</option>
-                      </select>
-                      <input type="email" placeholder="Email" />
-                      <input type="text" placeholder="Designation" />
-                      <button
-                        className={classes.deleteBtn}
-                        onClick={() => removeConsultant(consultant.id)}
-                      >
-                        Del
-                      </button>
-                      
-                    </div>
-
-                    
 
 
-                  ))}
-                  <div className={classes.editDetailsBtn}>
-                      <button>Change Password</button>
-                    </div>
-                </div>
-
+                    ))}
+                    <button className={classes.Btn}>
+                      Submit
+                    </button>
+                  </div> 
+                </div>*/}
               </Tab>
 
               <Tab eventKey="payments" title="Payments">

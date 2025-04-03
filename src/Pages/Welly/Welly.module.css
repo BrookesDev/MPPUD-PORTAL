@@ -1,0 +1,76 @@
+
+  
+  .back {
+    width: 689px; 
+    /* Adjust based on your requirement */
+    height: auto;
+  }
+  
+  .mWR {
+    position: absolute;
+    top: 6%;
+    right: 25%;
+    z-index: 1;
+    width: 50px;
+}
+.bank {
+    position: absolute;
+    top: 35%;
+    right: 10%;
+    z-index: 1;
+    width: 380px;
+}
+  
+
+  .block{
+    height: 100vh;
+    width: 69%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+    
+ 
+    .but button {
+     
+      padding: 15px;
+      background-color:#21B55A;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      width: 492px;
+      margin-top: 20px;
+    }
+    /* html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; 
+    } */
+    .main{
+      display: flex;
+      /* gap: 15px; */
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+  }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,7 +13,7 @@
 
 .panel {
   background: white;
-  width: 660px;
+  width: 500px;
   height: 100vh;
   z-index: 10000; 
   /* overflow: hidden; */

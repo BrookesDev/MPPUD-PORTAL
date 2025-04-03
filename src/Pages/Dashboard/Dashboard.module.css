@@ -434,7 +434,9 @@ img:hover {
     white-space: "nowrap";
     overflow: "hidden";
     text-overflow: "ellipsis";
+    
 }
+
 
 .usrwlcm {
   display: flex;
@@ -466,9 +468,11 @@ align-items: center;
 
 .onekad {
   display: flex;
-  background:  linear-gradient(107.85deg, #21B55A 4.88%, #0E4F27 169.03%);
+  /* background:  linear-gradient(107.85deg, #21B55A 4.88%, #0E4F27 169.03%); */
+  background-color: white;
   justify-content: space-between;
-  width: 256px;
+  /* width: 256px; */
+  width: 40%;
   height: 150px;
   border-radius: 8px;
   padding: 20px;
@@ -591,9 +595,10 @@ padding: 10px;
 }
 
 .allcards {
-  /* display: flex; */
+  display: flex;
   gap: 24px;
   margin-top: 20px;
+  /* width: 100%; */
 }
 
 .featuredicon2 {
@@ -605,7 +610,8 @@ padding: 10px;
   /* display: flex; */
   background-color:  #FFFFFF;
   /* justify-content: space-between; */
-  width: 256px;
+  /* width: 256px; */
+  width: 40%;
   height: 150px;
   border-radius: 8px;
   padding: 15px 20px 20px 20px;
@@ -670,7 +676,12 @@ padding: 10px;
 }
 
 .onekadfrstp p {
-  color: #ffffff;
+  color: black;
+  /* width: 30%; */
+}
+
+.twokadfrstp {
+  /* width: 30%; */
 }
 
 .wlcmintro {
@@ -1279,3 +1290,7 @@ display: block; /* Visible by default */
     margin: 1.5px;
   }
 }
+
+
+
+
