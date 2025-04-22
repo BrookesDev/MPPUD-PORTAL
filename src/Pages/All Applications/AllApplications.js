@@ -261,7 +261,7 @@ const AllApplications = () => {
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    const formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}:${padZero(date.getMinutes())} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+    const formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())}`;
     return formattedDate;
   }
 
@@ -828,7 +828,7 @@ const AllApplications = () => {
             <div className={classes.usrwlcm}>
               <div className={classes.wlcmcont}>
                 <p classes={{ color: isDarkMode ? "white" : "#101828", fontWeight: 600, fontSize: 30 }} className={classes.wlcm}>Applications</p>
-               <p>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
+               <p>Your Hub for All Applications – Apply, Track, and Stay Updated.</p>
               </div>
               <button onClick={() => setShowModal(true)} className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
                 <span> Make New Application</span>
@@ -1021,12 +1021,12 @@ const AllApplications = () => {
                   <div >
                     <table style={{ width: "98%" }}>
 
-                      <thead style={{ whiteSpace: 'nowrap' }}>
+                      <thead style={{ whiteSpace: 'wrap' }}>
                         <tr>
                           <th style={{ color: isDarkMode && "white" }}>S/N</th>
                           <th style={{ color: isDarkMode && "white" }}>Application Number</th>
                           <th style={{ color: isDarkMode && "white" }}>Application Type</th>
-                          <th style={{ color: isDarkMode && "white" }}>Submission Date</th>
+                          <th style={{ color: isDarkMode && "white" }}>Application Date</th>
                           <th style={{ color: isDarkMode && "white" }}>Application Status</th>
                           <th style={{ color: isDarkMode && "white" }}>Payment Status</th>
                           <th style={{ color: isDarkMode && "white" }}>Approval Required by</th>

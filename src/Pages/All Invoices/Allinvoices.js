@@ -486,9 +486,7 @@ const Allinvoices = () => {
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${padZero(
       date.getMonth() + 1
-    )}-${padZero(date.getDate())} ${padZero(date.getHours())}:${padZero(
-      date.getMinutes()
-    )} ${date.getHours() >= 12 ? "PM" : "AM"}`;
+    )}-${padZero(date.getDate())} `;
     return formattedDate;
   }
 
@@ -1208,7 +1206,7 @@ const Allinvoices = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Invoices</p>
-                <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
+                <p style={{marginTop: -20, }}>View, Track, and Manage All Invoices in One Place.</p>
               </div>
             </div>
             <Modal

@@ -740,6 +740,7 @@ const Settingss = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Settings</p>
+                <p style={{marginTop: -20, }}>Customize Your Experience – Configure Settings Your Way</p>
               </div>
             </div>
 

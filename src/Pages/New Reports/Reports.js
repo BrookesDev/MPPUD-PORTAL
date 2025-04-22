@@ -361,7 +361,7 @@ const Reports = () => {
             <div className={classes.usrwlcm}>
               <div>
                 <p className={classes.wlcm}>Support Tickets</p>
-                <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
+                <p style={{marginTop: -20, }}>Need help? Our support team is just a ticket away.</p>
               </div>
               <div>
                 <button onClick={handleOpenModal} className={classes.applctnbtn}>New Ticket</button>
