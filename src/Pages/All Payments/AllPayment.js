@@ -1206,7 +1206,7 @@ const AllPayment = () => {
           <div className={classes.dashBoardCont}>
             <div className={classes.usrwlcm}>
               <div>
-                <p className={classes.wlcm}>Invoices</p>
+                <p className={classes.wlcm}>Receipts</p>
                 <p style={{marginTop: -20, }}>Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions.</p>
               </div>
             </div>

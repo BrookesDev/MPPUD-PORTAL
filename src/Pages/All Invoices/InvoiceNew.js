@@ -171,7 +171,7 @@ const InvoiceNew = () => {
                       </tr>
                     </thead>
                     <tbody>
-                    {[].map((item, index) => (
+                    {userData?.break?.map((item, index) => (
                        <tr key={index}>
                       
                         <td className={classes.textbackc}>

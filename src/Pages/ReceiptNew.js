@@ -171,7 +171,7 @@ const ReceiptNew = () => {
                       </tr>
                     </thead>
                     <tbody>
-                    {[].map((item, index) => (
+                    {userData?.break?.map((item, index) => (
                        <tr key={index}>
                       
                         <td className={classes.textbackc}>
@@ -187,7 +187,18 @@ const ReceiptNew = () => {
                     </tbody>
                     
                   </table>
-
+  <div className={classes.belowData}>
+                   
+                      <div className={classes.belowDatas}>
+                        <p className={classes.textleft222}>SUBTOTAL</p>
+                        <p className={classes.textleft222}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(userData.amount)}</p>
+                        </div>
+                        <div style={{ width: '70%', borderTop: '2px solid #ccc', marginTop: -20, marginBottom: 10 }} />
+                        <div className={classes.belowDatas}>
+                        <td className={classes.textleft22212}>GRAND TOTAL</td>
+                        <td className={classes.textleft22212}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(userData.amount)}</td>
+                        </div>
+                    </div>
                  
                 
                 </main>
