@@ -19,6 +19,7 @@ import errorIcon from '../../Asset/error.svg';
 import Carousel from "react-bootstrap/Carousel";
 import { BASE_URL } from "../../API/Api";
 import axios from "axios";
+import Swal from "sweetalert2";
 // import localStorage from "@react-native-async-storage/async-storage";
 
 
@@ -123,6 +124,20 @@ const [activeIndex, setActiveIndex] = useState(0);
   const [stinCreated, setStinCreated] = useState(false);
 
   const createStin = async () => {
+    const confirmed = await Swal.fire({
+      title: 'Are you sure you want to create an S-TIN?',
+      text: 'All previous tax history will not be accessed on the new S-TIN ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, create it!',
+      cancelButtonText: 'No, cancel',
+    });
+
+    if (!confirmed.isConfirmed) {
+      return; // User canceled, do nothing
+    }
     setTinLoading(true);
     setShowErrorMessage1(false);
     try {

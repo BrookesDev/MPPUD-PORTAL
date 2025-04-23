@@ -405,7 +405,7 @@ const LandRatificationApp = () => {
 
   const fetchCaveatTypes = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/applications/get-zone`, {
+      const response = await axios.get(`${BASE_URL}/applications/get-areas`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${bearer}`,
@@ -2564,280 +2564,7 @@ const LandRatificationApp = () => {
                                     </Col>
                                   </Row> */}
               
-
-             
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="surveyPlan">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <div className={classes.fileUpload} onClick={handleClick1}>
-                      <img
-                        src={ImageIcon}
-                        alt="icon"
-                        className={classes.leftIcon}
-                      />
-                      <span className={classes.uploadText}>
-                        {fileName1.length > 30
-                          ? fileName1.slice(0, 30) + "..."
-                          : fileName1}
-                      </span>
-                      <div className={classes.uploadButton}>
-                        <img
-                          src={UploadIcon}
-                          alt="upload"
-                          className={classes.uploadIcon}
-                        />
-                      </div>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        ref={fileInputRef1}
-                        onChange={handleFileChange}
-                        className={classes.hiddenFile}
-                      />
-                    </div>
-                    <p style={{ fontSize: 12, color: "red" }}>{imgError}</p>
-                    {/* <Form.Control className={classes.optioncss} type="file" accept=".pdf" onChange={handleFileChange} /> */}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                <Form.Group controlId="BuildingArchitectural">
-                <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName.length > 30
-                        ? fileName.slice(0, 30) + "..."
-                        : fileName}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef}
-                      onChange={handleFileChange2}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError4}</p>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick30}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName30.length > 30
-                        ? fileName30.slice(0, 30) + "..."
-                        : fileName30}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef30}
-                      onChange={handleFileChange30}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick40}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName40
-                        ? fileName40.length > 30
-                          ? fileName40.slice(0, 30) + "..."
-                          : fileName40
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef40}
-                      onChange={handleFileChange40}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick31}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName31.length > 30
-                        ? fileName31.slice(0, 30) + "..."
-                        : fileName31}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef31}
-                      onChange={handleFileChange31}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
-                </Col>
-                <Col md={6}>
-                  <Form.Label
-                    className={
-                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                    }
-                  >
-                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
-                  </Form.Label>
-                  <div className={classes.fileUpload} onClick={handleClick32}>
-                    <img
-                      src={ImageIcon}
-                      alt="icon"
-                      className={classes.leftIcon}
-                    />
-                    <span className={classes.uploadText}>
-                      {fileName32
-                        ? fileName32.length > 30
-                          ? fileName32.slice(0, 30) + "..."
-                          : fileName32
-                        : ""}
-                    </span>
-                    <div className={classes.uploadButton}>
-                      <img
-                        src={UploadIcon}
-                        alt="upload"
-                        className={classes.uploadIcon}
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      ref={fileInputRef32}
-                      onChange={handleFileChange32}
-                      className={classes.hiddenFile}
-                    />
-                  </div>
-                  <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-              <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in Sqm <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter sqm size in number e.g 2"
-                      value={sizeSqm}
-                      onChange={(e) => setSizeSqm(e.target.value)}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in plot <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter plot size in number e.g 2"
-                      value={sizePlot}
-                      onChange={(e) => setSizePlot(e.target.value)}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row className="mb-3">
+              <Row className="mb-3"  style={{marginTop: 10}}>
               <Col md={6}>
                   <Form.Group controlId="proposedTimeline">
                     <Form.Label
@@ -2943,6 +2670,287 @@ const LandRatificationApp = () => {
                 </Col>
                 )}                
               </Row>
+              <Row className="mb-3">
+              <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      onChange={(e) => setSizeSqm(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+             
+
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="surveyPlan">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <div className={classes.fileUpload} onClick={handleClick1}>
+                      <img
+                        src={ImageIcon}
+                        alt="icon"
+                        className={classes.leftIcon}
+                      />
+                      <span className={classes.uploadText}>
+                        {fileName1.length > 30
+                          ? fileName1.slice(0, 30) + "..."
+                          : fileName1}
+                      </span>
+                      <div className={classes.uploadButton}>
+                        <img
+                          src={UploadIcon}
+                          alt="upload"
+                          className={classes.uploadIcon}
+                        />
+                      </div>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        ref={fileInputRef1}
+                        onChange={handleFileChange}
+                        className={classes.hiddenFile}
+                      />
+                    </div>
+                    <p style={{ fontSize: 12, color: "red" }}>{imgError}</p>
+                    {/* <Form.Control className={classes.optioncss} type="file" accept=".pdf" onChange={handleFileChange} /> */}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                <Form.Group controlId="BuildingArchitectural">
+                <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName.length > 30
+                        ? fileName.slice(0, 30) + "..."
+                        : fileName}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef}
+                      onChange={handleFileChange2}
+                      className={classes.hiddenFile}
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError4}</p>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mb-3">
+              {selectedType !== "1" && (
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick30}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName30.length > 30
+                        ? fileName30.slice(0, 30) + "..."
+                        : fileName30}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef30}
+                      onChange={handleFileChange30}
+                      className={classes.hiddenFile}
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
+                </Col>
+                  )}
+
+{selectedType !== "1" && (
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick40}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName40
+                        ? fileName40.length > 30
+                          ? fileName40.slice(0, 30) + "..."
+                          : fileName40
+                        : ""}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef40}
+                      onChange={handleFileChange40}
+                      className={classes.hiddenFile}
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
+                </Col>
+)}
+              </Row>
+              <Row className="mb-3">
+              {selectedType !== "1" && (
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick31}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName31.length > 30
+                        ? fileName31.slice(0, 30) + "..."
+                        : fileName31}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef31}
+                      onChange={handleFileChange31}
+                      className={classes.hiddenFile}
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
+                </Col>
+              )}
+
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick32}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName32
+                        ? fileName32.length > 30
+                          ? fileName32.slice(0, 30) + "..."
+                          : fileName32
+                        : ""}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef32}
+                      onChange={handleFileChange32}
+                      className={classes.hiddenFile}
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
+                </Col>
+              </Row>
+            
               <Row className="mb-3">
                 <Col md={12}>
                   <Form.Group controlId="attestation">
@@ -3882,8 +3890,160 @@ const LandRatificationApp = () => {
                                  <h1 style={{textTransform:'uppercase',}}>Building Permit Form</h1>
                                </div>
      <Form className={isDarkMode ? classes.formContainer1 : classes.formContainerr} style={{paddingLeft:10}}>
-      
-     <Row className="mb-3">
+
+     <Row className="mb-3"  style={{marginTop: 10}}>
+              <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Select Building Type <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      onChange={handleType}
+                      value={selectedType}
+                      disabled
+                    >
+                      <option value="">Select Building Type</option>
+               {tableData2?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Select Land Use Type <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className={classes.optioncss}
+                      onChange={handleProposedBuild}
+                      value={selectedBuildingType}
+                      disabled
+                    >
+                      <option value="">Select Land Use Type </option>
+               {tableData32?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>                
+              </Row>
+              <Row className="mb-3">
+               {selectedType == 3 && (
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                  <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Number of Floors <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter floor in number e.g 2"
+                      value={floorNumber}
+                      onChange={(e) => setFloorNumber(e.target.value)}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+               )}
+                {selectedBuildingType === "1" && (
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                  <Form.Label
+  className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
+>
+  Building Area/Location <span style={{color: "red"}}>*</span>
+</Form.Label>
+                    <Form.Select
+                    // disabled={selectedBuildingType !== "1"}
+                      className={classes.optioncss}
+                      onChange={handleBuildingChange}
+                      value={selectedBuilding}
+                      disabled
+                    >
+                      <option value="">Select building area/location </option>
+               {caveatTypes?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                )}                
+              </Row>
+              <Row className="mb-3">
+              <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in Sqm <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter sqm size in number e.g 2"
+                      value={sizeSqm}
+                      onChange={(e) => setSizeSqm(e.target.value)}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+             
+
+              <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group controlId="surveyPlan">
                     <Form.Label
@@ -3891,7 +4051,7 @@ const LandRatificationApp = () => {
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Survey Plan 
+                      Survey Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <div className={classes.fileUpload} onClick={handleClick1}>
                       <img
@@ -3915,8 +4075,9 @@ const LandRatificationApp = () => {
                         type="file"
                         accept=".pdf"
                         ref={fileInputRef1}
-                        disabled
+                        onChange={handleFileChange}
                         className={classes.hiddenFile}
+                        disabled
                       />
                     </div>
                     <p style={{ fontSize: 12, color: "red" }}>{imgError}</p>
@@ -3930,7 +4091,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Building Architectural Plan
+                    Building Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick}>
                     <img
@@ -3954,8 +4115,9 @@ const LandRatificationApp = () => {
                       type="file"
                       accept=".pdf"
                       ref={fileInputRef}
-                      disabled
+                      onChange={handleFileChange2}
                       className={classes.hiddenFile}
+                      disabled
                     />
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError4}</p>
@@ -3964,13 +4126,14 @@ const LandRatificationApp = () => {
               </Row>
 
               <Row className="mb-3">
+              {selectedType !== "1" && (
                 <Col md={6}>
                   <Form.Label
                     className={
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Electrical Architectural Plan
+                    Electrical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick30}>
                     <img
@@ -3994,19 +4157,23 @@ const LandRatificationApp = () => {
                       type="file"
                       accept=".pdf"
                       ref={fileInputRef30}
-                      disabled
+                      onChange={handleFileChange30}
                       className={classes.hiddenFile}
+                      disabled
                     />
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
                 </Col>
+                  )}
+
+{selectedType !== "1" && (
                 <Col md={6}>
                   <Form.Label
                     className={
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Mechanical Architectural Plan
+                    Mechanical Architectural Plan <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick40}>
                     <img
@@ -4032,21 +4199,24 @@ const LandRatificationApp = () => {
                       type="file"
                       accept=".pdf"
                       ref={fileInputRef40}
-                      disabled
+                      onChange={handleFileChange40}
                       className={classes.hiddenFile}
+                      disabled
                     />
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
                 </Col>
+)}
               </Row>
               <Row className="mb-3">
+              {selectedType !== "1" && (
                 <Col md={6}>
                   <Form.Label
                     className={
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Structural Engineering
+                    Structural Engineering <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick31}>
                     <img
@@ -4070,19 +4240,22 @@ const LandRatificationApp = () => {
                       type="file"
                       accept=".pdf"
                       ref={fileInputRef31}
-                      disabled
+                      onChange={handleFileChange31}
                       className={classes.hiddenFile}
+                      disabled
                     />
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
                 </Col>
+              )}
+
                 <Col md={6}>
                   <Form.Label
                     className={
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    Title Document
+                    Title Document <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick32}>
                     <img
@@ -4108,139 +4281,15 @@ const LandRatificationApp = () => {
                       type="file"
                       accept=".pdf"
                       ref={fileInputRef32}
-                     disabled
+                      onChange={handleFileChange32}
                       className={classes.hiddenFile}
+                      disabled
                     />
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError22}</p>
                 </Col>
               </Row>
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Land Use Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                     value={selectedBuildingType}
-                     disabled
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData32?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Select Type
-                    </Form.Label>
-                    <Form.Select
-                      className={classes.optioncss}
-                     value={selectedType}
-                     disabled
-                    >
-                      <option value="">Select Land Use Type</option>
-               {tableData2?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in plot <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter plot size in number e.g 2"
-                      value={sizePlot}
-                      disabled
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="proposedTimeline">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in Sqm <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      className={classes.optioncss}
-                      placeholder="Enter sqm size in number e.g 2"
-                      value={sizeSqm}
-                      disabled
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={12}>
-                  <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Building Area/Location 
-                    </Form.Label>
-                    <Form.Select
-                   
-                      className={classes.optioncss}
-                      disabled
-                      value={selectedBuilding}
-                    >
-                      <option value="">Select building area/location </option>
-               {caveatTypes?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              
-              </Row> 
+             
 
        <Row className="mb-3">
          <Col md={12}>

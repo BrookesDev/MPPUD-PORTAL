@@ -280,18 +280,18 @@ const Dashboard = () => {
                   onClick={isFilled === "0" ? () => navigate("/complete_your_registration") : isFilled === "1" ? () => navigate("/finish_onboarding_process") : undefined}
                 >
                   {isFilled === "2" ?
-                    "Here, you can seamlessly submit budget requests, track approvals, monitor financial performance, and manage transactions." :
+                    "Here’s a summary of the current activity on your account." :
                     <>
                     ⚠️ Application incomplete. 👉 Tap to complete!
                   </>
                   }
                 </p>
               </div>
-              {isFilled === "2" && (
+              {/* {isFilled === "2" && (
               <button className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
                 <span> Make New Request</span>
               </button>
-               )}
+               )} */}
             </div>
 
 
