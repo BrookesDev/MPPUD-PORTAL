@@ -2622,7 +2622,7 @@ const LandRatificationApp = () => {
               </Row>
               <Row className="mb-3">
                {selectedType == 3 && (
-                <Col md={6}>
+                <Col md={12}>
                   <Form.Group controlId="option3">
                   <Form.Label
                       className={
@@ -2641,8 +2641,12 @@ const LandRatificationApp = () => {
                   </Form.Group>
                 </Col>
                )}
-                {selectedBuildingType === "1" && (
-                <Col md={6}>
+                {/* {selectedBuildingType === "1" && ( */}
+             
+                {/* )}                 */}
+              </Row>
+              <Row className="mb-3">
+              <Col md={6}>
                   <Form.Group controlId="option3">
                   <Form.Label
   className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
@@ -2668,9 +2672,6 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                )}                
-              </Row>
-              <Row className="mb-3">
               <Col md={6}>
                   <Form.Group controlId="proposedTimeline">
                     <Form.Label
@@ -2689,7 +2690,9 @@ const LandRatificationApp = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col md={6}>
+              
+              </Row>
+              <Col md={12}>
                   <Form.Group controlId="option3">
                     <Form.Label
                       className={
@@ -2707,10 +2710,8 @@ const LandRatificationApp = () => {
                     />
                   </Form.Group>
                 </Col>
-              </Row>
-             
 
-              <Row className="mb-3">
+              <Row className="mb-3" style={{marginTop: 20}}>
                 <Col md={6}>
                   <Form.Group controlId="surveyPlan">
                     <Form.Label
@@ -3971,7 +3972,7 @@ const LandRatificationApp = () => {
                   </Form.Group>
                 </Col>
                )}
-                {selectedBuildingType === "1" && (
+                {/* {selectedBuildingType === "1" && ( */}
                 <Col md={6}>
                   <Form.Group controlId="option3">
                   <Form.Label
@@ -3999,7 +4000,7 @@ const LandRatificationApp = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                )}                
+                {/* )}                 */}
               </Row>
               <Row className="mb-3">
               <Col md={6}>
