@@ -896,7 +896,7 @@ const LandRatificationApp = () => {
 
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
-      formData.append("zone_id", selectedBuilding);
+      formData.append("area_id", selectedBuilding);
       formData.append("size_in_sqm", sizeSqm);
       formData.append("size_in_plot", sizePlot);
      
