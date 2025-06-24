@@ -307,7 +307,7 @@ function NewCacCompleteReg() {
 
             <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
               <Form.Label className={classes.inputLabel}>CAC Number</Form.Label>
-              <Form.Control className={classes.formInput} onChange={handleNinChange} onBlur={handleBlur} placeholder="Enter CAC" size="lg" type="text" id="cacregnumber" />
+              <Form.Control className={classes.formInput} value={cac} onChange={handleNinChange} onBlur={handleBlur} placeholder="Enter CAC" size="lg" type="text" id="cacregnumber" />
             </Form.Group>
            
             {showErrorMessage1 && (

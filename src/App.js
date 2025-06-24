@@ -70,7 +70,6 @@ function App() {
             {/* Routes without Sidebar (Login, Signup, Account) */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/create" element={<Create />} />
-            <Route path="/" element={<Welcome />} />
             <Route path="/account" element={<Account />} />
             <Route path="/complete_your_registration" element={<OnboardingCompleteReg />} />
             <Route path="/finish_onboarding_process" element={<FinishOnboarding />} />
