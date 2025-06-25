@@ -63,6 +63,7 @@ const [activeIndex, setActiveIndex] = useState(0);
     setSTin(e.target.value);
     setShowErrorMessage1(false);
     setShowResponseMessage(false);
+    setStinValid(false);
   };
 
  
@@ -109,9 +110,11 @@ const [activeIndex, setActiveIndex] = useState(0);
       const responseData = response.data;
      setResponseMessage(responseData?.message);
      setShowResponseMessage(true);
+      setStinValid(true);
     } catch (error) {
       setResponseMessage(JSON.stringify(error.response?.data?.message));
       setShowErrorMessage1(true);
+       setStinValid(false);
       setSTin("");
       console.log(error.response?.data?.message);
     
@@ -122,6 +125,7 @@ const [activeIndex, setActiveIndex] = useState(0);
   };
 
   const [stinCreated, setStinCreated] = useState(false);
+  const [stinValid, setStinValid] = useState(false);
 
   const createStin = async () => {
     const confirmed = await Swal.fire({
@@ -159,6 +163,7 @@ const [activeIndex, setActiveIndex] = useState(0);
      setResponseMessage(responseData?.message);
      setShowResponseMessage(true);
      setStinCreated(true);
+    
     } catch (error) {
       setResponseMessage(error.response?.data?.message);
       setShowErrorMessage1(true);
@@ -184,27 +189,31 @@ const [activeIndex, setActiveIndex] = useState(0);
     await validateTaxPayer(); // `stin` will be cleared inside validateTaxPayer if there’s an error
   };
 
-  const handleSignup = async () => {
+   const handleSignup = async () => {
     setLoading(true);
     setShowErrorMessage(false);
   
     try {
-      // Validate taxpayer first
-      if (!stinCreated) {
-        const isValid = await validateTaxPayer(); 
-  
-        if (!isValid) {
-          setLoading(false);
-          return;
-        }
-      }
+    //   let isValid = true; // Default to true if validation is not required
+    // if (!stinCreated) {
+    //   console.log('Validating taxpayer...'); // Debug: Check if validation is triggered
+    //   isValid = await validateTaxPayer();
+
+    //   console.log('Validation result:', isValid); // Debug: Log validation result
+    //   if (!isValid) {
+    //     console.log('Validation failed'); // Debug: Log failure reason
+    //     setLoading(false);
+    //     setShowErrorMessage(true);
+    //     setErrorMessage('Taxpayer validation failed. Please check your details.');
+    //     return;
+    //   }
+    // }
   
       // Proceed with signup if validation passes
       const response = await axios.post(
         `${BASE_URL}/customer_registration`,
         {
           tin: sTin,
-          // ogun_resident: isTaxpayer,
           registration_type: selectedRegType,
         },
         {
@@ -382,8 +391,19 @@ const [activeIndex, setActiveIndex] = useState(0);
            
            
 
-           
-            <Button  variant="success" className={classes.btngreen} onClick={handleSignup} >
+           {!stinValid ? (
+            <Button disabled={!sTin}  variant="success" className={classes.btngreen} onClick={validateTaxPayer} >
+           {loading ? (
+                             <>
+                               <Spinner size='sm' />
+                               <span style={{ marginLeft: '5px' }}>Processing...</span>
+                             </>
+                           ) : (
+                             "Verify STIN"
+                           )}
+            </Button>
+) : (
+            <Button disabled={!sTin}  variant="success" className={classes.btngreen} onClick={handleSignup} >
            {loading ? (
                              <>
                                <Spinner size='sm' />
@@ -393,6 +413,7 @@ const [activeIndex, setActiveIndex] = useState(0);
                              "Submit"
                            )}
             </Button>
+           )}
           {showErrorMessage && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 10 }}>
                   <img src={Invalid} alt="Invalid Tin" style={{ width: '20px', height: '20px' }} />
