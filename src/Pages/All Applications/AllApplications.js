@@ -7,6 +7,8 @@ import {
   Pagination,
   Accordion,
 } from "react-bootstrap";
+import crop from "../../Asset/repoort.png";
+import verified from "../../Asset/tick-circle.png";
 import PaidIcon from '../../Asset/PaidIc.png';
 import MakePaymentIcon from '../../Asset/wallet.png';
 import PendingPaymentIcon from '../../Asset/Pending.png';
@@ -41,6 +43,8 @@ import { BASE_URL } from '../../API/Api';
 import Notification from '../../Components/Notification/Notification';
 import { useTheme } from '../../ThemeContext';
 import Alert from "react-bootstrap/Alert";
+import Swal from 'sweetalert2';
+import { LiaCheckCircle } from 'react-icons/lia';
 
 // import axios from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -416,6 +420,10 @@ const AllApplications = () => {
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       saveAs(blob, "Applications.csv");
     };
+
+    
+
+   
 
 
   return (
@@ -1122,6 +1130,7 @@ const AllApplications = () => {
       />
       View Application
     </div>
+  
 
                               </div>
                             )}

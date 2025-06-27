@@ -7,6 +7,8 @@ import PdfIcon from "../../Asset/pdf.svg";
 import Printer from "../../Asset/printer.png";
 import xport from "../../Asset/export.png";
 import search from "../../Asset/search.svg";
+import crop from "../../Asset/repoort.png";
+import verified from "../../Asset/tick-circle.png";
 import UploadIcon from "../../Asset/upload.png";
 import plus from "../../Asset/plus.png";
 import Card from "../../Components/Card";
@@ -59,6 +61,7 @@ import { useTheme } from "../../ThemeContext";
 // import NewApplications from '../New Application/NewApplicationns';
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
+import { LiaCheckCircle } from "react-icons/lia";
 // import axios from 'axios';
 // import localStorage from '@react-native-async-storage/async-storage';
 
@@ -1172,6 +1175,93 @@ const Allinvoices = () => {
       fetchDashboardData();
     }
   }, [bearer]);
+
+  const [createLoading, setCreateLoading] = useState(false);
+
+   const handleVerifyPayment = async (payment_code) => {
+      setCreateLoading(true);
+    
+      // Show loading Swal before request
+      Swal.fire({
+        title: 'Verifying...',
+        text: 'Please wait while we verify your payment.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        customClass: {
+          title: classes.myTitle,
+          popup: classes.myText,
+        },
+      });
+    
+      try {
+        const formData = new FormData();
+        formData.append("payment_code", payment_code);
+    
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${bearer}`,
+        };
+    
+        const response = await axios.post(
+          `${BASE_URL}/application/validate-invoice`,
+          formData,
+          { headers }
+        );
+    
+        Swal.fire({
+          imageUrl: verified,
+          title: 'Success!',
+          text: response.data.message,
+          confirmButtonText: "Okay",
+          imageWidth: 48,
+          imageHeight: 48,
+          customClass: {
+            title: classes.myTitle,
+            popup: classes.myText,
+            confirmButton: classes.myButton,
+          },
+          allowOutsideClick: false,
+        });
+  
+        fetchDashboardData();
+    
+      } catch (error) {
+        let errorMessage = "An error occurred. Please try again.";
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          if (typeof error.response.data.message === "string") {
+            errorMessage = error.response.data.message;
+          } else if (Array.isArray(error.response.data.message)) {
+            errorMessage = error.response.data.message.join("; ");
+          } else if (typeof error.response.data.message === "object") {
+            errorMessage = JSON.stringify(error.response.data.message);
+          }
+        }
+    fetchDashboardData();
+        Swal.fire({
+          imageUrl: crop,
+          imageWidth: 48,
+          imageHeight: 48,
+          title: "Failed!",
+          confirmButtonText: "Okay",
+          text: errorMessage,
+          customClass: {
+            title: classes.myTitle,
+            popup: classes.myText,
+            confirmButton: classes.myDeclineButton,
+          },
+          allowOutsideClick: false,
+        });
+    
+      } finally {
+        setCreateLoading(false);
+      }
+    };
 
   return (
     <>
@@ -8269,6 +8359,26 @@ const Allinvoices = () => {
               Make Payment
             </a>
           </div>
+            <div
+                                                        style={{
+                                                          display: "flex",
+                                                          alignItems: "center",
+                                                          padding: "5px 10px",
+                                                          cursor: "pointer",
+                                                          textAlign: "left",
+                                                          whiteSpace: "nowrap"
+                                                        }}
+                                                        onClick={() => handleVerifyPayment(rowId.payment_code)}
+                                                      >
+                                                        <LiaCheckCircle
+                                                          size={20}
+                                                          style={{
+                                                            color: "#828282",
+                                                            marginRight: 10,
+                                                          }}
+                                                        />
+                                                        Validate Payment
+                                                      </div>
                                   </div>
                                 )}
                               </div>
@@ -8435,6 +8545,26 @@ const Allinvoices = () => {
               Make Payment
             </a>
           </div>
+                      <div
+                                                        style={{
+                                                          display: "flex",
+                                                          alignItems: "center",
+                                                          padding: "5px 10px",
+                                                          cursor: "pointer",
+                                                          textAlign: "left",
+                                                          whiteSpace: "nowrap"
+                                                        }}
+                                                        onClick={() => handleVerifyPayment(rowId.payment_code)}
+                                                      >
+                                                        <LiaCheckCircle
+                                                          size={20}
+                                                          style={{
+                                                            color: "#828282",
+                                                            marginRight: 10,
+                                                          }}
+                                                        />
+                                                        Validate Payment
+                                                      </div>
                                   </div>
                                 )}
                               </div>
