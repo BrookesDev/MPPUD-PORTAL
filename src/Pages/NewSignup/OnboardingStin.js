@@ -163,6 +163,7 @@ const [activeIndex, setActiveIndex] = useState(0);
      setResponseMessage(responseData?.message);
      setShowResponseMessage(true);
      setStinCreated(true);
+      setStinValid(true);
     
     } catch (error) {
       setResponseMessage(error.response?.data?.message);
@@ -171,6 +172,7 @@ const [activeIndex, setActiveIndex] = useState(0);
       console.log(error.response?.data?.message);
     
       setStinCreated(false);
+      setStinValid(false);
     } finally {
       setTinLoading(false);
     }
@@ -391,7 +393,7 @@ const [activeIndex, setActiveIndex] = useState(0);
            
            
 
-           {!stinValid ? (
+           {!stinValid  ? (
             <Button disabled={!sTin}  variant="success" className={classes.btngreen} onClick={validateTaxPayer} >
            {loading ? (
                              <>
