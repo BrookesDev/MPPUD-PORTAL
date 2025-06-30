@@ -71,7 +71,7 @@ function Login() {
       const tin = response.data?.data?.user?.customer?.tin;
       const nin = response.data?.data?.user?.customer?.nin;
       const gender = response.data?.data?.user?.customer?.gender;
-      const userType = response.data?.data?.user?.user_type;
+      const userType = response.data?.data?.user?.customer?.type;
       const resulth = response.data?.data?.user?.first_name;
       const resulthh = response.data?.data?.user?.last_name;
       const resultx = response.data?.data?.user?.email;
