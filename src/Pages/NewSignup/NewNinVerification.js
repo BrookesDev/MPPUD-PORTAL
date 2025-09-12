@@ -167,7 +167,7 @@ function NewNinVerification() {
       const responseData = response.data;
      setResponseMessage(responseData?.message);
      setShowResponseMessage(true);
-     navigate('/complete_your_registration_stin', {state:{selectedRegType}});
+     navigate('/complete_your_registration_stin', {state:{sTins: responseData?.data}});
     } catch (error) {
       setResponseMessage(JSON.stringify(error.response?.data?.message));
       setShowErrorMessage1(true);

@@ -39,6 +39,7 @@ function NewCacCompleteReg() {
 
    const [loading, setLoading] = useState(false);
    const [showValidations, setShowValidations] = useState(false);
+   const [tins, setTins] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -208,7 +209,8 @@ function NewCacCompleteReg() {
       const responseData = response.data;
      setResponseMessage(responseData?.message);
      setShowResponseMessage(true);
-     navigate('/complete_your_registration_stin', {state:{selectedRegType}});
+      setTins(responseData?.data);
+     navigate('/complete_your_registration_stin', {state:{selectedRegType, sTins: responseData?.data}});
     } catch (error) {
       setResponseMessage(JSON.stringify(error.response?.data?.message));
       setShowErrorMessage1(true);
