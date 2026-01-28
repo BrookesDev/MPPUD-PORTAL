@@ -73,6 +73,7 @@ const LandRatificationApp = () => {
   const [imgError4, setImgError4] = useState("");
   const [imgError21, setImgError21] = useState("");
   const [imgError22, setImgError22] = useState("");
+  const [imgError24, setImgError24] = useState("");
   const [surveyPlanNumber, setSurveyPlanNumber] = useState("");
 
   const [acquisitionType, setAcquisitionType] = useState("");
@@ -82,6 +83,7 @@ const LandRatificationApp = () => {
   const [imgError1, setImgError1] = useState("");
   // const [imgError2, setImgError2] = useState("");
   const [imgError3, setImgError3] = useState("");
+  const [imgError25, setImgError25] = useState("");
   const [plotSize, setPlotSize] = useState("");
 
   const [tableData, setTableData] = useState([]);
@@ -105,6 +107,8 @@ const LandRatificationApp = () => {
   const [fileName30, setFileName30] = useState("Electrical Architectural Plan");
   const [fileName31, setFileName31] = useState("Structural Engineering");
   const [fileName32, setFileName32] = useState("Title Document");
+  const [fileName34, setFileName34] = useState("Land Information");
+  const [fileName35, setFileName35] = useState("SSR Certficate");
   const [fileName40, setFileName40] = useState("Mechanical Architectural Plan");
   const [fileName1, setFileName1] = useState("Survey Plan");
   const [architectural, setArchitectural] = useState("Architectural Documents");
@@ -123,6 +127,8 @@ const LandRatificationApp = () => {
   const fileInputRef40 = useRef(null);
   const fileInputRef31 = useRef(null);
   const fileInputRef32 = useRef(null);
+  const fileInputRef34 = useRef(null);
+  const fileInputRef35 = useRef(null);
 
   const handleClick = () => {
     fileInputRef.current.click();
@@ -140,6 +146,12 @@ const LandRatificationApp = () => {
   };
   const handleClick40 = () => {
     fileInputRef40.current.click();
+  };
+  const handleClick34 = () => {
+    fileInputRef34.current.click();
+  };
+  const handleClick35 = () => {
+    fileInputRef35.current.click();
   };
 
   const handleClick1 = () => {
@@ -183,6 +195,8 @@ const LandRatificationApp = () => {
 
   const [selectedFile15, setSelectedFile15] = useState(null);
   const [selectedFile40, setSelectedFile40] = useState(null);
+  const [selectedFile34, setSelectedFile34] = useState(null);
+  const [selectedFile35, setSelectedFile35] = useState(null);
   const [customerPicture, setCustomerPicture] = useState("");
   const [businessName, setBusinessName] = useState("");
 
@@ -611,6 +625,38 @@ const LandRatificationApp = () => {
       setImgError("");
     }
   };
+
+  const handleFileChange34 = event => {
+    const files = event.target.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.size > 2 * 1024 * 1024) {
+        setImgError24("File is larger than 2MB. Max upload size is 2MB.");
+        setFileName34("");
+        return;
+      }
+      setFileName34(file.name);
+      setSelectedFile34([file]);
+      setImgError24("");
+    }
+  };
+
+  const handleFileChange35 = event => {
+    const files = event.target.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.size > 2 * 1024 * 1024) {
+        setImgError25("File is larger than 2MB. Max upload size is 2MB.");
+        setFileName35("");
+        return;
+      }
+      setFileName35(file.name);
+      setSelectedFile35([file]);
+      setImgError25("");
+    }
+  };
+
+
   const handleErrorClose = () => {
     setShowModalError(false);
     // handleShowPaymentModal();
@@ -766,6 +812,8 @@ const LandRatificationApp = () => {
       selectedFile40 &&
       selectedFile21 &&
       selectedFile22 &&
+      selectedFile34 &&
+      selectedFile35 &&
       selectedBuildingType &&
       selectedType &&
       selectedBuilding &&
@@ -781,6 +829,8 @@ const LandRatificationApp = () => {
     selectedFile40 ,
     selectedFile21 ,
     selectedFile22 ,
+    selectedFile34 ,
+    selectedFile35 ,
     selectedBuildingType ,
     selectedBuilding ,
     selectedType ,
@@ -893,6 +943,13 @@ const LandRatificationApp = () => {
       if (floorNumber && floorNumber.length > 0) {
         formData.append("no_of_floors", floorNumber[0]);
       }
+
+       if (selectedFile34 && selectedFile34.length > 0) {
+        formData.append("land_info_certificate", selectedFile34[0]);
+      }
+       if (selectedFile35 && selectedFile35.length > 0) {
+        formData.append("site_situation_report", selectedFile35[0]);
+      } 
 
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
@@ -2651,7 +2708,7 @@ const LandRatificationApp = () => {
                   <Form.Label
   className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
 >
-  Building Area/Location <span style={{color: "red"}}>*</span>
+  Site Location <span style={{color: "red"}}>*</span>
 </Form.Label>
                     <Form.Select
                     // disabled={selectedBuildingType !== "1"}
@@ -2872,6 +2929,89 @@ const LandRatificationApp = () => {
                 </Col>
 )}
               </Row>
+
+                             <Row className="mb-3">
+              
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Land Information <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick34}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName34.length > 30
+                        ? fileName34.slice(0, 30) + "..."
+                        : fileName34}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef34}
+                      onChange={handleFileChange34}
+                      className={classes.hiddenFile}
+                      // disabled
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError24}</p>
+                </Col>
+             
+
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    SSR Certficate <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick35}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName35
+                        ? fileName35.length > 30
+                          ? fileName35.slice(0, 30) + "..."
+                          : fileName35
+                        : ""}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef35}
+                      onChange={handleFileChange35}
+                      className={classes.hiddenFile}
+                      // disabled
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError25}</p>
+                </Col>
+              </Row>
+
               <Row className="mb-3">
               {selectedType !== "1" && (
                 <Col md={6}>
@@ -4209,6 +4349,91 @@ const LandRatificationApp = () => {
                 </Col>
 )}
               </Row>
+
+
+                          <Row className="mb-3">
+              
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    Land Information <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick34}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName34.length > 30
+                        ? fileName34.slice(0, 30) + "..."
+                        : fileName34}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef34}
+                      onChange={handleFileChange34}
+                      className={classes.hiddenFile}
+                      disabled
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError24}</p>
+                </Col>
+             
+
+                <Col md={6}>
+                  <Form.Label
+                    className={
+                      isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                    }
+                  >
+                    SSR Certficate <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                  </Form.Label>
+                  <div className={classes.fileUpload} onClick={handleClick35}>
+                    <img
+                      src={ImageIcon}
+                      alt="icon"
+                      className={classes.leftIcon}
+                    />
+                    <span className={classes.uploadText}>
+                      {fileName35
+                        ? fileName35.length > 30
+                          ? fileName35.slice(0, 30) + "..."
+                          : fileName35
+                        : ""}
+                    </span>
+                    <div className={classes.uploadButton}>
+                      <img
+                        src={UploadIcon}
+                        alt="upload"
+                        className={classes.uploadIcon}
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      ref={fileInputRef35}
+                      onChange={handleFileChange35}
+                      className={classes.hiddenFile}
+                      disabled
+                    />
+                  </div>
+                  <p style={{ fontSize: 12, color: "red" }}>{imgError25}</p>
+                </Col>
+              </Row>
+
+
               <Row className="mb-3">
               {selectedType !== "1" && (
                 <Col md={6}>

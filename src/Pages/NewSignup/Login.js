@@ -203,8 +203,11 @@ function Login() {
                   fontFamily: 'Inter, sans-serif',
                   textAlign: 'center',
                   margin: 0,
+                  maxWidth: "450px",
                 }}>
-                Effortless Budget Management: Request, Track, and<br />Approve with Ease
+                Welcome to the Ogun State Ministry of Physical Planning and Urban Development (MPPUD)  Application Portal  
+                {/* <br /> */}
+               
               </p>
             </Col>
           </Row>
