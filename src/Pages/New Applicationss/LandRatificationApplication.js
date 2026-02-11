@@ -995,12 +995,11 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
       // formData.append("area_id", selectedBuilding);
-      formData.append("lga_id", selectedBuilding);
-      formData.append("site_full_address", selectedBuilding);
-      formData.append("location_id", selectedBuilding);
+      formData.append("lga_id", selectedArea);
+      formData.append("site_full_address", siteFullAddress);
+      formData.append("location_id", selectedLocation);
       formData.append("size_in_sqm", sizeSqm);
-      formData.append("size_in_plot", sizePlot);
-     
+      formData.append("size_in_plot", sizePlot);     
 
       // console.log(selectedFile);
 
