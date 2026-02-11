@@ -74,6 +74,7 @@ const [activeIndex, setActiveIndex] = useState(0);
       const detail = await localStorage.getItem('userName');
       const details = await localStorage.getItem('userToken');
        const dtt = await localStorage.getItem('userType');
+       console.log(dtt);
 
 
 

@@ -108,7 +108,7 @@ const LandRatificationApp = () => {
   const [fileName31, setFileName31] = useState("Structural Engineering");
   const [fileName32, setFileName32] = useState("Title Document");
   const [fileName34, setFileName34] = useState("Land Information");
-  const [fileName35, setFileName35] = useState("SSR Certficate");
+  const [fileName35, setFileName35] = useState("Site Situation Evaluation Report");
   const [fileName40, setFileName40] = useState("Mechanical Architectural Plan");
   const [fileName1, setFileName1] = useState("Survey Plan");
   const [architectural, setArchitectural] = useState("Architectural Documents");
@@ -2977,7 +2977,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    SSR Certficate <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                    Site Situation Evaluation Report <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick35}>
                     <img
@@ -4398,7 +4398,7 @@ const LandRatificationApp = () => {
                       isDarkMode ? classes.labelTxt1 : classes.labelTxt
                     }
                   >
-                    SSR Certficate <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
+                    SSER Certficate <span style={{fontSize: 10, fontWeight: 700}}>(only PDF is allowed)</span><span style={{color:"red"}}>*</span>
                   </Form.Label>
                   <div className={classes.fileUpload} onClick={handleClick35}>
                     <img
