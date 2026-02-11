@@ -857,7 +857,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
       selectedFile35 &&
       selectedBuildingType &&
       selectedType &&
-      selectedBuilding &&
+      // selectedBuilding &&
       sizePlot &&
       sizeSqm &&
       attestation;
@@ -873,7 +873,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
     selectedFile34 ,
     selectedFile35 ,
     selectedBuildingType ,
-    selectedBuilding ,
+    // selectedBuilding ,
     selectedType ,
       sizePlot ,
       sizeSqm ,
@@ -3267,7 +3267,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     variant="success"
                     onClick={handlePreview}
                     // disabled={!isFormValid}
-                    disabled={!isFormValid}
+                    // disabled={!isFormValid}
                   >
                     {/* {createLoading ? (
                       <>
