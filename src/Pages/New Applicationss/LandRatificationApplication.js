@@ -54,6 +54,9 @@ const LandRatificationApp = () => {
   const [consentTypes, setConsentTypes] = useState([]);
   const [caveatTypes, setCaveatTypes] = useState([]);
   const [show, setShow] = useState(false);
+  const [tableData45, setTableData45] = useState([]);
+  const [localGovernment, setLocalGovernment] = useState([]);
+  
 
   const [show30, setShow30] = useState(false);
 
@@ -186,6 +189,7 @@ const LandRatificationApp = () => {
   const [floorNumber, setFloorNumber] = useState("");
 
   const [sizeSqm, setSizeSqm] = useState("");
+  const [siteFullAddress, setSiteFullAddress] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedSource, setSelectedSource] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -244,7 +248,8 @@ const LandRatificationApp = () => {
   const [compAddress, setAddress] = useState("");
   const [compPhone, setcompPhone] = useState("");
   const [CompEmail, setCompEmail] = useState("");
-
+const [selectedZone, setSelectedZone] = useState("");
+const [selectedZoneName, setSelectedZoneName] = useState("");
   // const totalPages = 10; // Total number of pages
 
   const readData = async () => {
@@ -416,6 +421,19 @@ const LandRatificationApp = () => {
   }, []);
 
 
+    const handleZoneChange = (e) => {
+      const selectedId = e.target.value;
+      const zoneName =
+        tableData2.find((item) => item.id.toString() === selectedId)
+          ?.description || "";
+      setSelectedZone(selectedId);
+      setSelectedZoneName(zoneName);
+      
+      if (selectedId) {
+        fetchArea(selectedId); // Fetch locations based on selected area
+      }
+    };
+
 
   const fetchCaveatTypes = async () => {
     try {
@@ -502,6 +520,39 @@ const LandRatificationApp = () => {
     fetchSchemes();
   }, [bearer]);
 
+     const fetchArea = async (selectedId) => {
+       try {
+         const response = await axios.get(
+           `${BASE_URL}/get_locations_by_lga?id=${selectedId}`,
+           {
+             headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${bearer}`,
+             },
+           }
+         );
+   
+         const resultsss = response.data?.data;
+         setTableData45(resultsss);
+         console.log(resultsss);
+       } catch (error) {
+         if (error.response && error.response.status === 401) {
+           // Redirect to login page if unauthorized
+           // navigate("/");
+         } else {
+           const errorStatus = error.response?.data?.message;
+           console.log(errorStatus);
+           setTableData45([]); // Ensure this is set properly
+         }
+       }
+     };
+   
+    //  useEffect(() => {
+    //    if (bearer) {
+    //      fetchArea();
+    //    }
+    //  }, [bearer]);
+
   const handleDevStatus = e => {
     setSelectedDevelopment(e.target.value);
     // setShowErrorMessage(false);
@@ -527,25 +578,15 @@ const LandRatificationApp = () => {
 
   const handleAreaChange = e => {
     const selectedId = e.target.value;
-    const areaName =
-      tableData.find(item => item.id.toString() === selectedId)?.description ||
-      "";
     setSelectedArea(selectedId);
-    setSelectedAreaName(areaName);
-    console.log(areaName);
     if (selectedId) {
-      fetchLocation(selectedId); // Fetch locations based on selected area
+      fetchArea(selectedId); // Fetch locations based on selected area
     }
   };
 
   const handleLocationChange = e => {
     const selectedId = e.target.value;
-    const stationName =
-      tableData2.find(item => item.id.toString() === selectedId)?.location ||
-      "";
-    setSelectedLocationName(stationName);
-    setSelectedLocation(e.target.value);
-    // setShowErrorMessage(false);
+    setSelectedLocation(selectedId);
   };
 
   const handleSourceFund = e => {
@@ -953,7 +994,10 @@ const LandRatificationApp = () => {
 
       formData.append("ptype", selectedBuildingType);
       formData.append("utype", selectedType);
-      formData.append("area_id", selectedBuilding);
+      // formData.append("area_id", selectedBuilding);
+      formData.append("lga_id", selectedBuilding);
+      formData.append("site_full_address", selectedBuilding);
+      formData.append("location_id", selectedBuilding);
       formData.append("size_in_sqm", sizeSqm);
       formData.append("size_in_plot", sizePlot);
      
@@ -1195,9 +1239,32 @@ const LandRatificationApp = () => {
     }
   };
 
+  const fetchLocal = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/fetch-local-govt`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${bearer}`,
+        },
+      });
+      const results = response.data?.data;
+      setLocalGovernment(results);
+      console.log(results);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // navigate("/");
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setLocalGovernment([]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (bearer) {
       fetchTax();
+      fetchLocal();
     }
   }, [bearer]);
 
@@ -2620,7 +2687,58 @@ const LandRatificationApp = () => {
                                       </Form.Group>
                                     </Col>
                                   </Row> */}
-              
+                            <Row className="mb-3">
+                              <Col md={6}>
+                                <Form.Group controlId="lga">
+                                  <Form.Label className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}>
+                                   Local Government Area of Site
+                                  </Form.Label>
+                                  <Form.Control
+                                    as="select"
+                                    className={`form-select ${classes.optioncss}`}
+                                    value={selectedArea}
+                                    onChange={handleAreaChange}
+                                    required
+                                  >
+                                    <option value="">Select LGA</option>
+                                   {localGovernment?.map((item, index) => (
+                               <option
+                                 key={index}
+                                 value={item.id}
+                                 name={item.local_govt}
+                               >
+                                 {item.local_govt}
+                               </option>
+                             ))}
+                                  </Form.Control>
+                                </Form.Group>
+                              </Col>
+                              <Col md={6}>
+                                <Form.Group controlId="lga">
+                                  <Form.Label className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}>
+                                    Site Location
+                                  </Form.Label>
+                                  <Form.Control
+                                    as="select"
+                                    className={`form-select ${classes.optioncss}`}
+                                    value={selectedLocation}
+                                    onChange={handleLocationChange}
+                                    required
+                                  >
+                                    <option value="">Select Location</option>
+                                    {tableData45?.map((item, index) => (
+                                      <option
+                                        key={index}
+                                        value={item.id}
+                                        name={item.description}
+                                      >
+                                        {item.description}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                </Form.Group>
+                              </Col>
+                            </Row>
               <Row className="mb-3"  style={{marginTop: 10}}>
               <Col md={6}>
                   <Form.Group controlId="proposedTimeline">
@@ -2703,30 +2821,22 @@ const LandRatificationApp = () => {
                 {/* )}                 */}
               </Row>
               <Row className="mb-3">
-              <Col md={6}>
+                <Col md={6}>
                   <Form.Group controlId="option3">
-                  <Form.Label
-  className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
->
-  Site Location <span style={{color: "red"}}>*</span>
-</Form.Label>
-                    <Form.Select
-                    // disabled={selectedBuildingType !== "1"}
-                      className={classes.optioncss}
-                      onChange={handleBuildingChange}
-                      value={selectedBuilding}
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
                     >
-                      <option value="">Select building area/location </option>
-               {caveatTypes?.map((item, index) => (
-                 <option
-                   key={index}
-                   value={item.id}
-                   name={item.description}
-                 >
-                   {item.description}
-                 </option>
-               ))}
-                    </Form.Select>
+                      Size in plot <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      className={classes.optioncss}
+                      placeholder="Enter plot size in number e.g 2"
+                      value={sizePlot}
+                      onChange={(e) => setSizePlot(e.target.value)}
+                    />
                   </Form.Group>
                 </Col>
               <Col md={6}>
@@ -2751,20 +2861,35 @@ const LandRatificationApp = () => {
               </Row>
               <Col md={12}>
                   <Form.Group controlId="option3">
-                    <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Size in plot <span style={{color:"red"}}>*</span>
-                    </Form.Label>
+                  <Form.Label
+                    className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
+                  >
+                    Site Full Address <span style={{color: "red"}}>*</span>
+                  </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       className={classes.optioncss}
-                      placeholder="Enter plot size in number e.g 2"
-                      value={sizePlot}
-                      onChange={(e) => setSizePlot(e.target.value)}
+                      placeholder="Enter site full address"
+                      value={siteFullAddress}
+                      onChange={(e) => setSiteFullAddress(e.target.value)}
                     />
+                    {/* <Form.Select
+                    // disabled={selectedBuildingType !== "1"}
+                      className={classes.optioncss}
+                      onChange={handleBuildingChange}
+                      value={selectedBuilding}
+                    >
+                      <option value="">Select building area/location </option>
+               {caveatTypes?.map((item, index) => (
+                 <option
+                   key={index}
+                   value={item.id}
+                   name={item.description}
+                 >
+                   {item.description}
+                 </option>
+               ))}
+                    </Form.Select> */}
                   </Form.Group>
                 </Col>
 
