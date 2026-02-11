@@ -873,7 +873,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
     selectedFile34 ,
     selectedFile35 ,
     selectedBuildingType ,
-    // selectedBuilding ,
+    // // selectedBuilding ,
     selectedType ,
       sizePlot ,
       sizeSqm ,
@@ -2815,9 +2815,6 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </Form.Group>
                 </Col>
                )}
-                {/* {selectedBuildingType === "1" && ( */}
-             
-                {/* )}                 */}
               </Row>
               <Row className="mb-3">
                 <Col md={6}>
@@ -3266,8 +3263,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     className={classes.modBtnn}
                     variant="success"
                     onClick={handlePreview}
-                    // disabled={!isFormValid}
-                    // disabled={!isFormValid}
+                    disabled={!isFormValid}
                   >
                     {/* {createLoading ? (
                       <>
