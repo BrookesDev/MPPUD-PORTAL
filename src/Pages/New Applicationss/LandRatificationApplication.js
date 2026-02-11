@@ -2795,7 +2795,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                 </Col>                
               </Row>
               <Row className="mb-3">
-               {selectedType == 3 && (
+               {/* {selectedType == 3 && ( */}
                 <Col md={12}>
                   <Form.Group controlId="option3">
                   <Form.Label
@@ -2814,7 +2814,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     />
                   </Form.Group>
                 </Col>
-               )}
+               {/* )} */}
               </Row>
               <Row className="mb-3">
                 <Col md={6}>
@@ -2970,7 +2970,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
               </Row>
 
               <Row className="mb-3">
-              {selectedType !== "1" && (
+              {/* {selectedType !== "1" && ( */}
                 <Col md={6}>
                   <Form.Label
                     className={
@@ -3007,9 +3007,9 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError2}</p>
                 </Col>
-                  )}
+                  {/* )} */}
 
-{selectedType !== "1" && (
+{/* {selectedType !== "1" && ( */}
                 <Col md={6}>
                   <Form.Label
                     className={
@@ -3048,7 +3048,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError3}</p>
                 </Col>
-)}
+{/* )} */}
               </Row>
 
                              <Row className="mb-3">
@@ -3134,7 +3134,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
               </Row>
 
               <Row className="mb-3">
-              {selectedType !== "1" && (
+              {/* {selectedType !== "1" && ( */}
                 <Col md={6}>
                   <Form.Label
                     className={
@@ -3171,7 +3171,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </div>
                   <p style={{ fontSize: 12, color: "red" }}>{imgError21}</p>
                 </Col>
-              )}
+              {/* )} */}
 
                 <Col md={6}>
                   <Form.Label
