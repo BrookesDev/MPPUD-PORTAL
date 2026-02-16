@@ -2795,7 +2795,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                 </Col>                
               </Row>
               <Row className="mb-3">
-               {/* {selectedType == 3 && ( */}
+               {selectedType == 3 && (
                 <Col md={12}>
                   <Form.Group controlId="option3">
                   <Form.Label
@@ -2814,7 +2814,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     />
                   </Form.Group>
                 </Col>
-               {/* )} */}
+              )}
               </Row>
               <Row className="mb-3">
                 <Col md={6}>
@@ -3235,16 +3235,16 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                             I/We realise that it is an offense to make a false
                             statement/claim in this form and that any allocation
                             granted me on the basis of such false claim is
-                            revocable and may be revoked, and if a certificate
-                            of occupancy has been granted, such certificate must
+                            revocable and may be revoked, and if a planning permit
+                             has been granted, such certificate must
                             be revoked.
                             <br />
-                            The Bureau of Lands and Survey accepts no
+                            The Ministry of Physical Planning and Urban Development accepts no
                             responsibility for an application form not completed
                             properly and for which reason such an application
                             may be rejected. <br />
                             I/We undertake to pay all necessary fees due to the
-                            preparation of a certificate of occupancy which may
+                            preparation of a planning permit which may
                             be issued consequent upon this application. <br />
                             Should I withdraw the above application after making
                             such deposit, I agree to forfeit the whole or such
@@ -4151,7 +4151,60 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                                  <h1 style={{textTransform:'uppercase',}}>Building Permit Form</h1>
                                </div>
      <Form className={isDarkMode ? classes.formContainer1 : classes.formContainerr} style={{paddingLeft:10}}>
-
+                            <Row className="mb-3">
+                              <Col md={6}>
+                                <Form.Group controlId="lga">
+                                  <Form.Label className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}>
+                                   Local Government Area of Site
+                                  </Form.Label>
+                                  <Form.Control
+                                    as="select"
+                                    className={`form-select ${classes.optioncss}`}
+                                    value={selectedArea}
+                                    onChange={handleAreaChange}
+                                    required
+                                    disabled
+                                  >
+                                    <option value="">Select LGA</option>
+                                   {localGovernment?.map((item, index) => (
+                               <option
+                                 key={index}
+                                 value={item.id}
+                                 name={item.local_govt}
+                               >
+                                 {item.local_govt}
+                               </option>
+                             ))}
+                                  </Form.Control>
+                                </Form.Group>
+                              </Col>
+                              <Col md={6}>
+                                <Form.Group controlId="lga">
+                                  <Form.Label className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}>
+                                    Site Location
+                                  </Form.Label>
+                                  <Form.Control
+                                    as="select"
+                                    className={`form-select ${classes.optioncss}`}
+                                    value={selectedLocation}
+                                    onChange={handleLocationChange}
+                                    required
+                                    disabled
+                                  >
+                                    <option value="">Select Location</option>
+                                    {tableData45?.map((item, index) => (
+                                      <option
+                                        key={index}
+                                        value={item.id}
+                                        name={item.description}
+                                      >
+                                        {item.description}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                </Form.Group>
+                              </Col>
+                            </Row>
      <Row className="mb-3"  style={{marginTop: 10}}>
               <Col md={6}>
                   <Form.Group controlId="proposedTimeline">
@@ -4212,7 +4265,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
               </Row>
               <Row className="mb-3">
                {selectedType == 3 && (
-                <Col md={6}>
+                <Col md={12}>
                   <Form.Group controlId="option3">
                   <Form.Label
                       className={
@@ -4232,7 +4285,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </Form.Group>
                 </Col>
                )}
-                {/* {selectedBuildingType === "1" && ( */}
+                {/* {selectedBuildingType === "1" && (
                 <Col md={6}>
                   <Form.Group controlId="option3">
                   <Form.Label
@@ -4260,7 +4313,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                {/* )}                 */}
+                )}                 */}
               </Row>
               <Row className="mb-3">
               <Col md={6}>
@@ -4302,9 +4355,25 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </Form.Group>
                 </Col>
               </Row>
-             
+              <Col md={12}>
+                  <Form.Group controlId="option3">
+                  <Form.Label
+                    className={isDarkMode ? classes.labelTxt1 : classes.labelTxt}
+                  >
+                    Site Full Address <span style={{color: "red"}}>*</span>
+                  </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter site full address"
+                      value={siteFullAddress}
+                      onChange={(e) => setSiteFullAddress(e.target.value)}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>             
 
-              <Row className="mb-3">
+              <Row className="mb-3" style={{marginTop: 20}}>
                 <Col md={6}>
                   <Form.Group controlId="surveyPlan">
                     <Form.Label
@@ -4660,16 +4729,15 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                      I/We realise that it is an offense to make a false
                      statement/claim in this form and that any allocation
                      granted me on the basis of such false claim is
-                     revocable and may be revoked, and if a certificate
-                     of occupancy has been granted, such certificate must
+                     revocable and may be revoked, and if a planning permit has been granted, such certificate must
                      be revoked.
                      <br />
-                     The Bureau of Lands and Survey accepts no
+                     The Ministry of Physical Planning and Urban Development accepts no
                      responsibility for an application form not completed
                      properly and for which reason such an application
                      may be rejected. <br />
                      I/We undertake to pay all necessary fees due to the
-                     preparation of a certificate of occupancy which may
+                     preparation of a planning permit which may
                      be issued consequent upon this application. <br />
                      Should I withdraw the above application after making
                      such deposit, I agree to forfeit the whole or such
