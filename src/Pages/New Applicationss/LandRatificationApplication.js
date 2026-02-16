@@ -2806,11 +2806,19 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                       Number of Floors <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       className={classes.optioncss}
                       placeholder="Enter floor in number e.g 2"
                       value={floorNumber}
-                      onChange={(e) => setFloorNumber(e.target.value)}
+                      // onChange={(e) => setFloorNumber(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow only: positive numbers with or without decimals, no leading 0
+                        if (/^[1-9]\d*(\.\d*)?$/.test(value) || value === "") {
+                          setFloorNumber(value);
+                        }
+                      }}                      
                     />
                   </Form.Group>
                 </Col>
@@ -2827,11 +2835,19 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                       Size in plot <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       className={classes.optioncss}
                       placeholder="Enter plot size in number e.g 2"
                       value={sizePlot}
-                      onChange={(e) => setSizePlot(e.target.value)}
+                      // onChange={(e) => setSizePlot(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow only: positive numbers with or without decimals, no leading 0
+                        if (/^[1-9]\d*(\.\d*)?$/.test(value) || value === "") {
+                          setSizePlot(value);
+                        }
+                      }}
                     />
                   </Form.Group>
                 </Col>
@@ -2845,11 +2861,19 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                       Size in Sqm <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       className={classes.optioncss}
                       placeholder="Enter sqm size in number e.g 2"
                       value={sizeSqm}
-                      onChange={(e) => setSizeSqm(e.target.value)}
+                      // onChange={(e) => setSizeSqm(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow only: positive numbers with or without decimals, no leading 0
+                        if (/^[1-9]\d*(\.\d*)?$/.test(value) || value === "") {
+                          setSizeSqm(value);
+                        }
+                      }}                      
                     />
                   </Form.Group>
                 </Col>
