@@ -1052,15 +1052,15 @@ const AllApplications = () => {
                         <td style={{ padding: 10 }}>{rowId.uuid}</td>
                         <td style={{ padding: 10 }}>{rowId.apptype?.description}</td>
                         <td style={{ padding: 10 }}>{formatDate(rowId.created_at)}</td>
-                        <td style={{ padding: 10 }}>{rowId.approval_status === 0 ? "Ongoing" : "Completed"}</td>
-                        <td style={{ padding: 10 }}>{rowId.payment_status === "0" ? "Unpaid" : "Paid"}</td>
-                        <td style={{ padding: 10 }}>{rowId.payment_status === "0"
+                        <td style={{ padding: 10 }}>{rowId.approval_status == 0 ? "Ongoing" : "Completed"}</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status == "0" ? "Unpaid" : "Paid"}</td>
+                        <td style={{ padding: 10 }}>{rowId.payment_status == "0"
                                     ? "Awaiting your Payment"
-                                    : rowId.payment_status === "1" &&
-                                      rowId.approval_status === "0"
+                                    : rowId.payment_status == "1" &&
+                                      rowId.approval_status == "0"
                                     ? rowId.role?.name
-                                    : rowId.payment_status === "1" &&
-                                    rowId.approval_status === "1"
+                                    : rowId.payment_status == "1" &&
+                                    rowId.approval_status == "1"
                                   ? "Approved"
                                     : null}</td>
                         {/* <td style={{ padding: 10 }}>₦528,861.00</td> */}
