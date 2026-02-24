@@ -569,6 +569,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
   };
   const handleType = e => {
     setSelectedType(e.target.value);
+    setFloorNumber("");
     // setShowErrorMessage(false);
   };
   const handleBuildingChange = e => {
@@ -2813,7 +2814,6 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                       // onChange={(e) => setFloorNumber(e.target.value)}
                       onChange={(e) => {
                         const value = e.target.value;
-
                         // Allow only: positive numbers with or without decimals, no leading 0
                         if (/^[1-9]\d*(\.\d*)?$/.test(value) || value === "") {
                           setFloorNumber(value);
