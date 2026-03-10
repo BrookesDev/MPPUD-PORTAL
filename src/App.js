@@ -45,6 +45,9 @@ import ApplicationPage from "./Pages/ApplicationPage/Application.js";
 import InvoiceNew from "./Pages/All Invoices/InvoiceNew.js";
 import Invoices from "./Pages/Invoices/Invoices.js";
 import ReceiptNew from "./Pages/ReceiptNew.js";
+import LUCMajorApplication from "./Pages/New Applicationss/LUCMajorApplication.js";
+import LUCTowersApplication from "./Pages/New Applicationss/LUCTowersApplication.js";
+import OpticsFirbreApplications from "./Pages/New Applicationss/OpticsFibreApplications.js";
 
 
 function App() {
@@ -97,6 +100,9 @@ function App() {
             <Route path="/payments" element={<AllPayment />} />
             <Route path='/new_applications' element={<NewApplications />} />
             <Route path='/applications_building_permit' element={<LandRatificationApp />} />
+            <Route path='/applications_luc_major_apps' element={<LUCMajorApplication />} />
+            <Route path='/applications_luc_towers_mass' element={<LUCTowersApplication />} />
+            <Route path='/applications_opticsfibre_pipelines' element={<OpticsFirbreApplications />} />
             <Route path='/application_page' element={<ApplicationPage />} />
 
             <Route path="/Welly" element={<Welly/>} />

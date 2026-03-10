@@ -862,7 +862,9 @@ const AllApplications = () => {
                 <Button variant="close" onClick={handleCloseModal}></Button>
               </Modal.Header>
               <Modal.Body>
-                <div className={classes.crdCont}>
+                <Row style={{ padding: "20px" }}>
+                  <Col md={6}>
+                                  <div className={classes.crdCont}>
                  <div
                                      
                                       className={classes.card}
@@ -873,7 +875,7 @@ const AllApplications = () => {
                                             className={classes.cardTitle}
                                             style={{ wordWrap: "break-word" }}
                                           >
-                                            Building Permit Application
+                                            Planning Permit Application
                                           </h3>
                                         </div>
                                    
@@ -896,6 +898,120 @@ const AllApplications = () => {
                                       </div>
                                     </div>
                                     </div>
+                  </Col>
+                  <Col md={6}>
+                                  <div className={classes.crdCont}>
+
+                 <div
+                                     
+                                      className={classes.card}
+                                    >
+                                      
+                                        <div>
+                                          <h3
+                                            className={classes.cardTitle}
+                                            style={{ wordWrap: "break-word" }}
+                                          >
+                                            LUC Towers, Radio Station, Mass etc
+                                          </h3>
+                                        </div>
+                                   
+                                      <p
+                                        className={classes.textPrg}
+                                        style={{ wordWrap: "break-word" }}
+                                      >
+                                        Click the Apply Button to start your application
+                                      </p>
+                                      <div className={classes.bottomBtn}>
+                                        <Button
+                                          onClick={() =>
+                                            navigate('/applications_luc_towers_mass')
+                                          }
+                                          variant="success"
+                                          className={classes.appBtn}
+                                        >
+                                          Apply
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    </div>
+                  </Col>
+                </Row>
+                <Row style={{ padding: "20px" }}>
+                  <Col md={6}>
+                                  <div className={classes.crdCont}>
+                 <div
+                                     
+                                      className={classes.card}
+                                    >
+                                      
+                                        <div>
+                                          <h3
+                                            className={classes.cardTitle}
+                                            style={{ wordWrap: "break-word" }}
+                                          >
+                                            Land Use Clearance on Major Applications
+                                          </h3>
+                                        </div>
+                                   
+                                      <p
+                                        className={classes.textPrg}
+                                        style={{ wordWrap: "break-word" }}
+                                      >
+                                        Click the Apply Button to start your application
+                                      </p>
+                                      <div className={classes.bottomBtn}>
+                                        <Button
+                                          onClick={() =>
+                                            navigate('/applications_luc_major_apps')
+                                          }
+                                          variant="success"
+                                          className={classes.appBtn}
+                                        >
+                                          Apply
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    </div>
+                  </Col>
+                  <Col md={6}>
+                                  <div className={classes.crdCont}>
+
+                 <div
+                                     
+                                      className={classes.card}
+                                    >
+                                      
+                                        <div>
+                                          <h3
+                                            className={classes.cardTitle}
+                                            style={{ wordWrap: "break-word" }}
+                                          >
+                                            Optics Fibre, Pipelines, Layout Route
+                                          </h3>
+                                        </div>
+                                   
+                                      <p
+                                        className={classes.textPrg}
+                                        style={{ wordWrap: "break-word" }}
+                                      >
+                                        Click the Apply Button to start your application
+                                      </p>
+                                      <div className={classes.bottomBtn}>
+                                        <Button
+                                          onClick={() =>
+                                            navigate('/applications_opticsfibre_pipelines')
+                                          }
+                                          variant="success"
+                                          className={classes.appBtn}
+                                        >
+                                          Apply
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    </div>
+                  </Col>
+                </Row>
               </Modal.Body>
             </Modal>
 
