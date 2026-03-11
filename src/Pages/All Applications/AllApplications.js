@@ -838,7 +838,12 @@ const AllApplications = () => {
                 <p classes={{ color: isDarkMode ? "white" : "#101828", fontWeight: 600, fontSize: 30 }} className={classes.wlcm}>Applications</p>
                <p>Your Hub for All Applications – Apply, Track, and Stay Updated.</p>
               </div>
-              <button onClick={() => setShowModal(true)} className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
+              <button 
+              // onClick={() => setShowModal(true)} 
+                onClick={() =>
+                  navigate('/new_applications')
+                }
+              className={classes.btnadd}><img src={plus} className={classes.plusiconstyl} />
                 <span> Make New Application</span>
               </button>
             </div>
