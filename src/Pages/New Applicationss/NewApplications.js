@@ -1092,8 +1092,8 @@ useEffect(() => {
             <div style={{ marginTop: 20 }} />
             <div className={isDarkMode ? classes.layoutcardss : classes.layoutcards}>
               <div className={classes.servicesCont}>
-                        <h2  className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}>
-                        Services Offered by <span>MPPUD</span>
+                        <h2  className={isDarkMode ? classes.sectionTitles : classes.sectionTitle}> 
+                          Services Offered by <span>MPPUD</span>
                           </h2>
                           <p className={isDarkMode ? classes.sectionSubtitles : classes.sectionSubtitle}>
                           Seamless urban planning at your fingertips! 
@@ -1181,6 +1181,12 @@ useEffect(() => {
       // setDetailsLoading(false);
     } else if (application.id == 11) {
       navigate('/applications_opticsfibre_pipelines');
+      // setDetailsLoading(false);
+    } else if (application.id == 12) {
+      navigate('/applications_master_plan_permit');
+      // setDetailsLoading(false);
+    } else if (application.id == 13) {
+      navigate('/applications_plan_information');
       // setDetailsLoading(false);
     } else if (application.id == "⁠Split My Tokenised Property") {
       window.open("", "_blank");

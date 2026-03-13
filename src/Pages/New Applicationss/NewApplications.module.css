@@ -385,25 +385,25 @@ text-decoration-skip-ink: none;
 }
 .sectionTitle {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 20px;
   color: #000000;
 }
 .sectionTitles {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 20px;
   color: #ffffff;
 }
 .sectionTitles > span {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 20px;
   color: #21B55A;
 }
 .sectionTitle > span {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 20px;
   color: #21B55A;
 }

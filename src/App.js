@@ -48,6 +48,8 @@ import ReceiptNew from "./Pages/ReceiptNew.js";
 import LUCMajorApplication from "./Pages/New Applicationss/LUCMajorApplication.js";
 import LUCTowersApplication from "./Pages/New Applicationss/LUCTowersApplication.js";
 import OpticsFirbreApplications from "./Pages/New Applicationss/OpticsFibreApplications.js";
+import MasterPlanApplications from "./Pages/New Applicationss/MasterPlanApplications.js";
+import PlanInformationApplications from "./Pages/New Applicationss/PlanInformationApplications.js";
 
 
 function App() {
@@ -103,6 +105,8 @@ function App() {
             <Route path='/applications_luc_major_apps' element={<LUCMajorApplication />} />
             <Route path='/applications_luc_towers_mass' element={<LUCTowersApplication />} />
             <Route path='/applications_opticsfibre_pipelines' element={<OpticsFirbreApplications />} />
+            <Route path='/applications_plan_information' element={<PlanInformationApplications />} />
+            <Route path='/applications_master_plan_permit' element={<MasterPlanApplications />} />
             <Route path='/application_page' element={<ApplicationPage />} />
 
             <Route path="/Welly" element={<Welly/>} />
