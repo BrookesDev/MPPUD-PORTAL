@@ -1059,35 +1059,19 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
       if (selectedFile && selectedFile.length > 0) {
         formData.append("survey_plan", selectedFile[0]);
       }
-      if (selectedFile15 && selectedFile15.length > 0) {
-        formData.append("building_plan", selectedFile2[0]);
-      }
-      if (selectedFile40 && selectedFile40.length > 0) {
-        formData.append("electrical_plan", selectedFile15[0]);
-      }
-      if (selectedFile2 && selectedFile2.length > 0) {
-        formData.append("mechanical_plan", selectedFile40[0]);
-      }
-      if (selectedFile21 && selectedFile21.length > 0) {
-        formData.append("structural_engineering", selectedFile21[0]);
-      }
       if (selectedFile22 && selectedFile22.length > 0) {
-        formData.append("title_document", selectedFile22[0]);
-      }
-      if (floorNumber && floorNumber.length > 0) {
-        formData.append("no_of_floors", floorNumber[0]);
-      }
-
-       if (selectedFile34 && selectedFile34.length > 0) {
-        formData.append("land_info_certificate", selectedFile34[0]);
+        formData.append("photocopy_of_land", selectedFile22[0]);
       }
        if (selectedFile35 && selectedFile35.length > 0) {
-        formData.append("site_situation_report", selectedFile35[0]);
+        formData.append("site_location_plan", selectedFile35[0]);
       } 
 
       formData.append("ptype", selectedBuildingType);
-      formData.append("utype", selectedType);
-      // formData.append("area_id", selectedBuilding);
+      formData.append("plan_clearance_id", selectedLandUse);
+      formData.append("other_plan_clearance", selectedLandUse == 6 ? otherPurpose : "");
+      formData.append("mode_of_acquisition_id", selectedModeAcquisition);
+      formData.append("other_acquisition_mode", selectedModeAcquisition == 5 ? otherMode : "");
+      formData.append("land_status_id", selectedDevelopment);
       formData.append("lga_id", selectedArea);
       formData.append("site_full_address", siteFullAddress);
       formData.append("location_id", selectedLocation);
