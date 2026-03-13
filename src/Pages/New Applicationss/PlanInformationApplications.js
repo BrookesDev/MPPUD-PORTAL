@@ -232,6 +232,8 @@ const PlanInformationApplications = () => {
   const [stin, setStin] = useState("");
   const [otherMode, setOtherMode] = useState("");
   const [otherPurpose, setOtherPurpose] = useState("");
+  const [proposalType, setProposalType] = useState("");
+  const [relevantInformation, setRelevantInformation] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [nokFirstName, setNokFirstName] = useState("");
@@ -1074,6 +1076,8 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
       formData.append("land_status_id", selectedDevelopment);
       formData.append("lga_id", selectedArea);
       formData.append("site_full_address", siteFullAddress);
+      formData.append("proposal_type", proposalType);
+      formData.append("other_information", relevantInformation);
       formData.append("location_id", selectedLocation);
       formData.append("size_in_sqm", sizeSqm);
       formData.append("size_in_plot", sizePlot);     
@@ -2986,35 +2990,6 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
               </Row>
               )}
               <Row className="mb-3">
-               {selectedType == 3 && (
-                <Col md={12}>
-                  <Form.Group controlId="option3">
-                  <Form.Label
-                      className={
-                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
-                      }
-                    >
-                      Number of Floors <span style={{color:"red"}}>*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className={classes.optioncss}
-                      placeholder="Enter floor in number e.g 2"
-                      value={floorNumber}
-                      // onChange={(e) => setFloorNumber(e.target.value)}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        // Allow only: positive numbers with or without decimals, no leading 0
-                        if (/^[1-9]\d*(\.\d*)?$/.test(value) || value === "") {
-                          setFloorNumber(value);
-                        }
-                      }}                      
-                    />
-                  </Form.Group>
-                </Col>
-              )}
-              </Row>
-              <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group controlId="option3">
                     <Form.Label
@@ -3101,8 +3076,57 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                ))}
                     </Form.Select> */}
                   </Form.Group>
+              </Col>
+              <Row className="mb-3"  style={{marginTop: 10}}>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Type of Proposal<span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Specific Type of Proposal"
+                      value={proposalType}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setProposalType(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
                 </Col>
-
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Other Relevanat Information <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Other Relevanat Information"
+                      value={relevantInformation}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setRelevantInformation(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </Col>  
+              </Row>
               <Row className="mb-3" style={{marginTop: 20}}>
                 <Col md={6}>
                   <Form.Label
