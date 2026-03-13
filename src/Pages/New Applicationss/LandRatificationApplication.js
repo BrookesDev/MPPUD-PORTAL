@@ -491,34 +491,35 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
     Authorization: `Bearer ${bearer}`,
   };
 
-  useEffect(() => {
-    const fetchSchemes = async () => {
-      setRoleLoading(true);
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/customer/show_all_scheme`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${bearer}`,
-            },
-          }
-        );
-        const results = response.data?.data;
-        setSchemes(results);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-        } else {
-          const errorStatus = error.response?.data?.message;
-          console.log(errorStatus);
-          setSchemes([]);
+  const fetchSchemes = async () => {
+    setRoleLoading(true);
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/customer/show_all_scheme`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+          },
         }
-      } finally {
-        setRoleLoading(false);
+      );
+      const results = response.data?.data;
+      setSchemes(results);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+      } else {
+        const errorStatus = error.response?.data?.message;
+        console.log(errorStatus);
+        setSchemes([]);
       }
-    };
-    fetchSchemes();
-  }, [bearer]);
+    } finally {
+      setRoleLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchSchemes();
+  // }, [bearer]);
 
      const fetchArea = async (selectedId) => {
        try {

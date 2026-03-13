@@ -603,7 +603,7 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
   };
 
   useEffect(() => {
-    fetchSchemes();
+    // fetchSchemes();
     fetchLandStatus();
     fetchPlanInfo();
     fetchModeAcquisition();
@@ -3109,12 +3109,13 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                         isDarkMode ? classes.labelTxt1 : classes.labelTxt
                       }
                     >
-                      Other Relevanat Information <span style={{color:"red"}}>*</span>
+                      Other Relevant Information <span style={{color:"red"}}>*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      as="textarea"
+                      rows={2}
                       className={classes.optioncss}
-                      placeholder="Enter Other Relevanat Information"
+                      placeholder="Enter Other Relevant Information"
                       value={relevantInformation}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -4393,6 +4394,66 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                   </Form.Group>
                 </Col>                
               </Row>
+              {(selectedModeAcquisition == 5 || selectedLandUse == 6) && (
+              <Row className="mb-3"  style={{marginTop: 10}}>
+                {selectedModeAcquisition == 5 && (
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Other Mode of Acquisition<span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Other Mode of Acquisition"
+                      value={otherMode}
+                      disabled
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setOtherMode(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                )}
+                {selectedLandUse == 6 && (
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Other Purpose <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Other Purpose"
+                      value={otherPurpose}
+                      disabled
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setOtherPurpose(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </Col>                
+                )}
+              </Row>
+              )}
               <Row className="mb-3">
                {selectedType == 3 && (
                 <Col md={12}>
@@ -4513,7 +4574,59 @@ const [selectedZoneName, setSelectedZoneName] = useState("");
                     </Form.Select> */}
                   </Form.Group>
                 </Col>
-
+              <Row className="mb-3"  style={{marginTop: 10}}>
+                <Col md={6}>
+                  <Form.Group controlId="proposedTimeline">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Type of Proposal<span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className={classes.optioncss}
+                      placeholder="Enter Specific Type of Proposal"
+                      value={proposalType}
+                      disabled
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setProposalType(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="option3">
+                    <Form.Label
+                      className={
+                        isDarkMode ? classes.labelTxt1 : classes.labelTxt
+                      }
+                    >
+                      Other Relevant Information <span style={{color:"red"}}>*</span>
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={2}
+                      disabled
+                      className={classes.optioncss}
+                      placeholder="Enter Other Relevant Information"
+                      value={relevantInformation}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow alphabets, numbers, /, \, @, &, (, ), and spaces
+                        if (/^[A-Za-z0-9\/\\@&() ]*$/.test(value)) {
+                          setRelevantInformation(value);
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </Col>  
+              </Row>
               <Row className="mb-3" style={{marginTop: 20}}>
                 <Col md={6}>
                   <Form.Label
